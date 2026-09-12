@@ -1,0 +1,352 @@
+<title>PHSI Pipeline</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --bg: #f6f7f2;
+    --surface: #ffffff;
+    --surface-2: #eef0e8;
+    --ink: #1c2119;
+    --ink-soft: #565f52;
+    --ink-faint: #8b9284;
+    --border: #d9ddcf;
+    --border-strong: #b9c0ac;
+    --gold: #9c6b26;
+    --gold-soft: #f1e4cd;
+    --green: #2d6a4f;
+    --green-soft: #dbe9df;
+    --violet: #4e5a92;
+    --violet-soft: #e4e5f2;
+    --shadow: 0 1px 2px rgba(30,35,25,0.06), 0 6px 20px rgba(30,35,25,0.05);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14170f;
+      --surface: #1b2018;
+      --surface-2: #222819;
+      --ink: #e8ecdf;
+      --ink-soft: #a4ac97;
+      --ink-faint: #707868;
+      --border: #333b28;
+      --border-strong: #465038;
+      --gold: #dcaa5c;
+      --gold-soft: #35301f;
+      --green: #74b896;
+      --green-soft: #223228;
+      --violet: #a3add9;
+      --violet-soft: #262a3d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14170f;
+    --surface: #1b2018;
+    --surface-2: #222819;
+    --ink: #e8ecdf;
+    --ink-soft: #a4ac97;
+    --ink-faint: #707868;
+    --border: #333b28;
+    --border-strong: #465038;
+    --gold: #dcaa5c;
+    --gold-soft: #35301f;
+    --green: #74b896;
+    --green-soft: #223228;
+    --violet: #a3add9;
+    --violet-soft: #262a3d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", -apple-system, sans-serif;
+    padding: 0 20px;
+    line-height: 1.5;
+  }
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding-block: 48px 64px;
+  }
+  header {
+    margin-bottom: 8px;
+  }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--green);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(28px, 4vw, 40px);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 10px;
+  }
+  .sub {
+    color: var(--ink-soft);
+    font-size: 16px;
+    max-width: 62ch;
+    margin: 0 0 6px;
+  }
+  .weights {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin: 18px 0 40px;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  .weights b { color: var(--ink); font-weight: 600; }
+  .swatch {
+    display: inline-block;
+    width: 9px; height: 9px;
+    border-radius: 2px;
+    margin-right: 6px;
+    position: relative;
+    top: -1px;
+  }
+
+  figure {
+    margin: 0 0 36px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    box-shadow: var(--shadow);
+    padding: clamp(16px, 3vw, 32px) clamp(12px, 3vw, 28px) 20px;
+    overflow-x: auto;
+  }
+  figure svg { display: block; margin: 0 auto; max-width: 100%; height: auto; min-width: 640px; }
+  figcaption {
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    text-align: center;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .notes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .note h3 {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .note p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--ink-soft);
+  }
+  .note.parked {
+    border-style: dashed;
+    border-color: var(--border-strong);
+  }
+  .note.parked h3 { color: var(--ink-faint); }
+
+  .stage-fin { color: var(--gold); }
+  .stage-esg { color: var(--green); }
+  .stage-llm { color: var(--violet); }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">ETH Hackathon — S&amp;P 500 Sustainability</p>
+    <h1>The PHSI Pipeline</h1>
+    <p class="sub">Pragmatic Hybrid Sustainability Index — how a ticker becomes a 0–100 score, from raw filings to ranking. Solid arrows are the build path; dashed elements are parked for after the core pipeline runs.</p>
+  </header>
+
+  <div class="weights">
+    <span><span class="swatch" style="background:var(--gold)"></span><b>Financial Levers</b> · 60% weight</span>
+    <span><span class="swatch" style="background:var(--green)"></span><b>ESG Compass</b> · 40% weight</span>
+    <span><span class="swatch" style="background:var(--violet); opacity:.7"></span><b>LLM PoC</b> · validation branch</span>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 1080 1020" role="img" aria-label="Pipeline diagram: three data sources load into a SQLite star schema keyed by ticker and GICS sector; a Pandas analytics engine winsorizes and z-scores financial and ESG metrics within each sector, applies a pragmatic penalty for missing ESG data, and blends both blocks 60/40 into a PHSI score with a weight-sensitivity sweep; a parallel local-LLM proof of concept parses a sample of sustainability PDFs to validate the published ESG ratings; the $1B net-zero portfolio allocation and the ESG-risk-versus-carbon-intensity question are parked until the core pipeline is running.">
+
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="currentColor"></path>
+        </marker>
+        <marker id="arrowDim" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-faint)"></path>
+        </marker>
+      </defs>
+
+      <!-- ============ ROW 1 : SOURCES ============ -->
+      <g font-family="IBM Plex Mono, monospace">
+        <rect x="30" y="30" width="290" height="86" rx="10" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.3"></rect>
+        <text x="175" y="60" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Yahoo Finance API</text>
+        <text x="175" y="80" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">FCF · Capex · margin · cost/rev, all 503 tickers</text>
+        <text x="175" y="100" text-anchor="middle" font-size="10" fill="var(--gold)">→ Financial Levers</text>
+
+        <rect x="395" y="30" width="290" height="86" rx="10" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.3"></rect>
+        <text x="540" y="60" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Kaggle ESG Risk Ratings</text>
+        <text x="540" y="80" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">Env / Social / Governance / Controversy, static CSV</text>
+        <text x="540" y="100" text-anchor="middle" font-size="10" fill="var(--green)">→ ESG Compass</text>
+
+        <rect x="760" y="20" width="290" height="106" rx="10" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.3" stroke-dasharray="5 4"></rect>
+        <text x="905" y="42" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">PDFs · 2 per company</text>
+        <text x="905" y="62" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">own sustainability report +</text>
+        <text x="905" y="78" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">independent agency rating (MSCI/CDP)</text>
+        <text x="905" y="96" text-anchor="middle" font-size="9.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">2–3 tickers, hand-downloaded for demo</text>
+        <text x="905" y="114" text-anchor="middle" font-size="10" fill="var(--violet)">→ LLM PoC only</text>
+      </g>
+
+      <!-- connectors row1 -> row2 -->
+      <g stroke="currentColor" stroke-width="1.4" fill="none" color="var(--ink-faint)">
+        <path d="M175,116 L175,150 Q175,166 300,166 L470,166" marker-end="url(#arrowDim)"></path>
+        <path d="M540,116 L540,166" marker-end="url(#arrowDim)"></path>
+      </g>
+      <text x="330" y="158" font-size="10.5" font-family="IBM Plex Mono, monospace" fill="var(--ink-faint)">load</text>
+
+      <!-- LLM branch goes down separately -->
+      <path d="M905,126 L905,270" stroke="var(--violet)" stroke-width="1.4" fill="none" stroke-dasharray="5 4" marker-end="url(#arrow)" color="var(--violet)"></path>
+
+      <!-- ============ ROW 2 : STORAGE ============ -->
+      <rect x="315" y="166" width="450" height="70" rx="10" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1.3"></rect>
+      <text x="540" y="194" text-anchor="middle" font-size="13.5" font-weight="600" font-family="IBM Plex Mono, monospace" fill="var(--ink)">SQLite · star schema (SQLAlchemy)</text>
+      <text x="540" y="213" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">joined and queried by ticker × GICS sector</text>
+
+      <path d="M540,236 L540,270" stroke="currentColor" stroke-width="1.4" color="var(--ink-faint)" marker-end="url(#arrowDim)"></path>
+      <text x="558" y="258" font-size="10.5" font-family="IBM Plex Mono, monospace" fill="var(--ink-faint)">sector-grouped query</text>
+
+      <!-- ============ ROW 3 : ANALYTICS ENGINE ============ -->
+      <rect x="200" y="270" width="680" height="230" rx="12" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.5"></rect>
+      <text x="222" y="298" font-size="13" font-weight="600" font-family="IBM Plex Mono, monospace" fill="var(--ink)">Analytics Engine (Pandas)</text>
+      <line x1="540" y1="282" x2="540" y2="486" stroke="var(--border)" stroke-width="1"></line>
+
+      <!-- financial column -->
+      <text x="360" y="326" text-anchor="middle" font-size="12" font-weight="600" fill="var(--gold)">Financial Levers</text>
+      <g font-size="11" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)" text-anchor="middle">
+        <text x="360" y="350">FCF yield · Capex/rev</text>
+        <text x="360" y="368">margin · cost/rev ratio</text>
+      </g>
+      <rect x="240" y="382" width="240" height="34" rx="7" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"></rect>
+      <text x="360" y="403" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink)">winsorize 5th/95th pct</text>
+      <path d="M360,416 L360,432" stroke="var(--ink-faint)" stroke-width="1.2" marker-end="url(#arrowDim)"></path>
+      <rect x="240" y="432" width="240" height="34" rx="7" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1"></rect>
+      <text x="360" y="453" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink)">z-score within GICS sector</text>
+
+      <!-- esg column -->
+      <text x="720" y="326" text-anchor="middle" font-size="12" font-weight="600" fill="var(--green)">ESG Compass</text>
+      <g font-size="11" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)" text-anchor="middle">
+        <text x="720" y="350">env · social · governance</text>
+        <text x="720" y="368">controversy level</text>
+      </g>
+      <rect x="600" y="382" width="240" height="34" rx="7" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1"></rect>
+      <text x="720" y="403" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink)">pragmatic penalty: NaN → sector p75</text>
+      <path d="M720,416 L720,432" stroke="var(--ink-faint)" stroke-width="1.2" marker-end="url(#arrowDim)"></path>
+      <rect x="600" y="432" width="240" height="34" rx="7" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1"></rect>
+      <text x="720" y="453" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink)">z-score within GICS sector</text>
+
+      <text x="540" y="486" text-anchor="middle" font-size="10.5" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace">merge on ticker</text>
+
+      <!-- LLM PoC box, sits beside engine, feeds into ESG column -->
+      <rect x="890" y="290" width="160" height="180" rx="10" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.3" stroke-dasharray="5 4"></rect>
+      <text x="970" y="313" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--ink)">LLM PoC</text>
+      <text x="970" y="330" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">local Qwen / DeepSeek</text>
+      <text x="970" y="345" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">strict-JSON prompts</text>
+      <line x1="910" y1="354" x2="1030" y2="354" stroke="var(--border-strong)" stroke-width="1"></line>
+      <text x="970" y="370" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">own report vs.</text>
+      <text x="970" y="384" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">agency report (MSCI/CDP)</text>
+      <text x="970" y="400" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">2–3 companies, by hand</text>
+      <text x="970" y="422" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono, monospace" fill="var(--violet)">↳ scope-limited demo</text>
+      <text x="970" y="437" text-anchor="middle" font-size="9" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-faint)">→ API-fed at institutional scale</text>
+
+      <path d="M890,390 L860,428" stroke="var(--violet)" stroke-width="1.3" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)" color="var(--violet)"></path>
+      <text x="885" y="415" font-size="9.5" font-family="IBM Plex Mono, monospace" fill="var(--violet)" text-anchor="end">cross-checks rating</text>
+
+      <!-- ============ ROW 4 : PHSI SCORE + SENSITIVITY ============ -->
+      <path d="M540,500 L540,536" stroke="currentColor" stroke-width="1.4" color="var(--ink-faint)" marker-end="url(#arrowDim)"></path>
+      <text x="558" y="524" font-size="10.5" font-family="IBM Plex Mono, monospace" fill="var(--ink-faint)">weighted blend 60/40</text>
+
+      <rect x="300" y="536" width="290" height="80" rx="10" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.6"></rect>
+      <text x="445" y="566" text-anchor="middle" font-size="14.5" font-weight="600" font-family="IBM Plex Mono, monospace" fill="var(--ink)">PHSI Score</text>
+      <text x="445" y="586" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">0–100, ranked within S&amp;P 500</text>
+      <text x="445" y="603" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">per company, per sector</text>
+
+      <path d="M590,576 L660,576" stroke="var(--ink-faint)" stroke-width="1.2" marker-end="url(#arrowDim)"></path>
+      <rect x="660" y="536" width="270" height="80" rx="10" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1.2" stroke-dasharray="5 4"></rect>
+      <text x="795" y="566" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--ink)">Sensitivity sweep</text>
+      <text x="795" y="586" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">re-run at 50/50, 60/40, 70/30</text>
+      <text x="795" y="603" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">check top/bottom-20 stability</text>
+
+      <!-- ============ ROW 5 : PARKED ============ -->
+      <path d="M445,616 L445,660" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4" fill="none" marker-end="url(#arrowDim)"></path>
+
+      <rect x="120" y="700" width="380" height="94" rx="10" fill="none" stroke="var(--border-strong)" stroke-width="1.3" stroke-dasharray="6 5"></rect>
+      <text x="310" y="726" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink-faint)">parked · $1B net-zero portfolio</text>
+      <text x="310" y="747" text-anchor="middle" font-size="10.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">40/40/20 allocation rule, derived</text>
+      <text x="310" y="763" text-anchor="middle" font-size="10.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">from PHSI sub-scores per sector</text>
+      <text x="310" y="782" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace">— after core pipeline runs —</text>
+
+      <rect x="580" y="700" width="380" height="94" rx="10" fill="none" stroke="var(--border-strong)" stroke-width="1.3" stroke-dasharray="6 5"></rect>
+      <text x="770" y="726" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink-faint)">parked · env risk vs. carbon</text>
+      <text x="770" y="747" text-anchor="middle" font-size="10.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">Sustainalytics risk score ≠ Scope 1/2</text>
+      <text x="770" y="763" text-anchor="middle" font-size="10.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">intensity — reconcile during fine-tune</text>
+      <text x="770" y="782" text-anchor="middle" font-size="10" fill="var(--ink-faint)" font-family="IBM Plex Mono, monospace">— after core pipeline runs —</text>
+
+      <path d="M445,616 L445,650 Q445,660 310,660 L310,700" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4" fill="none" marker-end="url(#arrowDim)"></path>
+      <path d="M445,616 L445,650 Q445,660 770,660 L770,700" stroke="var(--ink-faint)" stroke-width="1.3" stroke-dasharray="4 4" fill="none" marker-end="url(#arrowDim)"></path>
+
+      <!-- step markers -->
+      <g font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--ink-faint)">
+        <text x="30" y="20">01 sources</text>
+        <text x="315" y="156">02 storage</text>
+        <text x="200" y="262">03 analytics</text>
+        <text x="300" y="528">04 score</text>
+        <text x="120" y="692">05 open questions</text>
+      </g>
+    </svg>
+    <figcaption>Financials and the Kaggle ESG ratings cover all 503 tickers into a sector-keyed SQLite store; the Pandas engine winsorizes and z-scores each block within its own GICS sector, penalizing undisclosed ESG data by sector norm, then blends both blocks 60/40 into the PHSI score alongside a weight-sensitivity check. The LLM branch cross-checks a company's own sustainability report against an independent agency's rating (MSCI/CDP), hand-downloaded for 2–3 demo tickers — a deliberately scoped stand-in for the live agency-API feed an institutional desk already has under subscription. Portfolio allocation and the risk-vs-carbon distinction stay open until the core pipeline is working end to end.</figcaption>
+  </figure>
+
+  <div class="notes">
+    <div class="note">
+      <h3><span class="swatch" style="background:var(--gold)"></span>Decided</h3>
+      <p>Normalization is sector-relative (z-score within GICS sector), not universal min-max — for both financial levers and ESG metrics.</p>
+    </div>
+    <div class="note">
+      <h3><span class="swatch" style="background:var(--gold)"></span>Decided</h3>
+      <p>60/40 weight is shown alongside a sensitivity sweep (50/50 → 70/30) so the ranking's stability is demonstrable, not asserted.</p>
+    </div>
+    <div class="note">
+      <h3><span class="swatch" style="background:var(--violet)"></span>Decided</h3>
+      <p>The local-LLM PDF module is explicitly a proof-of-concept on a small sector-spread sample, not a full 503-company step.</p>
+    </div>
+    <div class="note">
+      <h3><span class="swatch" style="background:var(--violet)"></span>Decided</h3>
+      <p>PoC cross-checks each demo company's own report against an independent agency rating (MSCI/CDP) — hand-downloaded here, but a subscription an institutional desk (e.g. a Citadel-style shop) already holds. Data access isn't the pitch; the methodology is.</p>
+    </div>
+    <div class="note parked">
+      <h3>Parked</h3>
+      <p>Env Risk Score vs. carbon intensity — revisit as fine-tuning once the pipeline runs end to end.</p>
+    </div>
+    <div class="note parked">
+      <h3>Parked</h3>
+      <p>$1B net-zero portfolio allocation — turn the 40/40/20 narrative into a rule derived from PHSI sub-scores, after the core scoring works.</p>
+    </div>
+  </div>
+</div>
