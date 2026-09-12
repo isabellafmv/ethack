@@ -2,4 +2,11 @@ node_modules/
 dist/
 *.local
 .DS_Store
-web/*.tsbuildinfo
+*.tsbuildinfo
+
+# The real export is per-machine build output (regenerate with `npm run
+# data`) -- committing it would go stale the moment anyone else's DB differs.
+# The fixture (`npm run fixture`) IS committed: it's what makes a fresh clone
+# runnable with no Python pipeline at all, so it belongs in the repo.
+/public/data/matrix.json
+/public/data/quotes.json

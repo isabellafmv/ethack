@@ -1,0 +1,162 @@
+import { useMemo, useState } from "react";
+import { useMatrix } from "./data/useMatrix";
+import { useAppState } from "./state/useAppState";
+import { computeScores } from "./scoring/pipeline";
+import { resolveReference } from "./scoring/reference";
+import { VIEWS, viewById } from "./viz/views";
+import { axisCoverage } from "./viz/coverage";
+import { ScatterView, CAMERA_PRESETS, type CameraPresetId } from "./viz/ScatterView";
+import { AxisPickers } from "./viz/AxisPickers";
+import { FixtureBadge } from "./components/FixtureBadge";
+import { ProvenanceFooter } from "./components/ProvenanceFooter";
+import { SectorFilter } from "./components/SectorFilter";
+import { Legend } from "./components/Legend";
+import { CoverageStrip } from "./components/CoverageStrip";
+import { ReferencePicker } from "./components/ReferencePicker";
+import { WeightPanel } from "./components/WeightPanel";
+import { DetailPanel } from "./components/DetailPanel";
+import { SearchBox } from "./components/SearchBox";
+import "./App.css";
+
+export default function App() {
+  const matrix = useMatrix();
+  const state = useAppState();
+  const [cameraPreset, setCameraPreset] = useState<CameraPresetId | null>("isometric");
+
+  const companies = matrix.payload?.companies ?? [];
+
+  // Percentiles are sector-relative and computed over the FULL universe --
+  // sector filtering below is a display concern only (see pipeline.ts's own
+  // note on this), so `scores` never depends on the filter.
+  const scores = useMemo(() => computeScores(companies, state.weights), [companies, state.weights]);
+
+  const sectorCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const c of companies) m.set(c.sector, (m.get(c.sector) ?? 0) + 1);
+    return m;
+  }, [companies]);
+
+  const referenceBySector = useMemo(() => {
+    const m = new Map<string, ReturnType<typeof resolveReference>>();
+    for (const sector of sectorCounts.keys()) m.set(sector, resolveReference(companies, state.reference, sector));
+    return m;
+  }, [companies, sectorCounts, state.reference]);
+
+  const view = viewById(state.activeViewId);
+
+  const visibleResults = useMemo(() => {
+    const out = [];
+    for (const c of companies) {
+      if (state.selectedSectors.size > 0 && !state.selectedSectors.has(c.sector)) continue;
+      const r = scores.get(c.ticker);
+      if (r) out.push(r);
+    }
+    return out;
+  }, [companies, scores, state.selectedSectors]);
+
+  const coverages = useMemo(
+    () => state.axes.map((axis) => axisCoverage(axis, visibleResults)),
+    [state.axes, visibleResults]
+  );
+
+  const selectedCompany = state.selectedTicker
+    ? companies.find((c) => c.ticker === state.selectedTicker) ?? null
+    : null;
+  const selectedResult = state.selectedTicker ? scores.get(state.selectedTicker) ?? null : null;
+
+  if (matrix.status === "loading") {
+    return <div className="center-message">Loading sustainability data...</div>;
+  }
+  if (matrix.status === "error" || !matrix.payload) {
+    return (
+      <div className="error-banner">
+        <h1>Data failed to load</h1>
+        <p>{matrix.error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="app-shell">
+      {matrix.isFixture && <FixtureBadge />}
+      <header className="app-header">
+        <h1>S&amp;P 500 Sustainability Map</h1>
+        <nav className="view-tabs">
+          {VIEWS.map((v) => (
+            <button
+              key={v.id}
+              className={v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
+              onClick={() => state.setActiveViewId(v.id)}
+            >
+              {v.label}
+            </button>
+          ))}
+        </nav>
+        <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
+      </header>
+
+      <div className="app-body">
+        <aside className="app-sidebar app-sidebar--left">
+          <SectorFilter
+            sectorCounts={sectorCounts}
+            selected={state.selectedSectors}
+            onToggle={state.toggleSector}
+            onClear={state.clearSectorFilter}
+          />
+          <WeightPanel weights={state.weights} onChange={state.setWeights} companies={companies} />
+        </aside>
+
+        <main className="app-main">
+          <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} />
+          <div className="camera-presets">
+            {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
+              <button key={p} onClick={() => setCameraPreset(p)}>{p}</button>
+            ))}
+          </div>
+          <div className="scatter-container">
+            <ScatterView
+              companies={companies}
+              scores={scores}
+              axes={state.axes}
+              visibleSectors={state.selectedSectors}
+              referenceBySector={referenceBySector}
+              weights={state.weights}
+              onSelectCompany={state.setSelectedTicker}
+              cameraPreset={cameraPreset}
+            />
+          </div>
+        </main>
+
+        <aside className="app-sidebar app-sidebar--right">
+          <Legend reference={state.reference} deltaMode={state.deltaMode} />
+          <CoverageStrip coverages={coverages} />
+          <ReferencePicker
+            reference={state.reference}
+            onChangeReference={state.setReference}
+            deltaMode={state.deltaMode}
+            onChangeDeltaMode={state.setDeltaMode}
+            companies={companies}
+          />
+        </aside>
+
+        {selectedCompany && selectedResult && (
+          <DetailPanel
+            company={selectedCompany}
+            result={selectedResult}
+            urls={matrix.payload.urls}
+            weights={state.weights}
+            isFixture={matrix.isFixture}
+            onClose={() => state.setSelectedTicker(null)}
+          />
+        )}
+      </div>
+
+      <ProvenanceFooter
+        generatedAt={matrix.payload.generated_at}
+        schemaVersion={matrix.payload.schema_version}
+        analysisYear={matrix.payload.analysis_year}
+        isFixture={matrix.isFixture}
+      />
+    </div>
+  );
+}

@@ -22,7 +22,7 @@ import sqlite3
 from collections import defaultdict
 
 from .common.entities import universe
-from .common.fields import FIELDS
+from .common.fields import FIELDS, VALIDATION_ONLY
 from .common.paths import DATA, DB_PATH
 from .export_matrix import _rank
 
@@ -143,7 +143,10 @@ def export(db_path=DB_PATH, year: int | None = None, with_status: bool = False,
            fallback: bool = False):
     best = collect(db_path, year, fallback)
     meta = {r["ticker"]: r for r in universe()}
-    fields = [f for f in FIELDS]                      # vocabulary order, stable
+    # VALIDATION_ONLY fields are the external ESG ratings we are trying to
+    # BEAT. They must never sit in a table someone might build a score from,
+    # so they go to their own file and nowhere near the scoring columns.
+    fields = [f for f in FIELDS if f not in VALIDATION_ONLY]
     present = [f for f in fields if any((t, f) in best for t in meta)]
 
     tag = f"_FY{year}" if year else ""
@@ -220,6 +223,24 @@ def export(db_path=DB_PATH, year: int | None = None, with_status: bool = False,
                   "  calendar filers, so a ranking across this column compares different\n"
                   "  periods. Pin a year for anything you rank or divide:\n"
                   "      python -m pipeline.export_wide --year 2025")
+
+    vfields = [f for f in VALIDATION_ONLY if any((t, f) in best for t in meta)]
+    if vfields:
+        vp = DATA / "validation_external_ratings.csv"
+        with vp.open("w", newline="", encoding="utf-8") as fh:
+            w = csv.writer(fh)
+            w.writerow(META + vfields)
+            for t, m in sorted(meta.items()):
+                row = [t, m.get("company", ""), m.get("sector", ""),
+                       m.get("sub_industry", "")]
+                for f in vfields:
+                    rec = best.get((t, f))
+                    row.append((rec["value_num"] if rec["value_num"] is not None
+                                else rec["value_text"])
+                               if rec and rec["status"] in TRUSTED else "")
+                w.writerow(row)
+        print(f"wrote {vp}  —  VALIDATION ONLY. Never an input to a score; "
+              f"this is the benchmark we compare against.")
 
     if with_status:
         sp = DATA / f"wide{tag}_status.csv"
