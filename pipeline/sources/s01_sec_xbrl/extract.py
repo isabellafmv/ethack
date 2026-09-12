@@ -25,7 +25,12 @@ from .fields import EMITS
 from .tags import TAG_CHAINS, DERIVED
 
 SOURCE = "S01"
-YEARS = 3                    # how many fiscal years back to emit
+#: How many fiscal years to emit per company.
+#: 3 was too few: a June or September year-end filer (MSFT, PG, CSCO, INTU...)
+#: has FY2024-26 as its latest three, so pinning the analysis to FY2023 — the
+#: only year with EPA-measured emissions — silently dropped 26 companies that
+#: do have a 2023. 5 also gives trajectory work something to fit.
+YEARS = 5
 ANNUAL_MIN, ANNUAL_MAX = 340, 400   # days, to reject quarterly and 2-year facts
 FORMS = {"10-K", "10-K/A"}
 
@@ -65,18 +70,62 @@ def _facts_for_tag(doc: dict, tag: str) -> dict[int, dict]:
     return out
 
 
-def _first_hit(doc: dict, chain: list[str]) -> tuple[str | None, dict[int, dict]]:
+ASC606 = "RevenueFromContractWithCustomerExcludingAssessedTax"
+
+
+def _reconcile_revenue(doc: dict, res: dict) -> dict:
+    """Guard for the one case where `Revenues` is not the top line.
+
+    `Revenues` is preferred because contract revenue is a component of it. But a
+    handful of filers tag `Revenues` for a segment or a sub-total, leaving it
+    SMALLER than the contract-revenue figure. Total revenue can never be less
+    than revenue from contracts with customers, so when that happens the
+    ordering is wrong for this filer and the larger figure is taken.
+
+    Both values stay in the cache; only the pick changes, and `extracted_by`
+    records which concept won.
+    """
+    asc = _facts_for_tag(doc, ASC606)
+    for fy, (tag, fact) in list(res.items()):
+        alt = asc.get(fy)
+        if tag != ASC606 and alt and alt["val"] > fact["val"]:
+            res[fy] = (ASC606, alt)
+    return res
+
+
+def _resolve(doc: dict, chain: list[str]) -> dict[int, tuple[str, dict]]:
+    """{fiscal_year: (winning_tag, fact)} — resolved PER YEAR, not once.
+
+    Resolving once per company is subtly wrong and cost us NEE: its `Revenues`
+    tag stops in 2012, so a chain that locks onto the first tag with *any* data
+    returns nothing for 2023-2025 while a later tag in the chain has them all.
+    ASC 606 changed revenue tagging in 2018, so most companies have exactly this
+    shape — an old concept and a new one, each covering different years.
+
+    Earlier entries in the chain still win when both cover the same year.
+    """
+    out: dict[int, tuple[str, dict]] = {}
     for tag in chain:
-        got = _facts_for_tag(doc, tag)
-        if got:
-            return tag, got
-    return None, {}
+        for fy, fact in _facts_for_tag(doc, tag).items():
+            out.setdefault(fy, (tag, fact))
+    return out
+
+
+def _first_hit(doc: dict, chain: list[str]) -> tuple[str | None, dict[int, dict]]:
+    """Back-compat shim for the derived legs. Prefer _resolve for new code."""
+    res = _resolve(doc, chain)
+    if not res:
+        return None, {}
+    tag = max((t for t, _ in res.values()),
+              key=lambda t: sum(1 for tt, _ in res.values() if tt == t))
+    return tag, {fy: f for fy, (t, f) in res.items()}
 
 
 def extract(ticker_list: list[str] | None = None, *, limit: int | None = None) -> str:
     ticker_list = ticker_list or tickers(limit)
     cik_of = ticker_to_cik()
     missing_raw: list[str] = []
+    no_annual: list[str] = []
 
     with ObservationWriter(SOURCE) as w:
         for t in ticker_list:
@@ -88,13 +137,15 @@ def extract(ticker_list: list[str] | None = None, *, limit: int | None = None) -
             doc = json.loads(raw)
             url = _url(cik)
             years_seen: set[int] = set()
-            chosen: dict[str, tuple[str, dict[int, dict]]] = {}
+            chosen: dict[str, dict[int, tuple[str, dict]]] = {}
 
             for field, chain in TAG_CHAINS.items():
-                tag, facts = _first_hit(doc, chain)
-                if tag:
-                    chosen[field] = (tag, facts)
-                    years_seen |= set(facts)
+                res = _resolve(doc, chain)
+                if field == "revenue_usd":
+                    res = _reconcile_revenue(doc, res)
+                if res:
+                    chosen[field] = res
+                    years_seen |= set(res)
 
             years = sorted(years_seen, reverse=True)[:YEARS]
 
@@ -114,36 +165,56 @@ def extract(ticker_list: list[str] | None = None, *, limit: int | None = None) -
                     status=Status.NOT_DISCLOSED,
                 ))
 
+            if not years:
+                # No annual 10-K facts at all -- a recent spin-off or a fresh
+                # registration. The company must still appear in the data with
+                # every field not_disclosed: a constituent that silently drops
+                # out of the universe is failure mode #1, and the manifest
+                # would show a coverage gap with no explanation.
+                fy0 = date.today().year - 1
+                for field in EMITS:
+                    w.write(Observation(
+                        ticker=t, field=field, value=None, unit=None,
+                        fiscal_year=fy0, period_end=None, quote=None, source=SOURCE,
+                        source_url=url, source_section=None,
+                        extracted_by="xbrl:no_annual_filing", status=Status.NOT_DISCLOSED))
+                no_annual.append(t)
+                continue
+
             for fy in years:
                 for field in TAG_CHAINS:
                     if field not in EMITS:
                         continue
                     unit = "count" if field == "shares_outstanding" else "usd"
-                    tag, facts = chosen.get(field, (None, {}))
-                    fact = facts.get(fy)
-                    emit(field, fy, fact["val"], tag, unit) if fact else absent(field, fy)
+                    hit = chosen.get(field, {}).get(fy)
+                    emit(field, fy, hit[1]["val"], hit[0], unit) if hit else absent(field, fy)
 
                 # --- derived: both legs required -------------------------
                 # A partial FCF is worse than none: the affordability ratio
                 # divides by it, so a half-number becomes a confident wrong answer.
-                ocf_tag, ocf = _first_hit(doc, DERIVED["free_cash_flow_usd"]["operating_cash_flow"])
-                capex_tag, capex = _first_hit(doc, DERIVED["free_cash_flow_usd"]["minus_capex"])
-                if ocf.get(fy) and capex.get(fy):
+                ocf = _resolve(doc, DERIVED["free_cash_flow_usd"]["operating_cash_flow"])
+                capex = _resolve(doc, DERIVED["free_cash_flow_usd"]["minus_capex"])
+                if fy in ocf and fy in capex:
                     emit("free_cash_flow_usd", fy,
-                         ocf[fy]["val"] - capex[fy]["val"], f"{ocf_tag}-{capex_tag}")
+                         ocf[fy][1]["val"] - capex[fy][1]["val"],
+                         f"{ocf[fy][0]}-{capex[fy][0]}")
                 else:
                     absent("free_cash_flow_usd", fy)
 
-                ebit_tag, ebit = _first_hit(doc, DERIVED["ebitda_usd"]["ebit"])
-                da_tag, da = _first_hit(doc, DERIVED["ebitda_usd"]["plus_dep_amort"])
-                if ebit.get(fy) and da.get(fy):
-                    emit("ebitda_usd", fy, ebit[fy]["val"] + da[fy]["val"],
-                         f"{ebit_tag}+{da_tag}")
+                ebit = _resolve(doc, DERIVED["ebitda_usd"]["ebit"])
+                da = _resolve(doc, DERIVED["ebitda_usd"]["plus_dep_amort"])
+                if fy in ebit and fy in da:
+                    emit("ebitda_usd", fy, ebit[fy][1]["val"] + da[fy][1]["val"],
+                         f"{ebit[fy][0]}+{da[fy][0]}")
                 else:
                     absent("ebitda_usd", fy)
 
         out = w.summary()
 
+    if no_annual:
+        out += (f"\n  {len(no_annual)} companies have XBRL but no 10-K "
+                f"(spin-off or new registration), recorded as not_disclosed: "
+                f"{', '.join(no_annual)}")
     if missing_raw:
         out += (f"\n  {len(missing_raw)} companies have no cached filing -- "
                 f"run pull.py first ({', '.join(missing_raw[:8])}"

@@ -25,7 +25,11 @@ from .common.paths import DB_PATH, MATRIX_PATH
 #: Measured beats reported beats modelled. The others stay in `alternatives`
 #: so the say-do gap remains inspectable in the UI.
 SOURCE_PRIORITY = ["S15", "S19", "S01", "S04", "S05", "S08", "S09",
-                   "S10", "S02", "S03", "S06", "S07", "S11", "S12", "S13", "imputed"]
+                   "S10", "S02", "S03", "S06", "S07", "S11", "S12", "S13",
+                   # Derived (a teammate's own matching): real data, but with a
+                   # weaker provenance trail than our own extraction, so it
+                   # fills gaps rather than overriding a primary pull.
+                   "S15~team", "S09~team", "S01~team", "imputed"]
 
 
 def _rank(src: str) -> int:
@@ -82,7 +86,12 @@ def export(db_path=DB_PATH, out=MATRIX_PATH) -> dict:
             "sector": sec.get(t, "Unknown"),
             "sub_industry": meta.get(t, {}).get("sub_industry", ""),
             "fields": vals,
-            "alternatives": {f: alts[(t, f)] for f in vals if alts.get((t, f))},
+            # Alternatives exist so a click can show "EPA says X, the company
+            # says Y". Two is enough for that; the quote belongs to the chosen
+            # value, and carrying it on every alternative doubled the payload.
+            "alternatives": {f: [{k: v for k, v in a.items() if k != "q"}
+                                 for a in alts[(t, f)][:2]]
+                             for f in vals if alts.get((t, f))},
             # Opacity on the 3D map. A bright point in the good corner with a
             # low number here is claiming to be good without evidence.
             "confidence": round(sum(v["c"] for v in vals.values()) / n, 3) if n else 0.0,

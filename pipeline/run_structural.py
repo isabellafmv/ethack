@@ -24,6 +24,8 @@ STRUCTURAL = [
     ("S01", "s01_sec_xbrl", "XBRL financials — 11 fields, the denominators"),
     ("S07", "s07_market", "market cap + shares (bubble size)"),
     ("S14", "s14_kaggle_esg", "external ESG ratings — VALIDATION ONLY"),
+    ("S09", "s09_sbti", "SBTi targets — the affordability numerator"),
+    ("S15", "s15_epa_ghgrp", "EPA-measured Scope 1 — the only measured emissions"),
 ]
 
 

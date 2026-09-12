@@ -40,16 +40,26 @@ import pandas as pd
 from score_calculation.transition.sector_assumptions import (
     DEFAULT_ABATEMENT_COST_USD_PER_TCO2E,
     SECTOR_ABATEMENT_COST_USD_PER_TCO2E,
-    TARGET_REDUCTION_PCT_BY_TIER,
 )
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
-FINANCIALS_PATH = DATA_DIR / "company_financials.csv"
-SECTOR_EMISSIONS_PATH = DATA_DIR / "epa_sector_emissions.csv"
-SBTI_PATH = DATA_DIR / "sbti_matches.csv"
-GHGRP_MATCHES_PATH = DATA_DIR / "epa_ghgrp_company_matches.csv"
+# Isabella's pipeline output: one row per company, fallback-filled to FY2025
+# (falls back to the latest available year per field rather than dropping a
+# company for being off-year -- see pipeline/export_wide.py).
+WIDE_PATH = DATA_DIR / "wide_FY2025_fallback.csv"
 OUTPUT_PATH = DATA_DIR / "transition_scores.csv"
+
+# SBTi target ambition -> momentum score. Isabella's field contract only
+# distinguishes three tiers (commitment / near-term / net-zero), coarser than
+# the old 1.5C-vs-2C split this used to have -- there's no data to support
+# that finer split anymore.
+MOMENTUM_SCORES = {
+    "no_target": 0,
+    "committed": 25,
+    "near_term_set": 75,
+    "net_zero_validated": 100,
+}
 
 ASSUMED_CARBON_PRICE_USD_PER_TON = 100.0
 CURRENT_YEAR = 2024  # anchor for "years to target"; matches the EDGAR/GHGRP vintage in use
@@ -79,96 +89,96 @@ def _ceiling_score(pct_of_base: pd.Series, ceiling_pct: float) -> pd.Series:
     return 100 * (1 - clipped / ceiling_pct)
 
 
-def _build_sector_intensity(financials: pd.DataFrame, sector_emissions: pd.DataFrame) -> pd.DataFrame:
-    sector_revenue = (
-        financials.dropna(subset=["revenue_usd"])
-        .groupby("sector")["revenue_usd"].sum()
-        .rename("sector_revenue_usd")
+def _build_sector_intensity(df: pd.DataFrame) -> pd.DataFrame:
+    """Sector-level tCO2e/$mm-revenue benchmark, built live from whichever
+    companies in `df` have a real (GHGRP-measured) scope1_tco2e -- replaces
+    the old hand-built epa_sector_emissions.csv with the same companies the
+    rest of the pipeline already pulled.
+    """
+    measured = df.dropna(subset=["scope1_tco2e", "revenue_usd"])
+    intensity = (
+        measured.groupby("sector")
+        .agg(scope1_tco2e=("scope1_tco2e", "sum"), revenue_usd=("revenue_usd", "sum"))
         .reset_index()
     )
-    intensity = sector_emissions.merge(sector_revenue, left_on="gics_sector", right_on="sector", how="left")
-    intensity["tco2e_per_usd_mm_revenue"] = (
-        intensity["ghgrp_direct_emissions_tco2e"] / (intensity["sector_revenue_usd"] / 1e6)
-    )
+    intensity["tco2e_per_usd_mm_revenue"] = intensity["scope1_tco2e"] / (intensity["revenue_usd"] / 1e6)
 
-    # Sectors with no GHGRP-reported facilities (e.g. Financials, Info Tech)
-    # aren't in sector_emissions at all -- give them the lowest observed
-    # intensity's floor rather than treating them as "no data".
-    all_sectors = financials["sector"].dropna().unique()
+    # Sectors with no GHGRP-measured company at all (e.g. Financials, Info
+    # Tech) aren't in `measured` -- give them the lowest observed intensity's
+    # floor rather than treating them as "no data".
+    all_sectors = df["sector"].dropna().unique()
     floor = intensity["tco2e_per_usd_mm_revenue"].min()
-    missing = set(all_sectors) - set(intensity["gics_sector"])
+    missing = set(all_sectors) - set(intensity["sector"])
     if missing:
-        filler = pd.DataFrame({"gics_sector": sorted(missing), "tco2e_per_usd_mm_revenue": floor})
-        intensity = pd.concat([intensity[["gics_sector", "tco2e_per_usd_mm_revenue"]], filler], ignore_index=True)
+        filler = pd.DataFrame({"sector": sorted(missing), "tco2e_per_usd_mm_revenue": floor})
+        intensity = pd.concat([intensity[["sector", "tco2e_per_usd_mm_revenue"]], filler], ignore_index=True)
 
     # sector_exposure_score: min-max rank of intensity, inverted so lower
     # structural exposure -> higher score.
     lo, hi = intensity["tco2e_per_usd_mm_revenue"].min(), intensity["tco2e_per_usd_mm_revenue"].max()
     intensity["sector_exposure_score"] = 100 * (1 - (intensity["tco2e_per_usd_mm_revenue"] - lo) / (hi - lo))
-    return intensity[["gics_sector", "tco2e_per_usd_mm_revenue", "sector_exposure_score"]]
+    return intensity[["sector", "tco2e_per_usd_mm_revenue", "sector_exposure_score"]]
 
 
 def _estimate_emissions(df: pd.DataFrame) -> pd.DataFrame:
+    measured = df["scope1_tco2e"].notna()
     modelled = df["tco2e_per_usd_mm_revenue"] * (df["revenue_usd"] / 1e6)
-    df["estimated_emissions_tco2e"] = df["ghgrp_emissions_tco2e"].where(df["ghgrp_matched"], modelled)
-    df["emissions_source_tier"] = df["ghgrp_matched"].map({True: "measured", False: "modelled"})
+    df["estimated_emissions_tco2e"] = df["scope1_tco2e"].where(measured, modelled)
+    df["emissions_source_tier"] = measured.map({True: "measured", False: "modelled"})
     return df
 
 
-def _sector_counterfactual_target(sbti: pd.DataFrame) -> dict:
+def _momentum_tier(row: pd.Series) -> str:
+    if row["sbti_target_validated"] != 1:
+        return "no_target"
+    return {"net-zero": "net_zero_validated", "near-term": "near_term_set", "commitment": "committed"}.get(
+        row["sbti_target_type"], "no_target"
+    )
+
+
+def _sector_counterfactual_target(df: pd.DataFrame) -> tuple[dict, dict]:
     """Median (reduction %, target year) among each sector's SBTi-quantified
     peers, used as the counterfactual for companies with no stated target --
     'no target' still carries the liability, it just isn't acknowledged.
     """
-    quantified = sbti[sbti["momentum_tier"].isin(["targets_set_1.5c", "targets_set_2c", "net_zero_validated"])].copy()
-    quantified["reduction_pct"] = quantified["momentum_tier"].map(TARGET_REDUCTION_PCT_BY_TIER)
-
+    quantified = df.dropna(subset=["target_reduction_pct", "target_year"])
     by_sector = quantified.groupby("sector").agg(
-        reduction_pct=("reduction_pct", "median"),
-        target_year=("near_term_target_year", "median"),
+        reduction_pct=("target_reduction_pct", "median"),
+        target_year=("target_year", "median"),
     )
     global_fallback = {
-        "reduction_pct": quantified["reduction_pct"].median(),
-        "target_year": quantified["near_term_target_year"].median(),
+        "reduction_pct": quantified["target_reduction_pct"].median(),
+        "target_year": quantified["target_year"].median(),
     }
     return by_sector.to_dict("index"), global_fallback
 
 
-def _target_inputs(sbti_row: pd.Series, counterfactual_by_sector: dict, global_fallback: dict) -> tuple[float, float, str]:
-    reduction_pct = TARGET_REDUCTION_PCT_BY_TIER.get(sbti_row["momentum_tier"])
-    target_year = sbti_row["near_term_target_year"]
+def _target_inputs(row: pd.Series, counterfactual_by_sector: dict, global_fallback: dict) -> tuple[float, float, str]:
+    reduction_pct, target_year = row["target_reduction_pct"], row["target_year"]
 
-    if reduction_pct is not None and pd.notna(target_year):
-        return reduction_pct, target_year, "disclosed"
+    if pd.notna(reduction_pct) and pd.notna(target_year):
+        return reduction_pct / 100.0, target_year, "disclosed"  # wide file's pct is 0-100, formula wants a fraction
 
-    fallback = counterfactual_by_sector.get(sbti_row["sector"], global_fallback)
-    return fallback["reduction_pct"], fallback["target_year"], "counterfactual_sector_median"
+    fallback = counterfactual_by_sector.get(row["sector"], global_fallback)
+    return fallback["reduction_pct"] / 100.0, fallback["target_year"], "counterfactual_sector_median"
 
 
 def compute_transition_scores() -> pd.DataFrame:
-    financials = pd.read_csv(FINANCIALS_PATH)
-    sector_emissions = pd.read_csv(SECTOR_EMISSIONS_PATH)
-    sbti = pd.read_csv(SBTI_PATH)
-    ghgrp = pd.read_csv(GHGRP_MATCHES_PATH)
+    df = pd.read_csv(WIDE_PATH)
 
-    sector_intensity = _build_sector_intensity(financials, sector_emissions)
-
-    df = financials.merge(sector_intensity, left_on="sector", right_on="gics_sector", how="left")
-    df = df.merge(ghgrp[["ticker", "ghgrp_matched", "ghgrp_emissions_tco2e"]], on="ticker", how="left")
-    df = df.merge(
-        sbti[["ticker", "momentum_tier", "regulatory_momentum_score", "near_term_target_year"]],
-        on="ticker", how="left",
-    )
+    sector_intensity = _build_sector_intensity(df)
+    df = df.merge(sector_intensity, on="sector", how="left")
     df = _estimate_emissions(df)
 
     # --- Carbon-price exposure ---
     df["carbon_price_cost_usd"] = df["estimated_emissions_tco2e"] * ASSUMED_CARBON_PRICE_USD_PER_TON
-    df["pct_ebitda_erosion"] = 100 * df["carbon_price_cost_usd"] / df["ebitda_proxy_usd"]
-    erosion_for_scoring = df["pct_ebitda_erosion"].clip(lower=0).where(df["ebitda_proxy_usd"] > 0, CARBON_PRICE_EROSION_CEILING_PCT)
+    df["pct_ebitda_erosion"] = 100 * df["carbon_price_cost_usd"] / df["ebitda_usd"]
+    erosion_for_scoring = df["pct_ebitda_erosion"].clip(lower=0).where(df["ebitda_usd"] > 0, CARBON_PRICE_EROSION_CEILING_PCT)
     df["carbon_price_exposure_score"] = _ceiling_score(erosion_for_scoring, CARBON_PRICE_EROSION_CEILING_PCT)
 
     # --- Regulatory momentum: SBTi tier blended with R&D intensity ---
-    sbti_score = df["regulatory_momentum_score"].fillna(0)
+    df["momentum_tier"] = df.apply(_momentum_tier, axis=1)
+    sbti_score = df["momentum_tier"].map(MOMENTUM_SCORES).fillna(0)
     df["rnd_intensity_pct"] = 100 * df["rnd_expense_usd"].fillna(0) / df["revenue_usd"]
     rnd_score = (100 * df["rnd_intensity_pct"].clip(lower=0, upper=RND_INTENSITY_CAP_PCT) / RND_INTENSITY_CAP_PCT).fillna(0)
     df["regulatory_momentum_score"] = (
@@ -176,12 +186,11 @@ def compute_transition_scores() -> pd.DataFrame:
     )
 
     # --- Transition affordability ---
-    counterfactual_by_sector, global_fallback = _sector_counterfactual_target(sbti)
-    target_inputs = sbti.apply(
+    counterfactual_by_sector, global_fallback = _sector_counterfactual_target(df)
+    target_inputs = df.apply(
         lambda row: _target_inputs(row, counterfactual_by_sector, global_fallback), axis=1, result_type="expand"
     )
-    target_inputs.columns = ["target_reduction_pct", "target_year", "target_basis"]
-    df = df.merge(pd.concat([sbti["ticker"], target_inputs], axis=1), on="ticker", how="left")
+    df[["target_reduction_pct", "target_year", "target_basis"]] = target_inputs
 
     df["years_to_target"] = (df["target_year"] - CURRENT_YEAR).clip(lower=1)
     df["abatement_cost_usd_per_tco2e"] = df["sector"].map(SECTOR_ABATEMENT_COST_USD_PER_TCO2E).fillna(
@@ -201,7 +210,7 @@ def compute_transition_scores() -> pd.DataFrame:
 
     columns = [
         "ticker", "company", "sector",
-        "revenue_usd", "ebitda_proxy_usd", "free_cash_flow_usd", "rnd_expense_usd",
+        "revenue_usd", "ebitda_usd", "free_cash_flow_usd", "rnd_expense_usd",
         "estimated_emissions_tco2e", "emissions_source_tier",
         "pct_ebitda_erosion", "carbon_price_exposure_score",
         "sector_exposure_score",

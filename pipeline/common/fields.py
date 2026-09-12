@@ -46,6 +46,11 @@ class FieldSpec:
     description: str
     sources: tuple[str, ...]      # which source IDs are allowed to emit this
     timeless: bool = False        # if True, fiscal_year must be 0
+    #: A SNAPSHOT is true as of a date, not for a period: market cap, an SBTi
+    #: status, an agency rating. Pinning an analysis year must constrain annual
+    #: FLOWS (revenue, capex, Scope 1) so ratios stay within one period — but
+    #: blanking snapshots would throw away data that has no period to mismatch.
+    snapshot: bool = False
 
     def check(self, obs) -> None:
         from .schema import SchemaError, TIMELESS
@@ -75,15 +80,24 @@ class FieldSpec:
         if not self.timeless and obs.fiscal_year == TIMELESS:
             raise SchemaError(f"{obs.ticker}/{self.name}: needs a real fiscal_year, got 0")
 
-        if obs.source not in self.sources and obs.source != "imputed":
+        # A derived source is written "<origin>~<who>", e.g. "S15~team" for a
+        # teammate's own GHGRP matching. It validates against its origin but
+        # keeps a distinct identity in the primary key, so the derived value and
+        # our own extraction coexist and can be compared rather than one
+        # silently overwriting the other.
+        origin = obs.source.split("~")[0]
+        if origin not in self.sources and obs.source != "imputed":
             raise SchemaError(
                 f"{obs.ticker}/{self.name}: source {obs.source} is not declared for this "
-                f"field (allowed: {', '.join(self.sources)}). Widen the spec deliberately."
+                f"field (allowed: {', '.join(self.sources)}, or <one of those>~derived). "
+                f"Widen the spec deliberately."
             )
 
 
-def _f(name, dtype, unit, pillar, description, sources, timeless=False):
-    return FieldSpec(name, dtype, unit, pillar, description, tuple(sources), timeless)
+def _f(name, dtype, unit, pillar, description, sources, timeless=False,
+       snapshot=False):
+    return FieldSpec(name, dtype, unit, pillar, description, tuple(sources),
+                     timeless, snapshot)
 
 
 _SPECS = [
@@ -96,15 +110,15 @@ _SPECS = [
     _f("gics_sub_industry", str, None, "X", "GICS sub-industry", ["S08"], True),
     _f("hq_state", str, None, "X", "HQ state, used to constrain entity matching", ["S08"], True),
     _f("subsidiary_count", int, "count", "X", "Subsidiaries listed in Exhibit 21", ["S05"]),
-    _f("market_cap_usd", float, "usd", "X", "Market cap; bubble size on the 3D map", ["S07"]),
-    _f("shares_outstanding", float, "count", "X", "Shares outstanding", ["S01", "S07"]),
+    _f("market_cap_usd", float, "usd", "X", "Market cap; bubble size on the 3D map", ["S07"], snapshot=True),
+    _f("shares_outstanding", float, "count", "X", "Shares outstanding", ["S01", "S07"], snapshot=True),
 
     # === X  validation only -- NEVER an input =============================
     _f("esg_risk_score_external", float, "index", "X",
        "Sustainalytics-derived risk score. VALIDATION ONLY: this is the thing we "
-       "are trying to beat. Must never enter a pillar score.", ["S14"]),
+       "are trying to beat. Must never enter a pillar score.", ["S14"], snapshot=True),
     _f("esg_controversy_level_external", str, None, "X",
-       "External controversy band. VALIDATION ONLY.", ["S14"]),
+       "External controversy band. VALIDATION ONLY.", ["S14"], snapshot=True),
 
     # === P1  environmental & resource efficiency ==========================
     _f("scope1_tco2e", float, "tco2e", "P1",
@@ -144,12 +158,12 @@ _SPECS = [
     _f("green_revenue_share_pct", float, "pct", "P2",
        "Revenue from low-carbon segments. The classification is OURS, not the "
        "company's -- per-segment rationale must be published alongside.", ["S02"]),
-    _f("sbti_target_validated", bool, None, "P2", "Has an SBTi-validated target", ["S09"]),
-    _f("sbti_target_type", str, None, "P2", "near-term | net-zero | commitment", ["S09"]),
-    _f("target_year", int, "year", "P2", "Stated target year", ["S09", "S10", "S02"]),
-    _f("target_baseline_year", int, "year", "P2", "Baseline year for the target", ["S09", "S10"]),
-    _f("target_reduction_pct", float, "pct", "P2", "Stated reduction vs baseline", ["S09", "S10"]),
-    _f("target_scope_coverage", str, None, "P2", "Which scopes the target covers", ["S09", "S10"]),
+    _f("sbti_target_validated", bool, None, "P2", "Has an SBTi-validated target", ["S09"], snapshot=True),
+    _f("sbti_target_type", str, None, "P2", "near-term | net-zero | commitment", ["S09"], snapshot=True),
+    _f("target_year", int, "year", "P2", "Stated target year", ["S09", "S10", "S02"], snapshot=True),
+    _f("target_baseline_year", int, "year", "P2", "Baseline year for the target", ["S09", "S10"], snapshot=True),
+    _f("target_reduction_pct", float, "pct", "P2", "Stated reduction vs baseline", ["S09", "S10"], snapshot=True),
+    _f("target_scope_coverage", str, None, "P2", "Which scopes the target covers", ["S09", "S10"], snapshot=True),
     _f("risk_hitword_density", float, "index", "P2",
        "Item 1A hitwords weighted by POSITION and proximity to intensifiers. "
        "Raw counts measure document length -- ship the text-vs-XBRL discrepancy, "

@@ -48,10 +48,30 @@ def universe() -> list[dict]:
         return list(csv.DictReader(fh))
 
 
+#: Wikipedia sometimes lists a company's NEWEST registrant number rather than
+#: the one carrying its filing history. A re-registration or holding-company
+#: reshuffle creates a fresh CIK with only 10-Qs behind it, and the decades of
+#: annual filings stay under the old one. Overriding here fixes pull and extract
+#: together, because both resolve the CIK through this function.
+#:
+#: Each entry needs a reason. An unexplained CIK override is indistinguishable
+#: from a typo six hours later.
+CIK_OVERRIDES: dict[str, tuple[str, str]] = {
+    # ticker: (cik, why)
+    "XOM": ("0000034088",
+            "Wikipedia lists 2115436 ('Exxon Mobil Corporation', 10-Q only, "
+            "registered 2025). The 10-K history is under 34088."),
+}
+
+
 @functools.lru_cache(maxsize=1)
 def ticker_to_cik() -> dict[str, str]:
     from .sec_client import pad_cik
-    return {r["ticker"]: pad_cik(r["cik"]) for r in universe() if r.get("cik")}
+    out = {r["ticker"]: pad_cik(r["cik"]) for r in universe() if r.get("cik")}
+    for ticker, (cik, _why) in CIK_OVERRIDES.items():
+        if ticker in out:
+            out[ticker] = pad_cik(cik)
+    return out
 
 
 @functools.lru_cache(maxsize=1)
@@ -62,6 +82,27 @@ def cik_to_ticker() -> dict[str, str]:
 @functools.lru_cache(maxsize=1)
 def name_index() -> dict[str, str]:
     return {normalise_name(r["company"]): r["ticker"] for r in universe()}
+
+
+@functools.lru_cache(maxsize=1)
+def despaced_index() -> dict[str, str]:
+    """Normalised names with spaces removed.
+
+    EPA files carry legal names ('EXXON MOBIL CORP') while the constituent list
+    carries trading names ('ExxonMobil'). After suffix-stripping those are
+    'exxon mobil' and 'exxonmobil' — a mismatch on one space, which loses the
+    single most carbon-material company in the index. Removing spaces is a
+    narrow, deterministic fallback; it is NOT fuzzy matching and still requires
+    every other character to agree.
+    """
+    return {normalise_name(r["company"]).replace(" ", ""): r["ticker"]
+            for r in universe()}
+
+
+def match_exact(name: str) -> str | None:
+    """Ticker for a legal name, exact then space-insensitive. No fuzz."""
+    n = normalise_name(name)
+    return name_index().get(n) or despaced_index().get(n.replace(" ", ""))
 
 
 @functools.lru_cache(maxsize=1)

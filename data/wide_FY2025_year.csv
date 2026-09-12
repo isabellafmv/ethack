@@ -1,0 +1,501 @@
+ticker,company,sector,sub_industry,cik,legal_name,gics_sector,gics_sub_industry,hq_state,market_cap_usd,shares_outstanding,esg_risk_score_external,esg_controversy_level_external,cogs_usd,energy_cost_usd,revenue_usd,ebit_usd,ebitda_usd,free_cash_flow_usd,capex_usd,rnd_expense_usd,sbti_target_validated,sbti_target_type,target_year,target_baseline_year,target_reduction_pct,target_scope_coverage,buybacks_usd,dividends_paid_usd
+A,Agilent Technologies,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+AAPL,Apple Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+ABBV,AbbVie,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+ABNB,Airbnb,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,,,2025,2026,2026,2026,,,,2025,
+ABT,Abbott Laboratories,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,,,,,,2025,2025
+ACGL,Arch Capital Group,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,2025,
+ACN,Accenture,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+ADBE,Adobe Inc.,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,
+ADI,Analog Devices,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+ADM,Archer Daniels Midland,Consumer Staples,Agricultural Products & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+ADP,Automatic Data Processing,Industrials,Human Resource & Employment Services,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,,,2025,2026,,,,,,2025,2025
+ADSK,Autodesk,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+AEE,Ameren,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+AEP,American Electric Power,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+AES,AES Corporation,Utilities,Independent Power Producers & Energy Traders,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,,,2025,2025,,2026,,,,,,,2025
+AFL,Aflac,Financials,Life & Health Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+AIG,American International Group,Financials,Multi-line Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+AIZ,Assurant,Financials,Multi-line Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+AJG,Arthur J. Gallagher & Co.,Financials,Insurance Brokers,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,,2025
+AKAM,Akamai Technologies,Information Technology,Internet Services & Infrastructure,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+ALB,Albemarle Corporation,Materials,Specialty Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+ALGN,Align Technology,Health Care,Health Care Supplies,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+ALL,Allstate,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+ALLE,Allegion,Industrials,Building Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+AMAT,Applied Materials,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+AMCR,Amcor,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2026,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+AMD,Advanced Micro Devices,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+AME,Ametek,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+AMGN,Amgen,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+AMP,Ameriprise Financial,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+AMT,American Tower,Real Estate,Telecom Tower REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+AMZN,Amazon,Consumer Discretionary,Broadline Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,,
+ANET,Arista Networks,Information Technology,Communications Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+AON,Aon plc,Financials,Insurance Brokers,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,2025
+AOS,A. O. Smith,Industrials,Building Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+APA,APA Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,2024,2024,,,,2025,2025,,,,2026,,,,,,,2025
+APD,Air Products,Materials,Industrial Gases,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+APH,Amphenol,Information Technology,Electronic Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+APO,Apollo Global Management,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+APP,AppLovin,Communication Services,Advertising,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,,,2025,2026,,,,,,2025,
+APTV,Aptiv,Consumer Discretionary,Automotive Parts & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+ARE,Alexandria Real Estate Equities,Real Estate,Office REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,,,,,,2026,,,,,,2025,2025
+ARES,Ares Management,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2024,,,,,2025,2025,,,,,2026,,,,,,,
+ATO,Atmos Energy,Utilities,Gas Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+AVGO,Broadcom,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+AVY,Avery Dennison,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+AWK,American Water Works,Utilities,Water Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+AXON,Axon Enterprise,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,
+AXP,American Express,Financials,Consumer Finance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+AZO,AutoZone,Consumer Discretionary,Automotive Retail,0,0,0,0,0,,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+BA,Boeing,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+BAC,Bank of America,Financials,Diversified Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,
+BALL,Ball Corporation,Materials,"Metal, Glass & Plastic Containers",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+BAX,Baxter International,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+BBY,Best Buy,Consumer Discretionary,Computer & Electronics Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+BDX,Becton Dickinson,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+BEN,Franklin Resources,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+BF.B,Brown–Forman,Consumer Staples,Distillers & Vintners,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+BG,Bunge Global,Consumer Staples,Agricultural Products & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+BIIB,Biogen,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,,
+BKNG,Booking Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+BKR,Baker Hughes,Energy,Oil & Gas Equipment & Services,0,0,0,0,0,2026,2026,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+BLDR,Builders FirstSource,Industrials,Building Products,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+BLK,BlackRock,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+BMY,Bristol Myers Squibb,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+BNY,BNY Mellon,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,,,,,2025,,,2025,2025,,2026,,,,,,2025,2025
+BR,Broadridge Financial Solutions,Industrials,Data Processing & Outsourced Services,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+BRK.B,Berkshire Hathaway,Financials,Multi-Sector Holdings,0,0,0,0,0,2026,2026,,,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+BRO,Brown & Brown,Financials,Insurance Brokers,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,2025,2025
+BSX,Boston Scientific,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,
+BX,Blackstone Inc.,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,,2025
+BXP,"BXP, Inc.",Real Estate,Office REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,,2025
+C,Citigroup,Financials,Diversified Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CAH,Cardinal Health,Health Care,Health Care Distributors,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+CARR,Carrier Global,Industrials,Building Products,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+CASY,Casey's,Consumer Staples,Food Retail,0,0,0,0,0,2026,2025,,,,,2025,,,2025,2025,,2026,,,,,,2025,2025
+CAT,Caterpillar Inc.,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+CB,Chubb Limited,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,,,,2026,,,,,,2025,2025
+CBOE,Cboe Global Markets,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CBRE,CBRE Group,Real Estate,Real Estate Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,
+CCI,Crown Castle,Real Estate,Telecom Tower REITs,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CCL,Carnival Corporation,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+CDNS,Cadence Design Systems,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+CDW,CDW Corporation,Information Technology,Technology Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+CEG,Constellation Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CF,CF Industries,Materials,Fertilizers & Agricultural Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CFG,Citizens Financial Group,Financials,Regional Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+CHD,Church & Dwight,Consumer Staples,Household Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+CHRW,C.H. Robinson,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CHTR,Charter Communications,Communication Services,Cable & Satellite,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+CI,Cigna,Health Care,Health Care Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,2026,,,,,2025,2025
+CIEN,Ciena,Information Technology,Communications Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+CINF,Cincinnati Financial,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,2025,2025
+CL,Colgate-Palmolive,Consumer Staples,Household Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+CLX,Clorox,Consumer Staples,Household Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+CMCSA,Comcast,Communication Services,Cable & Satellite,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+CME,CME Group,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+CMG,Chipotle Mexican Grill,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+CMI,Cummins,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,,2025
+CMS,CMS Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,,,,2026,,,,,,,
+CNC,Centene Corporation,Health Care,Managed Health Care,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+CNP,CenterPoint Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+COF,Capital One,Financials,Consumer Finance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+COHR,Coherent Corp.,Information Technology,Electronic Components,0,0,0,0,0,2026,2026,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,
+COIN,Coinbase,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,2025,2026,,,,,,2025,
+COO,Cooper Companies (The),Health Care,Health Care Supplies,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+COP,ConocoPhillips,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,2025,2026,,,,,,2025,2025
+COR,Cencora,Health Care,Health Care Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+COST,Costco,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CPAY,Corpay,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+CPRT,Copart,Industrials,Diversified Support Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+CPT,Camden Property Trust,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,,,,,,2026,,,,,,2025,2025
+CRH,CRH plc,Materials,Construction Materials,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+CRL,Charles River Laboratories,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+CRM,Salesforce,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+CRWD,CrowdStrike,Information Technology,Systems Software,0,0,0,0,0,2026,2025,,,2025,,2025,2025,,2025,2025,2025,2026,2026,,,,,,
+CSCO,Cisco,Information Technology,Communications Equipment,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+CSGP,CoStar Group,Real Estate,Real Estate Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+CSX,CSX Corporation,Industrials,Rail Transportation,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+CTAS,Cintas,Industrials,Diversified Support Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CTSH,Cognizant,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+CTVA,Corteva,Materials,Fertilizers & Agricultural Chemicals,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+CVNA,Carvana,Consumer Discretionary,Automotive Retail,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,
+CVS,CVS Health,Health Care,Health Care Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+CVX,Chevron Corporation,Energy,Integrated Oil & Gas,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,,,2025,2025,2025,2026,,,,,,2025,2025
+D,Dominion Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,,2025
+DAL,Delta Air Lines,Industrials,Passenger Airlines,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,2025
+DASH,DoorDash,Consumer Discretionary,Specialized Consumer Services,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+DD,DuPont,Industrials,Industrial Conglomerates,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+DDOG,Datadog,Information Technology,Application Software,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,
+DE,Deere & Company,Industrials,Agricultural & Farm Machinery,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+DECK,Deckers Brands,Consumer Discretionary,Footwear,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+DELL,Dell Technologies,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+DG,Dollar General,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+DGX,Quest Diagnostics,Health Care,Health Care Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+DHI,D. R. Horton,Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+DHR,Danaher Corporation,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+DIS,Walt Disney Company (The),Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+DLR,Digital Realty,Real Estate,Data Center REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,,2025
+DLTR,Dollar Tree,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+DOC,Healthpeak Properties,Real Estate,Health Care REITs,0,0,0,0,0,2026,2025,,,,,2025,,,2025,2025,,2026,2026,2026,,,,2025,2025
+DOV,Dover Corporation,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+DOW,Dow Inc.,Materials,Commodity Chemicals,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+DPZ,Domino's,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+DRI,Darden Restaurants,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+DTE,DTE Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,,2025
+DUK,Duke Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+DVA,DaVita,Health Care,Health Care Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+DVN,Devon Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+DXCM,Dexcom,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+EBAY,eBay Inc.,Consumer Discretionary,Broadline Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+ECHO,EchoStar,Communication Services,Wireless Telecommunication Services,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+ECL,Ecolab,Materials,Specialty Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+ED,Consolidated Edison,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+EFX,Equifax,Industrials,Research & Consulting Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+EG,Everest Group,Financials,Reinsurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,,,,2026,,,,,,2025,2025
+EIX,Edison International,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+EL,Estée Lauder Companies (The),Consumer Staples,Personal Care Products,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+ELV,Elevance Health,Health Care,Managed Health Care,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+EME,Emcor,Industrials,Construction & Engineering,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+EMR,Emerson Electric,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+EOG,EOG Resources,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,
+EQIX,Equinix,Real Estate,Data Center REITs,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,2025
+EQT,EQT Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+ERIE,Erie Indemnity,Financials,Insurance Brokers,0,0,0,0,0,2026,2026,,,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+ES,Eversource Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,,2025
+ESS,Essex Property Trust,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,2025,
+ETN,Eaton Corporation,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+ETR,Entergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+EVRG,Evergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+EW,Edwards Lifesciences,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+EXC,Exelon,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+EXE,Expand Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+EXPD,Expeditors International,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+EXPE,Expedia Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+EXR,Extra Space Storage,Real Estate,Self-Storage REITs,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+F,Ford Motor Company,Consumer Discretionary,Automobile Manufacturers,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+FANG,Diamondback Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,,2025
+FAST,Fastenal,Industrials,Trading Companies & Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+FCX,Freeport-McMoRan,Materials,Copper,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+FDS,FactSet,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+FDX,FedEx,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+FDXF,FedEx Freight,Industrials,Cargo Ground Transportation,0,0,0,0,0,2026,2025,,,,2025,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+FE,FirstEnergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+FERG,Ferguson Enterprises,Industrials,Trading Companies & Distributors,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+FFIV,"F5, Inc.",Information Technology,Communications Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+FICO,Fair Isaac,Information Technology,Application Software,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+FIS,Fidelity National Information Services,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+FISV,Fiserv,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+FITB,Fifth Third Bancorp,Financials,Regional Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+FIX,Comfort Systems USA,Industrials,Construction & Engineering,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+FLEX,Flex Ltd.,Information Technology,Electronic Manufacturing Services,0,0,0,0,0,2026,2025,,,2025,,2025,2025,,2025,2025,,2026,2026,2026,,,,2025,
+FOX,Fox Corporation (Class B),Communication Services,Broadcasting,0,0,0,0,0,2026,2026,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+FRT,Federal Realty Investment Trust,Real Estate,Retail REITs,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,,,,2026,2026,2026,,,,,
+FSLR,First Solar,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,,
+FTNT,Fortinet,Information Technology,Systems Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+FTV,Fortive,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+GD,General Dynamics,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+GDDY,GoDaddy,Information Technology,Internet Services & Infrastructure,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+GE,GE Aerospace,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+GEHC,GE HealthCare,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,,,,,2025,2025,,2025,2025,2025,2026,2026,2026,,,,2025,2025
+GEN,Gen Digital,Information Technology,Systems Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+GEV,GE Vernova,Industrials,Heavy Electrical Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+GILD,Gilead Sciences,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+GIS,General Mills,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+GL,Globe Life,Financials,Life & Health Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+GLW,Corning Inc.,Information Technology,Electronic Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,2025,2026,2026,2026,,,,2025,
+GM,General Motors,Consumer Discretionary,Automobile Manufacturers,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+GNRC,Generac,Industrials,Heavy Electrical Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+GOOGL,Alphabet Inc. (Class A),Communication Services,Interactive Media & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+GPC,Genuine Parts Company,Consumer Discretionary,Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+GPN,Global Payments,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+GRMN,Garmin,Consumer Discretionary,Consumer Electronics,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,,,,,,,2025
+GS,Goldman Sachs,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+GWW,W. W. Grainger,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+HAL,Halliburton,Energy,Oil & Gas Equipment & Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+HAS,Hasbro,Consumer Discretionary,Leisure Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,,2025
+HBAN,Huntington Bancshares,Financials,Regional Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+HCA,HCA Healthcare,Health Care,Health Care Facilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+HD,Home Depot (The),Consumer Discretionary,Home Improvement Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+HIG,Hartford (The),Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+HII,Huntington Ingalls Industries,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+HLT,Hilton Worldwide,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+HON,Honeywell Technologies,Industrials,Industrial Conglomerates,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+HONA,Honeywell Aerospace,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2026,,,,,,,,,,,2026,,,,,,,
+HOOD,Robinhood Markets,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,2025,2026,,,,,,2025,
+HPE,Hewlett Packard Enterprise,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+HPQ,HP Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+HRL,Hormel Foods,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+HSIC,Henry Schein,Health Care,Health Care Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+HST,Host Hotels & Resorts,Real Estate,Hotel & Resort REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,2025,2025
+HSY,Hershey Company (The),Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+HUBB,Hubbell Incorporated,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+HUM,Humana,Health Care,Managed Health Care,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+HWM,Howmet Aerospace,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+IBKR,Interactive Brokers,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,,2025
+IBM,IBM,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,,,,,,,2025
+ICE,Intercontinental Exchange,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+IDXX,Idexx Laboratories,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+IEX,IDEX Corporation,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+IFF,International Flavors & Fragrances,Materials,Specialty Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+INCY,Incyte,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,2025,2026,,,,,,2025,
+INTC,Intel,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+INTU,Intuit,Information Technology,Application Software,0,0,0,0,0,2026,2026,2024,2024,,,2025,2025,,2025,2025,2025,2026,2026,,,,,2025,2025
+INVH,Invitation Homes,Real Estate,Single-Family Residential REITs,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+IP,International Paper,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+IQV,IQVIA,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+IR,Ingersoll Rand,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+IRM,Iron Mountain,Real Estate,Other Specialized REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,2025
+ISRG,Intuitive Surgical,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+IT,Gartner,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,2026,2026,,,,2025,
+ITW,Illinois Tool Works,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+IVZ,Invesco,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+J,Jacobs Solutions,Industrials,Construction & Engineering,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+JBHT,J.B. Hunt,Industrials,Cargo Ground Transportation,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+JBL,Jabil,Information Technology,Electronic Manufacturing Services,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+JCI,Johnson Controls,Industrials,Building Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+JKHY,Jack Henry & Associates,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,,,,,,2025,2025
+JNJ,Johnson & Johnson,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+JPM,JPMorgan Chase,Financials,Diversified Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+KDP,Keurig Dr Pepper,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+KEY,KeyCorp,Financials,Regional Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+KEYS,Keysight Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+KHC,Kraft Heinz,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+KIM,Kimco Realty,Real Estate,Retail REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+KKR,KKR & Co.,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+KLAC,KLA Corporation,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+KMB,Kimberly-Clark,Consumer Staples,Household Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+KMI,Kinder Morgan,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+KO,Coca-Cola Company (The),Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+KR,Kroger,Consumer Staples,Food Retail,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+KVUE,Kenvue,Consumer Staples,Personal Care Products,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+L,Loews Corporation,Financials,Multi-line Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+LDOS,Leidos,Industrials,Diversified Support Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+LEN,Lennar,Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2024,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+LH,Labcorp,Health Care,Health Care Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+LHX,L3Harris,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,,,,,,2025,2025,2025,2025,,2026,,,,,,2025,2025
+LII,Lennox International,Industrials,Building Products,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+LIN,Linde plc,Materials,Industrial Gases,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+LITE,Lumentum,Information Technology,Communications Equipment,0,0,0,0,0,2026,2026,,,,,2025,2025,,2025,2025,2025,2026,2026,,,,,2025,
+LLY,Lilly (Eli),Health Care,Pharmaceuticals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,,,,,,2025,2025
+LMT,Lockheed Martin,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+LNT,Alliant Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,,,,,,,2025
+LOW,Lowe's,Consumer Discretionary,Home Improvement Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+LRCX,Lam Research,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+LULU,Lululemon Athletica,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+LUV,Southwest Airlines,Industrials,Passenger Airlines,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+LVS,Las Vegas Sands,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+LYB,LyondellBasell,Materials,Specialty Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+LYV,Live Nation Entertainment,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+MA,Mastercard,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MAA,Mid-America Apartment Communities,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+MAR,Marriott International,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MAS,Masco,Industrials,Building Products,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+MCD,McDonald's,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MCHP,Microchip Technology,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+MCK,McKesson Corporation,Health Care,Health Care Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+MCO,Moody's Corporation,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MDLZ,Mondelez International,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+MDT,Medtronic,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+MET,MetLife,Financials,Life & Health Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,,,,,2025,2025
+META,Meta Platforms,Communication Services,Interactive Media & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+MGM,MGM Resorts,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+MKC,McCormick & Company,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+MLM,Martin Marietta Materials,Materials,Construction Materials,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MMM,3M,Industrials,Industrial Conglomerates,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MNST,Monster Beverage,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,
+MO,Altria,Consumer Staples,Tobacco,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+MOS,Mosaic Company (The),Materials,Fertilizers & Agricultural Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+MPC,Marathon Petroleum,Energy,Oil & Gas Refining & Marketing,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+MPWR,Monolithic Power Systems,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+MRK,Merck & Co.,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,,,,,,2025,2025
+MRNA,Moderna,Health Care,Biotechnology,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+MRSH,Marsh McLennan,Financials,Insurance Brokers,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+MRVL,Marvell Technology,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,,,2025,,2025,2025,,2025,2025,2025,2026,2026,,,,,2025,2025
+MS,Morgan Stanley,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,,2025
+MSCI,MSCI,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+MSFT,Microsoft,Information Technology,Systems Software,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,2026,2026,,,,2025,2025
+MSI,Motorola Solutions,Information Technology,Communications Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+MTB,M&T Bank,Financials,Regional Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+MTD,Mettler Toledo,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,2025,2026,2026,2026,,,,2025,
+MU,Micron Technology,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,2025,2025,2025,2025,2025,2025,2025,,2026,,,,,,,
+NDAQ,"Nasdaq, Inc.",Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+NDSN,Nordson Corporation,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+NEE,NextEra Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,,2025
+NEM,Newmont,Materials,Gold,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+NFLX,Netflix,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+NI,NiSource,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+NKE,"Nike, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+NOC,Northrop Grumman,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+NOW,ServiceNow,Information Technology,Systems Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+NRG,NRG Energy,Utilities,Independent Power Producers & Energy Traders,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+NSC,Norfolk Southern,Industrials,Rail Transportation,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+NTAP,NetApp,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+NTRS,Northern Trust,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+NUE,Nucor,Materials,Steel,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,,2026,,,,,,2025,2025
+NVDA,Nvidia,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+NVR,"NVR, Inc.",Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2025,2024,2024,,,2025,,,2025,2025,,2026,,,,,,2025,
+NWS,News Corp (Class B),Communication Services,Publishing,0,0,0,0,0,2026,2026,,,,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+NXPI,NXP Semiconductors,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+O,Realty Income,Real Estate,Retail REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,,2025
+ODFL,Old Dominion,Industrials,Cargo Ground Transportation,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+OKE,Oneok,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+OMC,Omnicom Group,Communication Services,Advertising,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+ON,ON Semiconductor,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+ORCL,Oracle Corporation,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,2025,2026,,,,,,2025,2025
+ORLY,O'Reilly Automotive,Consumer Discretionary,Automotive Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+OTIS,Otis Worldwide,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+OXY,Occidental Petroleum,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+PANW,Palo Alto Networks,Information Technology,Systems Software,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+PAYX,Paychex,Industrials,Human Resource & Employment Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+PCAR,Paccar,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+PCG,PG&E Corporation,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,,
+PEG,Public Service Enterprise Group,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+PEP,PepsiCo,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+PFE,Pfizer,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,
+PFG,Principal Financial Group,Financials,Life & Health Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,,,,,,2026,2026,,,,,2025,2025
+PG,Procter & Gamble,Consumer Staples,Personal Care Products,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+PGR,Progressive Corporation,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,,2025
+PH,Parker Hannifin,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,2026,,,,,2025,2025
+PHM,PulteGroup,Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2025,2024,2024,,,2025,,,2025,2025,,2026,,,,,,2025,2025
+PKG,Packaging Corporation of America,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+PLD,Prologis,Real Estate,Industrial REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,,2025
+PLTR,Palantir Technologies,Information Technology,Application Software,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+PM,Philip Morris International,Consumer Staples,Tobacco,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,,2025
+PNC,PNC Financial Services,Financials,Diversified Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+PNR,Pentair,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,2025,2026,,,,,,2025,2025
+PNW,Pinnacle West Capital,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+PODD,Insulet Corporation,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+PPG,PPG Industries,Materials,Specialty Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+PPL,PPL Corporation,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+PRU,Prudential Financial,Financials,Life & Health Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,,,,,,2026,,,,,,2025,2025
+PSA,Public Storage,Real Estate,Self-Storage REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,
+PSKY,Paramount Skydance Corporation,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2024,,,,,2025,2025,2025,,,,2026,,,,,,,
+PSX,Phillips 66,Energy,Oil & Gas Refining & Marketing,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,,,,,2025,2026,,,,,,2025,2025
+PTC,PTC Inc.,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+PWR,Quanta Services,Industrials,Construction & Engineering,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+PYPL,PayPal,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+Q,Qnity Electronics,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+QCOM,Qualcomm,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+RCL,Royal Caribbean Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+RDDT,Reddit,Communication Services,Interactive Media & Services,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,
+REG,Regency Centers,Real Estate,Retail REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,,2025
+REGN,Regeneron Pharmaceuticals,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+RF,Regions Financial Corporation,Financials,Regional Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+RJF,Raymond James Financial,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2025,2024,2024,,,2025,,,2025,2025,,2026,,,,,,,
+RL,Ralph Lauren Corporation,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,2026,,,,,2025,2025
+RMD,ResMed|,Health Care,Health Care Equipment,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+ROK,Rockwell Automation,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+ROL,"Rollins, Inc.",Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+ROP,Roper Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,2025,2026,2026,,,,,2025,2025
+ROST,Ross Stores,Consumer Discretionary,Apparel Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+RSG,Republic Services,Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+RTX,RTX Corporation,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+RVTY,Revvity,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+SBAC,SBA Communications,Real Estate,Telecom Tower REITs,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+SBUX,Starbucks,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+SCHW,Charles Schwab Corporation,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,2025,2025
+SHW,Sherwin-Williams,Materials,Specialty Chemicals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+SJM,J.M. Smucker Company (The),Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,,2025,2025,,2026,2026,2026,,,,2025,2025
+SLB,Schlumberger,Energy,Oil & Gas Equipment & Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,,2025
+SMCI,Supermicro,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2026,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,,
+SNA,Snap-on,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,2025,2026,,,,,,2025,2025
+SNDK,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2026,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,
+SNPS,Synopsys,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+SO,Southern Company,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+SOLV,Solventum,Health Care,Health Care Technology,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,,
+SPG,Simon Property Group,Real Estate,Retail REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+SPGI,S&P Global,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+SRE,Sempra,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+STE,Steris,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+STLD,Steel Dynamics,Materials,Steel,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+STT,State Street Corporation,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,2025,2025,,2026,,,,,,2025,2025
+STX,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,2025,2025
+STZ,Constellation Brands,Consumer Staples,Distillers & Vintners,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+SW,Smurfit Westrock,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+SWK,Stanley Black & Decker,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+SWKS,Skyworks Solutions,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+SYF,Synchrony Financial,Financials,Consumer Finance,0,0,0,0,0,2026,2025,2024,2024,,,,2025,2025,,,,2026,,,,,,2025,2025
+SYK,Stryker Corporation,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,,2025
+SYY,Sysco,Consumer Staples,Food Distributors,0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+T,AT&T,Communication Services,Integrated Telecommunication Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+TAP,Molson Coors Beverage Company,Consumer Staples,Brewers,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+TDG,TransDigm Group,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+TDY,Teledyne Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+TECH,Bio-Techne,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2026,,,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+TEL,TE Connectivity,Information Technology,Electronic Manufacturing Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+TER,Teradyne,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+TFC,Truist Financial,Financials,Diversified Banks,0,0,0,0,0,2026,2025,,,,,2025,2025,,,,,2026,,,,,,2025,2025
+TGT,Target Corporation,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+TJX,TJX Companies,Consumer Discretionary,Apparel Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+TKO,TKO Group Holdings,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+TMO,Thermo Fisher Scientific,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+TMUS,T-Mobile US,Communication Services,Wireless Telecommunication Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+TPL,Texas Pacific Land Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+TPR,"Tapestry, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+TRGP,Targa Resources,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,
+TRMB,Trimble Inc.,Information Technology,Application Software,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+TROW,T. Rowe Price,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+TRV,Travelers Companies (The),Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+TSCO,Tractor Supply,Consumer Discretionary,Other Specialty Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+TSLA,"Tesla, Inc.",Consumer Discretionary,Automobile Manufacturers,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,,
+TSN,Tyson Foods,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,,2025
+TT,Trane Technologies,Industrials,Building Products,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+TTD,Trade Desk (The),Communication Services,Advertising,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+TTWO,Take-Two Interactive,Communication Services,Interactive Home Entertainment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,
+TXN,Texas Instruments,Information Technology,Semiconductors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+TXT,Textron,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+TYL,Tyler Technologies,Information Technology,Application Software,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+UAL,United Airlines Holdings,Industrials,Passenger Airlines,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+UBER,Uber,Industrials,Passenger Ground Transportation,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,
+UDR,"UDR, Inc.",Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,,,,,2025,2025
+UHS,Universal Health Services,Health Care,Health Care Facilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+ULTA,Ulta Beauty,Consumer Discretionary,Other Specialty Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,
+UNH,UnitedHealth Group,Health Care,Managed Health Care,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+UNP,Union Pacific Corporation,Industrials,Rail Transportation,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+UPS,United Parcel Service,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2025,2024,2024,,2025,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+URI,United Rentals,Industrials,Trading Companies & Distributors,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,,,,,,2025,2025
+USB,U.S. Bancorp,Financials,Diversified Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,,,,,2026,,,,,,2025,2025
+V,Visa Inc.,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2026,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+VEEV,Veeva Systems,Health Care,Health Care Technology,0,0,0,0,0,2026,2025,,,2025,,2025,2025,,,,2025,2026,2026,,,,,2025,
+VICI,Vici Properties,Real Estate,Hotel & Resort REITs,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,,,,2026,,,,,,,2025
+VLO,Valero Energy,Energy,Oil & Gas Refining & Marketing,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,,,,,,2025,2025
+VLTO,Veralto,Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,,,,,,2025
+VMC,Vulcan Materials Company,Materials,Construction Materials,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+VMRK,Vivmark Residential,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2025,,,,,,,,,,,2026,,,,,,2025,2025
+VRSK,Verisk Analytics,Industrials,Research & Consulting Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+VRSN,Verisign,Information Technology,Internet Services & Infrastructure,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+VRT,Vertiv,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+VRTX,Vertex Pharmaceuticals,Health Care,Biotechnology,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,
+VST,Vistra Corp.,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+VTR,Ventas,Real Estate,Health Care REITs,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,,2025
+VTRS,Viatris,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,,,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,
+VZ,Verizon,Communication Services,Integrated Telecommunication Services,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,2026,2026,,,,,2025
+WAB,Wabtec,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+WAT,Waters Corporation,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+WBD,Warner Bros. Discovery,Communication Services,Broadcasting,0,0,0,0,0,2026,2025,,,,,2025,2025,2025,2025,2025,,2026,,,,,,,
+WDAY,"Workday, Inc.",Information Technology,Application Software,0,0,0,0,0,2026,2025,,,,,2025,2025,,2025,2025,2025,2026,2026,,,,,2025,
+WDC,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2026,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+WEC,WEC Energy Group,Utilities,Electric Utilities,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,,2026,,,,,,2025,2025
+WELL,Welltower,Real Estate,Health Care REITs,0,0,0,0,0,2026,2025,2024,2024,2025,2025,2025,,,,,,2026,2026,2026,,,,,2025
+WFC,Wells Fargo,Financials,Diversified Banks,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+WM,Waste Management,Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+WMB,Williams Companies,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+WMT,Walmart,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,,,,,2025,2025
+WRB,W. R. Berkley Corporation,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,,,,2026,,,,,,2025,2025
+WSM,"Williams-Sonoma, Inc.",Consumer Discretionary,Homefurnishing Retail,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+WST,West Pharmaceutical Services,Health Care,Health Care Supplies,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+WTW,Willis Towers Watson,Financials,Insurance Brokers,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+WY,Weyerhaeuser,Real Estate,Timber REITs,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,,,2025,2026,2026,2026,,,,2025,2025
+WYNN,Wynn Resorts,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,2025,2025
+XEL,Xcel Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,,2026,,,,,,,2025
+XOM,ExxonMobil,Energy,Integrated Oil & Gas,0,0,0,0,0,2026,2025,2024,2024,,,2025,2025,2025,2025,2025,2025,2026,,,,,,2025,2025
+XYL,Xylem Inc.,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,2025
+XYZ,"Block, Inc.",Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+YUM,Yum! Brands,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+ZBH,Zimmer Biomet,Health Care,Health Care Equipment,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,2026,2026,,,,2025,2025
+ZBRA,Zebra Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2025,,,2025,,2025,2025,2025,2025,2025,2025,2026,2026,2026,,,,2025,
+ZTS,Zoetis,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2025,2024,2024,2025,,2025,2025,2025,2025,2025,,2026,,,,,,2025,

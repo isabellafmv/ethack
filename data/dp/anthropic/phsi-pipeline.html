@@ -202,16 +202,16 @@
         <text x="175" y="100" text-anchor="middle" font-size="10" fill="var(--gold)">→ Financial Levers</text>
 
         <rect x="395" y="30" width="290" height="86" rx="10" fill="var(--green-soft)" stroke="var(--green)" stroke-width="1.3"></rect>
-        <text x="540" y="60" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Kaggle ESG Risk Ratings</text>
-        <text x="540" y="80" text-anchor="middle" font-size="11" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">Env / Social / Governance / Controversy, static CSV</text>
+        <text x="540" y="58" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Sustainalytics ESG Risk Ratings</text>
+        <text x="540" y="77" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">independent agency, all 503 tickers (via Kaggle CSV)</text>
         <text x="540" y="100" text-anchor="middle" font-size="10" fill="var(--green)">→ ESG Compass</text>
 
         <rect x="760" y="20" width="290" height="106" rx="10" fill="var(--violet-soft)" stroke="var(--violet)" stroke-width="1.3" stroke-dasharray="5 4"></rect>
-        <text x="905" y="42" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">PDFs · 2 per company</text>
-        <text x="905" y="62" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">own sustainability report +</text>
-        <text x="905" y="78" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">independent agency rating (MSCI/CDP)</text>
-        <text x="905" y="96" text-anchor="middle" font-size="9.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">2–3 tickers, hand-downloaded for demo</text>
-        <text x="905" y="114" text-anchor="middle" font-size="10" fill="var(--violet)">→ LLM PoC only</text>
+        <text x="905" y="44" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">Company's own sustainability report</text>
+        <text x="905" y="64" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)" font-family="IBM Plex Sans, sans-serif">self-reported ESG narrative, PDF</text>
+        <text x="905" y="82" text-anchor="middle" font-size="9.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">2–3 tickers, hand-downloaded for demo</text>
+        <text x="905" y="100" text-anchor="middle" font-size="9.5" fill="var(--ink-faint)" font-family="IBM Plex Sans, sans-serif">(agency side already in the DB — no 2nd PDF)</text>
+        <text x="905" y="118" text-anchor="middle" font-size="10" fill="var(--violet)">→ LLM PoC only</text>
       </g>
 
       <!-- connectors row1 -> row2 -->
@@ -269,14 +269,14 @@
       <text x="970" y="330" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">local Qwen / DeepSeek</text>
       <text x="970" y="345" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">strict-JSON prompts</text>
       <line x1="910" y1="354" x2="1030" y2="354" stroke="var(--border-strong)" stroke-width="1"></line>
-      <text x="970" y="370" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">own report vs.</text>
-      <text x="970" y="384" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">agency report (MSCI/CDP)</text>
-      <text x="970" y="400" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">2–3 companies, by hand</text>
+      <text x="970" y="370" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">extracts self-reported</text>
+      <text x="970" y="384" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">claims → compares vs.</text>
+      <text x="970" y="400" text-anchor="middle" font-size="9.5" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-soft)">Sustainalytics score (DB)</text>
       <text x="970" y="422" text-anchor="middle" font-size="9.5" font-family="IBM Plex Mono, monospace" fill="var(--violet)">↳ scope-limited demo</text>
-      <text x="970" y="437" text-anchor="middle" font-size="9" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-faint)">→ API-fed at institutional scale</text>
+      <text x="970" y="437" text-anchor="middle" font-size="9" font-family="IBM Plex Sans, sans-serif" fill="var(--ink-faint)">→ full-coverage PDFs at institutional scale</text>
 
       <path d="M890,390 L860,428" stroke="var(--violet)" stroke-width="1.3" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)" color="var(--violet)"></path>
-      <text x="885" y="415" font-size="9.5" font-family="IBM Plex Mono, monospace" fill="var(--violet)" text-anchor="end">cross-checks rating</text>
+      <text x="885" y="415" font-size="9.5" font-family="IBM Plex Mono, monospace" fill="var(--violet)" text-anchor="end">flags the gap</text>
 
       <!-- ============ ROW 4 : PHSI SCORE + SENSITIVITY ============ -->
       <path d="M540,500 L540,536" stroke="currentColor" stroke-width="1.4" color="var(--ink-faint)" marker-end="url(#arrowDim)"></path>
@@ -320,7 +320,7 @@
         <text x="120" y="692">05 open questions</text>
       </g>
     </svg>
-    <figcaption>Financials and the Kaggle ESG ratings cover all 503 tickers into a sector-keyed SQLite store; the Pandas engine winsorizes and z-scores each block within its own GICS sector, penalizing undisclosed ESG data by sector norm, then blends both blocks 60/40 into the PHSI score alongside a weight-sensitivity check. The LLM branch cross-checks a company's own sustainability report against an independent agency's rating (MSCI/CDP), hand-downloaded for 2–3 demo tickers — a deliberately scoped stand-in for the live agency-API feed an institutional desk already has under subscription. Portfolio allocation and the risk-vs-carbon distinction stay open until the core pipeline is working end to end.</figcaption>
+    <figcaption>Financials and the Sustainalytics ESG risk ratings — an independent agency's data, not the companies' own — cover all 503 tickers into a sector-keyed SQLite store; the Pandas engine winsorizes and z-scores each block within its own GICS sector, penalizing undisclosed ESG data by sector norm, then blends both blocks 60/40 into the PHSI score alongside a weight-sensitivity check. The LLM branch reads a company's own sustainability report — hand-downloaded for 2–3 demo tickers — and compares its self-reported claims against the independent rating already sitting in the database, surfacing the gap between what a company says and what an independent agency scores it. At institutional scale, that PDF step runs on full coverage, not a hand-picked sample. Portfolio allocation and the risk-vs-carbon distinction stay open until the core pipeline is working end to end.</figcaption>
   </figure>
 
   <div class="notes">
@@ -338,7 +338,7 @@
     </div>
     <div class="note">
       <h3><span class="swatch" style="background:var(--violet)"></span>Decided</h3>
-      <p>PoC cross-checks each demo company's own report against an independent agency rating (MSCI/CDP) — hand-downloaded here, but a subscription an institutional desk (e.g. a Citadel-style shop) already holds. Data access isn't the pitch; the methodology is.</p>
+      <p>The Kaggle CSV is already independent-agency data (Sustainalytics) — no second agency source needed. The PoC's real job is comparing a company's own report against that independent rating, on 2–3 hand-downloaded tickers; full coverage is an institutional-desk subscription away.</p>
     </div>
     <div class="note parked">
       <h3>Parked</h3>

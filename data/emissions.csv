@@ -1,0 +1,501 @@
+ticker,company,sector,scope1_tco2e,emissions_source_tier,ghgrp_facility_count,sbti_tier,target_year
+A,Agilent Technologies,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+AAPL,Apple Inc.,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+ABBV,AbbVie,Health Care,99777.824,measured_epa,2,targets_set_1.5c,2030.0
+ABNB,Airbnb,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+ABT,Abbott Laboratories,Health Care,134386.892,measured_epa,4,no_target,
+ACGL,Arch Capital Group,Financials,,not_disclosed,0,no_target,
+ACN,Accenture,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+ADBE,Adobe Inc.,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+ADI,Analog Devices,Information Technology,117771.628108,measured_epa,3,targets_set_1.5c,2030.0
+ADM,Archer Daniels Midland,Consumer Staples,10585367.606,measured_epa,18,no_target,
+ADP,Automatic Data Processing,Industrials,,not_disclosed,0,no_target,
+ADSK,Autodesk,Information Technology,,not_disclosed,0,targets_set_1.5c,2031.0
+AEE,Ameren,Utilities,19669522.870000005,measured_epa,11,no_target,
+AEP,American Electric Power,Utilities,48790616.2008486,measured_epa,25,no_target,
+AES,AES Corporation,Utilities,15564412.834,measured_epa,9,no_target,
+AFL,Aflac,Financials,,not_disclosed,0,no_target,
+AIG,American International Group,Financials,,not_disclosed,0,no_target,
+AIZ,Assurant,Financials,,not_disclosed,0,no_target,
+AJG,Arthur J. Gallagher & Co.,Financials,,not_disclosed,0,no_target,
+AKAM,Akamai Technologies,Information Technology,,not_disclosed,0,no_target,
+ALB,Albemarle Corporation,Materials,229671.722,measured_epa,3,no_target,
+ALGN,Align Technology,Health Care,,not_disclosed,0,no_target,
+ALL,Allstate,Financials,,not_disclosed,0,no_target,
+ALLE,Allegion,Industrials,,not_disclosed,0,no_target,
+AMAT,Applied Materials,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+AMCR,Amcor,Materials,,not_disclosed,0,net_zero_validated,2033.0
+AMD,Advanced Micro Devices,Information Technology,,not_disclosed,0,targets_set_2c,2020.0
+AME,Ametek,Industrials,,not_disclosed,0,no_target,
+AMGN,Amgen,Health Care,61780.352,measured_epa,1,targets_set_1.5c,2030.0
+AMP,Ameriprise Financial,Financials,,not_disclosed,0,no_target,
+AMT,American Tower,Real Estate,,not_disclosed,0,targets_set_2c,2035.0
+AMZN,Amazon,Consumer Discretionary,,not_disclosed,0,no_target,
+ANET,Arista Networks,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+AON,Aon plc,Financials,,not_disclosed,0,targets_set_1.5c,2032.0
+AOS,A. O. Smith,Industrials,,not_disclosed,0,no_target,
+APA,APA Corporation,Energy,287402.2745928,measured_epa,13,no_target,
+APD,Air Products,Materials,,not_disclosed,0,no_target,
+APH,Amphenol,Information Technology,,not_disclosed,0,no_target,
+APO,Apollo Global Management,Financials,,not_disclosed,0,no_target,
+APP,AppLovin,Communication Services,,not_disclosed,0,no_target,
+APTV,Aptiv,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+ARE,Alexandria Real Estate Equities,Real Estate,,not_disclosed,0,no_target,
+ARES,Ares Management,Financials,1454174.0512,measured_epa,1,no_target,
+ATO,Atmos Energy,Utilities,130555.092,measured_epa,3,no_target,
+AVGO,Broadcom,Information Technology,34457.051985,measured_epa,1,no_target,
+AVY,Avery Dennison,Materials,,not_disclosed,0,targets_set_1.5c,2030.0
+AWK,American Water Works,Utilities,,not_disclosed,0,no_target,
+AXON,Axon Enterprise,Industrials,,not_disclosed,0,no_target,
+AXP,American Express,Financials,,not_disclosed,0,net_zero_validated,2033.0
+AZO,AutoZone,Consumer Discretionary,,not_disclosed,0,no_target,
+BA,Boeing,Industrials,151144.822,measured_epa,4,no_target,
+BAC,Bank of America,Financials,,not_disclosed,0,no_target,
+BALL,Ball Corporation,Materials,,not_disclosed,0,targets_set_1.5c,2030.0
+BAX,Baxter International,Health Care,43203.836,measured_epa,1,no_target,
+BBY,Best Buy,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+BDX,Becton Dickinson,Health Care,,not_disclosed,0,no_target,
+BEN,Franklin Resources,Financials,,not_disclosed,0,no_target,
+BF.B,Brown–Forman,Consumer Staples,90072.76,measured_epa,2,no_target,
+BG,Bunge Global,Consumer Staples,,not_disclosed,0,no_target,
+BIIB,Biogen,Health Care,28268.191999999995,measured_epa,1,no_target,
+BKNG,Booking Holdings,Consumer Discretionary,,not_disclosed,0,net_zero_validated,2030.0
+BKR,Baker Hughes,Energy,,not_disclosed,0,no_target,
+BLDR,Builders FirstSource,Industrials,,not_disclosed,0,no_target,
+BLK,BlackRock,Financials,187749.8994,measured_epa,1,no_target,
+BMY,Bristol Myers Squibb,Health Care,95102.74,measured_epa,2,net_zero_validated,2033.0
+BNY,BNY Mellon,Financials,,not_disclosed,0,no_target,
+BR,Broadridge Financial Solutions,Industrials,,not_disclosed,0,net_zero_validated,2033.0
+BRK.B,Berkshire Hathaway,Financials,52734933.4973898,measured_epa,117,no_target,
+BRO,Brown & Brown,Financials,,not_disclosed,0,no_target,
+BSX,Boston Scientific,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+BX,Blackstone Inc.,Financials,,not_disclosed,0,no_target,
+BXP,"BXP, Inc.",Real Estate,,not_disclosed,0,targets_set_1.5c,2030.0
+C,Citigroup,Financials,,not_disclosed,0,no_target,
+CAH,Cardinal Health,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+CARR,Carrier Global,Industrials,,not_disclosed,0,net_zero_validated,2030.0
+CASY,Casey's,Consumer Staples,,not_disclosed,0,no_target,
+CAT,Caterpillar Inc.,Industrials,456901.738,measured_epa,7,no_target,
+CB,Chubb Limited,Financials,,not_disclosed,0,no_target,
+CBOE,Cboe Global Markets,Financials,,not_disclosed,0,no_target,
+CBRE,CBRE Group,Real Estate,,not_disclosed,0,net_zero_validated,2030.0
+CCI,Crown Castle,Real Estate,,not_disclosed,0,no_target,
+CCL,Carnival Corporation,Consumer Discretionary,,not_disclosed,0,no_target,
+CDNS,Cadence Design Systems,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+CDW,CDW Corporation,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+CEG,Constellation Energy,Utilities,8941320.546,measured_epa,10,no_target,
+CF,CF Industries,Materials,20579424.174,measured_epa,6,no_target,
+CFG,Citizens Financial Group,Financials,,not_disclosed,0,no_target,
+CHD,Church & Dwight,Consumer Staples,,not_disclosed,0,targets_set_1.5c,2031.0
+CHRW,C.H. Robinson,Industrials,,not_disclosed,0,no_target,
+CHTR,Charter Communications,Communication Services,,not_disclosed,0,no_target,
+CI,Cigna,Health Care,,not_disclosed,0,committed,
+CIEN,Ciena,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+CINF,Cincinnati Financial,Financials,,not_disclosed,0,no_target,
+CL,Colgate-Palmolive,Consumer Staples,,not_disclosed,0,net_zero_validated,2030.0
+CLX,Clorox,Consumer Staples,,not_disclosed,0,targets_set_1.5c,2030.0
+CMCSA,Comcast,Communication Services,,not_disclosed,0,targets_set_1.5c,2030.0
+CME,CME Group,Financials,,not_disclosed,0,no_target,
+CMG,Chipotle Mexican Grill,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+CMI,Cummins,Industrials,,not_disclosed,0,targets_set_1.5c,2030.0
+CMS,CMS Energy,Utilities,16768404.8872564,measured_epa,11,no_target,
+CNC,Centene Corporation,Health Care,,not_disclosed,0,no_target,
+CNP,CenterPoint Energy,Utilities,3741577.852,measured_epa,2,no_target,
+COF,Capital One,Financials,,not_disclosed,0,no_target,
+COHR,Coherent Corp.,Information Technology,,not_disclosed,0,no_target,
+COIN,Coinbase,Financials,,not_disclosed,0,no_target,
+COO,Cooper Companies (The),Health Care,,not_disclosed,0,no_target,
+COP,ConocoPhillips,Energy,1133099.858348,measured_epa,7,no_target,
+COR,Cencora,Health Care,,not_disclosed,0,targets_set_1.5c,2032.0
+COST,Costco,Consumer Staples,,not_disclosed,0,no_target,
+CPAY,Corpay,Financials,,not_disclosed,0,no_target,
+CPRT,Copart,Industrials,,not_disclosed,0,no_target,
+CPT,Camden Property Trust,Real Estate,,not_disclosed,0,no_target,
+CRH,CRH plc,Materials,,not_disclosed,0,targets_set_1.5c,2030.0
+CRL,Charles River Laboratories,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+CRM,Salesforce,Information Technology,,not_disclosed,0,no_target,
+CRWD,CrowdStrike,Information Technology,,not_disclosed,0,targets_set_1.5c,2031.0
+CSCO,Cisco,Information Technology,,not_disclosed,0,no_target,
+CSGP,CoStar Group,Real Estate,,not_disclosed,0,net_zero_validated,2033.0
+CSX,CSX Corporation,Industrials,,not_disclosed,0,targets_set_2c,2029.0
+CTAS,Cintas,Industrials,,not_disclosed,0,no_target,
+CTSH,Cognizant,Information Technology,,not_disclosed,0,no_target,
+CTVA,Corteva,Materials,82753.73999999999,measured_epa,2,no_target,
+CVNA,Carvana,Consumer Discretionary,,not_disclosed,0,no_target,
+CVS,CVS Health,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+CVX,Chevron Corporation,Energy,16522888.64808879,measured_epa,31,no_target,
+D,Dominion Energy,Utilities,28318232.555,measured_epa,27,no_target,
+DAL,Delta Air Lines,Industrials,1256096.862,measured_epa,2,targets_set_2c,2035.0
+DASH,DoorDash,Consumer Discretionary,,not_disclosed,0,no_target,
+DD,DuPont,Industrials,,not_disclosed,0,no_target,
+DDOG,Datadog,Information Technology,,not_disclosed,0,no_target,
+DE,Deere & Company,Industrials,45075.88,measured_epa,1,targets_set_1.5c,2030.0
+DECK,Deckers Brands,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+DELL,Dell Technologies,Information Technology,,not_disclosed,0,net_zero_validated,2031.0
+DG,Dollar General,Consumer Staples,,not_disclosed,0,no_target,
+DGX,Quest Diagnostics,Health Care,,not_disclosed,0,no_target,
+DHI,D. R. Horton,Consumer Discretionary,,not_disclosed,0,no_target,
+DHR,Danaher Corporation,Health Care,,not_disclosed,0,net_zero_validated,2035.0
+DIS,Walt Disney Company (The),Communication Services,108269.89074,measured_epa,1,targets_set_1.5c,2030.0
+DLR,Digital Realty,Real Estate,,not_disclosed,0,targets_set_1.5c,2030.0
+DLTR,Dollar Tree,Consumer Staples,,not_disclosed,0,no_target,
+DOC,Healthpeak Properties,Real Estate,,not_disclosed,0,targets_set_2c,2033.0
+DOV,Dover Corporation,Industrials,,not_disclosed,0,targets_set_2c,2030.0
+DOW,Dow Inc.,Materials,16644866.1521,measured_epa,16,no_target,
+DPZ,Domino's,Consumer Discretionary,,not_disclosed,0,no_target,
+DRI,Darden Restaurants,Consumer Discretionary,,not_disclosed,0,no_target,
+DTE,DTE Energy,Utilities,23095572.205256,measured_epa,23,no_target,
+DUK,Duke Energy,Utilities,72317600.8256672,measured_epa,40,no_target,
+DVA,DaVita,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+DVN,Devon Energy,Energy,36538.4417428,measured_epa,6,no_target,
+DXCM,Dexcom,Health Care,,not_disclosed,0,no_target,
+EBAY,eBay Inc.,Consumer Discretionary,,not_disclosed,0,net_zero_validated,2030.0
+ECHO,EchoStar,Communication Services,,not_disclosed,0,no_target,
+ECL,Ecolab,Materials,,not_disclosed,0,net_zero_validated,2030.0
+ED,Consolidated Edison,Utilities,2463230.61,measured_epa,5,no_target,
+EFX,Equifax,Industrials,,not_disclosed,0,targets_set_1.5c,2032.0
+EG,Everest Group,Financials,,not_disclosed,0,no_target,
+EIX,Edison International,Utilities,1056295.236,measured_epa,1,no_target,
+EL,Estée Lauder Companies (The),Consumer Staples,,not_disclosed,0,targets_set_1.5c,2030.0
+ELV,Elevance Health,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+EME,Emcor,Industrials,,not_disclosed,0,no_target,
+EMR,Emerson Electric,Industrials,,not_disclosed,0,net_zero_validated,2030.0
+EOG,EOG Resources,Energy,318787.588,measured_epa,7,no_target,
+EQIX,Equinix,Real Estate,,not_disclosed,0,net_zero_validated,2030.0
+EQT,EQT Corporation,Energy,,not_disclosed,0,no_target,
+ERIE,Erie Indemnity,Financials,,not_disclosed,0,no_target,
+ES,Eversource Energy,Utilities,,not_disclosed,0,no_target,
+ESS,Essex Property Trust,Real Estate,,not_disclosed,0,targets_set_1.5c,2034.0
+ETN,Eaton Corporation,Industrials,,not_disclosed,0,net_zero_validated,2030.0
+ETR,Entergy,Utilities,38030028.4749876,measured_epa,27,no_target,
+EVRG,Evergy,Utilities,23043646.27078,measured_epa,13,no_target,
+EW,Edwards Lifesciences,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+EXC,Exelon,Utilities,,not_disclosed,0,no_target,
+EXE,Expand Energy,Energy,,not_disclosed,0,no_target,
+EXPD,Expeditors International,Industrials,,not_disclosed,0,no_target,
+EXPE,Expedia Group,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+EXR,Extra Space Storage,Real Estate,,not_disclosed,0,no_target,
+F,Ford Motor Company,Consumer Discretionary,497625.124,measured_epa,10,targets_set_2c,2035.0
+FANG,Diamondback Energy,Energy,,not_disclosed,0,no_target,
+FAST,Fastenal,Industrials,,not_disclosed,0,no_target,
+FCX,Freeport-McMoRan,Materials,468237.9740000001,measured_epa,5,no_target,
+FDS,FactSet,Financials,,not_disclosed,0,no_target,
+FDX,FedEx,Industrials,,not_disclosed,0,targets_set_1.5c,2035.0
+FDXF,FedEx Freight,Industrials,,not_disclosed,0,no_target,
+FE,FirstEnergy,Utilities,15258135.972,measured_epa,2,no_target,
+FERG,Ferguson Enterprises,Industrials,,not_disclosed,0,no_target,
+FFIV,"F5, Inc.",Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+FICO,Fair Isaac,Information Technology,,not_disclosed,0,no_target,
+FIS,Fidelity National Information Services,Financials,,not_disclosed,0,no_target,
+FISV,Fiserv,Financials,,not_disclosed,0,no_target,
+FITB,Fifth Third Bancorp,Financials,,not_disclosed,0,no_target,
+FIX,Comfort Systems USA,Industrials,,not_disclosed,0,no_target,
+FLEX,Flex Ltd.,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+FOX,Fox Corporation (Class B),Communication Services,,not_disclosed,0,no_target,
+FRT,Federal Realty Investment Trust,Real Estate,,not_disclosed,0,no_target,
+FSLR,First Solar,Information Technology,,not_disclosed,0,net_zero_validated,2028.0
+FTNT,Fortinet,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+FTV,Fortive,Industrials,,not_disclosed,0,no_target,
+GD,General Dynamics,Industrials,,not_disclosed,0,no_target,
+GDDY,GoDaddy,Information Technology,,not_disclosed,0,no_target,
+GE,GE Aerospace,Industrials,,not_disclosed,0,no_target,
+GEHC,GE HealthCare,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+GEN,Gen Digital,Information Technology,,not_disclosed,0,no_target,
+GEV,GE Vernova,Industrials,,not_disclosed,0,no_target,
+GILD,Gilead Sciences,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+GIS,General Mills,Consumer Staples,70688.598,measured_epa,2,net_zero_validated,2030.0
+GL,Globe Life,Financials,,not_disclosed,0,no_target,
+GLW,Corning Inc.,Information Technology,171577.1979,measured_epa,4,targets_set_1.5c,2028.0
+GM,General Motors,Consumer Discretionary,572170.952,measured_epa,14,targets_set_2c,2035.0
+GNRC,Generac,Industrials,,not_disclosed,0,no_target,
+GOOGL,Alphabet Inc. (Class A),Communication Services,15853.46924,measured_epa,1,targets_set_1.5c,2030.0
+GPC,Genuine Parts Company,Consumer Discretionary,,not_disclosed,0,no_target,
+GPN,Global Payments,Financials,,not_disclosed,0,no_target,
+GRMN,Garmin,Consumer Discretionary,,not_disclosed,0,no_target,
+GS,Goldman Sachs,Financials,15642.0912,measured_epa,1,no_target,
+GWW,W. W. Grainger,Industrials,,not_disclosed,0,no_target,
+HAL,Halliburton,Energy,53414.518,measured_epa,2,no_target,
+HAS,Hasbro,Consumer Discretionary,,not_disclosed,0,net_zero_validated,2030.0
+HBAN,Huntington Bancshares,Financials,,not_disclosed,0,no_target,
+HCA,HCA Healthcare,Health Care,,not_disclosed,0,no_target,
+HD,Home Depot (The),Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+HIG,Hartford (The),Financials,,not_disclosed,0,no_target,
+HII,Huntington Ingalls Industries,Industrials,49706.726,measured_epa,1,no_target,
+HLT,Hilton Worldwide,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+HON,Honeywell Technologies,Industrials,,not_disclosed,0,no_target,
+HONA,Honeywell Aerospace,Industrials,,not_disclosed,0,no_target,
+HOOD,Robinhood Markets,Financials,,not_disclosed,0,no_target,
+HPE,Hewlett Packard Enterprise,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+HPQ,HP Inc.,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+HRL,Hormel Foods,Consumer Staples,58585.68,measured_epa,1,targets_set_1.5c,2030.0
+HSIC,Henry Schein,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+HST,Host Hotels & Resorts,Real Estate,,not_disclosed,0,targets_set_1.5c,2030.0
+HSY,Hershey Company (The),Consumer Staples,,not_disclosed,0,targets_set_1.5c,2030.0
+HUBB,Hubbell Incorporated,Industrials,,not_disclosed,0,no_target,
+HUM,Humana,Health Care,,not_disclosed,0,targets_set_1.5c,2029.0
+HWM,Howmet Aerospace,Industrials,124137.594,measured_epa,3,no_target,
+IBKR,Interactive Brokers,Financials,,not_disclosed,0,no_target,
+IBM,IBM,Information Technology,,not_disclosed,0,no_target,
+ICE,Intercontinental Exchange,Financials,,not_disclosed,0,no_target,
+IDXX,Idexx Laboratories,Health Care,,not_disclosed,0,no_target,
+IEX,IDEX Corporation,Industrials,,not_disclosed,0,no_target,
+IFF,International Flavors & Fragrances,Materials,307088.216,measured_epa,7,targets_set_1.5c,2030.0
+INCY,Incyte,Health Care,,not_disclosed,0,no_target,
+INTC,Intel,Information Technology,790767.5444783,measured_epa,4,no_target,
+INTU,Intuit,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+INVH,Invitation Homes,Real Estate,,not_disclosed,0,no_target,
+IP,International Paper,Materials,5404387.698,measured_epa,28,targets_set_2c,2030.0
+IQV,IQVIA,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+IR,Ingersoll Rand,Industrials,,not_disclosed,0,net_zero_validated,2034.0
+IRM,Iron Mountain,Real Estate,,not_disclosed,0,net_zero_validated,2033.0
+ISRG,Intuitive Surgical,Health Care,,not_disclosed,0,no_target,
+IT,Gartner,Information Technology,,not_disclosed,0,targets_set_1.5c,2029.0
+ITW,Illinois Tool Works,Industrials,17549.74984,measured_epa,1,no_target,
+IVZ,Invesco,Financials,,not_disclosed,0,no_target,
+J,Jacobs Solutions,Industrials,,not_disclosed,0,no_target,
+JBHT,J.B. Hunt,Industrials,,not_disclosed,0,no_target,
+JBL,Jabil,Information Technology,,not_disclosed,0,no_target,
+JCI,Johnson Controls,Industrials,,not_disclosed,0,targets_set_1.5c,2030.0
+JKHY,Jack Henry & Associates,Financials,,not_disclosed,0,no_target,
+JNJ,Johnson & Johnson,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+JPM,JPMorgan Chase,Financials,,not_disclosed,0,no_target,
+KDP,Keurig Dr Pepper,Consumer Staples,,not_disclosed,0,targets_set_1.5c,2030.0
+KEY,KeyCorp,Financials,,not_disclosed,0,no_target,
+KEYS,Keysight Technologies,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+KHC,Kraft Heinz,Consumer Staples,,not_disclosed,0,net_zero_validated,2030.0
+KIM,Kimco Realty,Real Estate,,not_disclosed,0,no_target,
+KKR,KKR & Co.,Financials,,not_disclosed,0,no_target,
+KLAC,KLA Corporation,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+KMB,Kimberly-Clark,Consumer Staples,1030421.266,measured_epa,8,targets_set_2c,2030.0
+KMI,Kinder Morgan,Energy,9624625.0280996,measured_epa,203,no_target,
+KO,Coca-Cola Company (The),Consumer Staples,,not_disclosed,0,no_target,
+KR,Kroger,Consumer Staples,,not_disclosed,0,no_target,
+KVUE,Kenvue,Consumer Staples,,not_disclosed,0,targets_set_1.5c,2030.0
+L,Loews Corporation,Financials,1937140.466,measured_epa,41,no_target,
+LDOS,Leidos,Industrials,,not_disclosed,0,no_target,
+LEN,Lennar,Consumer Discretionary,,not_disclosed,0,no_target,
+LH,Labcorp,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+LHX,L3Harris,Industrials,,not_disclosed,0,no_target,
+LII,Lennox International,Industrials,,not_disclosed,0,targets_set_2c,2034.0
+LIN,Linde plc,Materials,8787322.32,measured_epa,18,targets_set_2c,2035.0
+LITE,Lumentum,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+LLY,Lilly (Eli),Health Care,,not_disclosed,0,no_target,
+LMT,Lockheed Martin,Industrials,95794.134,measured_epa,2,no_target,
+LNT,Alliant Energy,Utilities,12978458.9224172,measured_epa,16,no_target,
+LOW,Lowe's,Consumer Discretionary,,not_disclosed,0,no_target,
+LRCX,Lam Research,Information Technology,,not_disclosed,0,targets_set_1.5c,2034.0
+LULU,Lululemon Athletica,Consumer Discretionary,,not_disclosed,0,no_target,
+LUV,Southwest Airlines,Industrials,,not_disclosed,0,no_target,
+LVS,Las Vegas Sands,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+LYB,LyondellBasell,Materials,,not_disclosed,0,no_target,
+LYV,Live Nation Entertainment,Communication Services,,not_disclosed,0,no_target,
+MA,Mastercard,Financials,,not_disclosed,0,targets_set_1.5c,2030.0
+MAA,Mid-America Apartment Communities,Real Estate,,not_disclosed,0,no_target,
+MAR,Marriott International,Consumer Discretionary,,not_disclosed,0,net_zero_validated,2030.0
+MAS,Masco,Industrials,,not_disclosed,0,no_target,
+MCD,McDonald's,Consumer Discretionary,,not_disclosed,0,net_zero_validated,2030.0
+MCHP,Microchip Technology,Information Technology,472938.201976,measured_epa,3,no_target,
+MCK,McKesson Corporation,Health Care,,not_disclosed,0,targets_set_1.5c,2032.0
+MCO,Moody's Corporation,Financials,,not_disclosed,0,net_zero_validated,2030.0
+MDLZ,Mondelez International,Consumer Staples,,not_disclosed,0,net_zero_validated,2030.0
+MDT,Medtronic,Health Care,,not_disclosed,0,targets_set_1.5c,2034.0
+MET,MetLife,Financials,,not_disclosed,0,committed,
+META,Meta Platforms,Communication Services,,not_disclosed,0,targets_set_1.5c,2031.0
+MGM,MGM Resorts,Consumer Discretionary,110103.336,measured_epa,1,targets_set_1.5c,2030.0
+MKC,McCormick & Company,Consumer Staples,,not_disclosed,0,net_zero_validated,2030.0
+MLM,Martin Marietta Materials,Materials,3999044.162,measured_epa,4,targets_set_1.5c,2035.0
+MMM,3M,Industrials,1007143.688924,measured_epa,11,targets_set_1.5c,2030.0
+MNST,Monster Beverage,Consumer Staples,,not_disclosed,0,no_target,
+MO,Altria,Consumer Staples,66467.196,measured_epa,2,net_zero_validated,2030.0
+MOS,Mosaic Company (The),Materials,1584499.966,measured_epa,8,no_target,
+MPC,Marathon Petroleum,Energy,28608923.01688,measured_epa,26,no_target,
+MPWR,Monolithic Power Systems,Information Technology,,not_disclosed,0,no_target,
+MRK,Merck & Co.,Health Care,365529.704,measured_epa,3,no_target,
+MRNA,Moderna,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+MRSH,Marsh McLennan,Financials,,not_disclosed,0,net_zero_validated,2030.0
+MRVL,Marvell Technology,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+MS,Morgan Stanley,Financials,,not_disclosed,0,no_target,
+MSCI,MSCI,Financials,,not_disclosed,0,net_zero_validated,2030.0
+MSFT,Microsoft,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+MSI,Motorola Solutions,Information Technology,,not_disclosed,0,no_target,
+MTB,M&T Bank,Financials,,not_disclosed,0,no_target,
+MTD,Mettler Toledo,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+MU,Micron Technology,Information Technology,303884.3484487,measured_epa,2,no_target,
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,,not_disclosed,0,no_target,
+NDAQ,"Nasdaq, Inc.",Financials,,not_disclosed,0,net_zero_validated,2032.0
+NDSN,Nordson Corporation,Industrials,,not_disclosed,0,no_target,
+NEE,NextEra Energy,Utilities,42401136.670371,measured_epa,20,no_target,
+NEM,Newmont,Materials,567759.26746,measured_epa,3,targets_set_2c,2030.0
+NFLX,Netflix,Communication Services,,not_disclosed,0,targets_set_1.5c,2030.0
+NI,NiSource,Utilities,4456754.266,measured_epa,3,no_target,
+NKE,"Nike, Inc.",Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+NOC,Northrop Grumman,Industrials,110192.278,measured_epa,3,no_target,
+NOW,ServiceNow,Information Technology,,not_disclosed,0,targets_set_1.5c,2026.0
+NRG,NRG Energy,Utilities,22461424.34004,measured_epa,16,targets_set_1.5c,2025.0
+NSC,Norfolk Southern,Industrials,,not_disclosed,0,targets_set_2c,2034.0
+NTAP,NetApp,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+NTRS,Northern Trust,Financials,,not_disclosed,0,committed,
+NUE,Nucor,Materials,5497406.23368,measured_epa,26,no_target,
+NVDA,Nvidia,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+NVR,"NVR, Inc.",Consumer Discretionary,,not_disclosed,0,no_target,
+NWS,News Corp (Class B),Communication Services,,not_disclosed,0,net_zero_validated,2030.0
+NXPI,NXP Semiconductors,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+O,Realty Income,Real Estate,,not_disclosed,0,no_target,
+ODFL,Old Dominion,Industrials,,not_disclosed,0,no_target,
+OKE,Oneok,Energy,2494624.4816,measured_epa,32,no_target,
+OMC,Omnicom Group,Communication Services,,not_disclosed,0,targets_set_1.5c,2030.0
+ON,ON Semiconductor,Information Technology,,not_disclosed,0,no_target,
+ORCL,Oracle Corporation,Information Technology,,not_disclosed,0,no_target,
+ORLY,O'Reilly Automotive,Consumer Discretionary,,not_disclosed,0,no_target,
+OTIS,Otis Worldwide,Industrials,,not_disclosed,0,targets_set_1.5c,2033.0
+OXY,Occidental Petroleum,Energy,7889828.406804,measured_epa,36,no_target,
+PANW,Palo Alto Networks,Information Technology,,not_disclosed,0,net_zero_validated,2027.0
+PAYX,Paychex,Industrials,,not_disclosed,0,no_target,
+PCAR,Paccar,Industrials,,not_disclosed,0,targets_set_2c,2030.0
+PCG,PG&E Corporation,Utilities,340079.538,measured_epa,7,no_target,
+PEG,Public Service Enterprise Group,Utilities,146.3,measured_epa,1,no_target,
+PEP,PepsiCo,Consumer Staples,317942.602,measured_epa,10,net_zero_validated,2030.0
+PFE,Pfizer,Health Care,225796.41,measured_epa,3,targets_set_1.5c,2030.0
+PFG,Principal Financial Group,Financials,,not_disclosed,0,no_target,
+PG,Procter & Gamble,Consumer Staples,1660556.136144,measured_epa,10,targets_set_1.5c,2030.0
+PGR,Progressive Corporation,Financials,,not_disclosed,0,no_target,
+PH,Parker Hannifin,Industrials,,not_disclosed,0,targets_set_1.5c,2030.0
+PHM,PulteGroup,Consumer Discretionary,,not_disclosed,0,no_target,
+PKG,Packaging Corporation of America,Materials,1498344.226,measured_epa,8,no_target,
+PLD,Prologis,Real Estate,,not_disclosed,0,net_zero_validated,2030.0
+PLTR,Palantir Technologies,Information Technology,,not_disclosed,0,no_target,
+PM,Philip Morris International,Consumer Staples,,not_disclosed,0,net_zero_validated,2030.0
+PNC,PNC Financial Services,Financials,,not_disclosed,0,no_target,
+PNR,Pentair,Industrials,,not_disclosed,0,no_target,
+PNW,Pinnacle West Capital,Utilities,10537824.43364,measured_epa,8,no_target,
+PODD,Insulet Corporation,Health Care,,not_disclosed,0,no_target,
+PPG,PPG Industries,Materials,198602.998,measured_epa,3,targets_set_1.5c,2030.0
+PPL,PPL Corporation,Utilities,26771409.22,measured_epa,6,no_target,
+PRU,Prudential Financial,Financials,,not_disclosed,0,no_target,
+PSA,Public Storage,Real Estate,,not_disclosed,0,no_target,
+PSKY,Paramount Skydance Corporation,Communication Services,,not_disclosed,0,no_target,
+PSX,Phillips 66,Energy,27912481.324431334,measured_epa,63,no_target,
+PTC,PTC Inc.,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+PWR,Quanta Services,Industrials,,not_disclosed,0,no_target,
+PYPL,PayPal,Financials,,not_disclosed,0,targets_set_1.5c,2025.0
+Q,Qnity Electronics,Information Technology,,not_disclosed,0,no_target,
+QCOM,Qualcomm,Information Technology,48566.81599999999,measured_epa,2,net_zero_validated,2030.0
+RCL,Royal Caribbean Group,Consumer Discretionary,,not_disclosed,0,no_target,
+RDDT,Reddit,Communication Services,,not_disclosed,0,no_target,
+REG,Regency Centers,Real Estate,,not_disclosed,0,no_target,
+REGN,Regeneron Pharmaceuticals,Health Care,,not_disclosed,0,no_target,
+RF,Regions Financial Corporation,Financials,,not_disclosed,0,no_target,
+RJF,Raymond James Financial,Financials,,not_disclosed,0,no_target,
+RL,Ralph Lauren Corporation,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+RMD,ResMed|,Health Care,,not_disclosed,0,no_target,
+ROK,Rockwell Automation,Industrials,,not_disclosed,0,net_zero_validated,2033.0
+ROL,"Rollins, Inc.",Industrials,,not_disclosed,0,no_target,
+ROP,Roper Technologies,Information Technology,,not_disclosed,0,no_target,
+ROST,Ross Stores,Consumer Discretionary,,not_disclosed,0,no_target,
+RSG,Republic Services,Industrials,10721712.294,measured_epa,177,targets_set_2c,2030.0
+RTX,RTX Corporation,Industrials,154646.258,measured_epa,3,no_target,
+RVTY,Revvity,Health Care,,not_disclosed,0,no_target,
+SBAC,SBA Communications,Real Estate,,not_disclosed,0,targets_set_1.5c,2033.0
+SBUX,Starbucks,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+SCHW,Charles Schwab Corporation,Financials,,not_disclosed,0,no_target,
+SHW,Sherwin-Williams,Materials,,not_disclosed,0,no_target,
+SJM,J.M. Smucker Company (The),Consumer Staples,,not_disclosed,0,targets_set_2c,2030.0
+SLB,Schlumberger,Energy,,not_disclosed,0,no_target,
+SMCI,Supermicro,Information Technology,,not_disclosed,0,no_target,
+SNA,Snap-on,Industrials,,not_disclosed,0,no_target,
+SNDK,Sandisk,Information Technology,,not_disclosed,0,committed,
+SNPS,Synopsys,Information Technology,,not_disclosed,0,targets_set_1.5c,2032.0
+SO,Southern Company,Utilities,76256538.3623456,measured_epa,48,no_target,
+SOLV,Solventum,Health Care,,not_disclosed,0,committed,
+SPG,Simon Property Group,Real Estate,,not_disclosed,0,targets_set_1.5c,2035.0
+SPGI,S&P Global,Financials,,not_disclosed,0,net_zero_validated,2025.0
+SRE,Sempra,Utilities,,not_disclosed,0,no_target,
+STE,Steris,Health Care,,not_disclosed,0,committed,
+STLD,Steel Dynamics,Materials,2569896.58,measured_epa,11,no_target,
+STT,State Street Corporation,Financials,,not_disclosed,0,no_target,
+STX,Seagate Technology,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+STZ,Constellation Brands,Consumer Staples,,not_disclosed,0,no_target,
+SW,Smurfit Westrock,Materials,,not_disclosed,0,no_target,
+SWK,Stanley Black & Decker,Industrials,,not_disclosed,0,targets_set_1.5c,2030.0
+SWKS,Skyworks Solutions,Information Technology,24116.71997,measured_epa,1,no_target,
+SYF,Synchrony Financial,Financials,,not_disclosed,0,no_target,
+SYK,Stryker Corporation,Health Care,,not_disclosed,0,no_target,
+SYY,Sysco,Consumer Staples,,not_disclosed,0,targets_set_2c,2030.0
+T,AT&T,Communication Services,,not_disclosed,0,targets_set_1.5c,2030.0
+TAP,Molson Coors Beverage Company,Consumer Staples,377025.7400000001,measured_epa,6,no_target,
+TDG,TransDigm Group,Industrials,,not_disclosed,0,no_target,
+TDY,Teledyne Technologies,Information Technology,,not_disclosed,0,no_target,
+TECH,Bio-Techne,Health Care,,not_disclosed,0,targets_set_1.5c,2031.0
+TEL,TE Connectivity,Information Technology,,not_disclosed,0,targets_set_1.5c,2032.0
+TER,Teradyne,Information Technology,,not_disclosed,0,net_zero_validated,2030.0
+TFC,Truist Financial,Financials,,not_disclosed,0,no_target,
+TGT,Target Corporation,Consumer Staples,,not_disclosed,0,targets_set_2c,2030.0
+TJX,TJX Companies,Consumer Discretionary,,not_disclosed,0,no_target,
+TKO,TKO Group Holdings,Communication Services,,not_disclosed,0,no_target,
+TMO,Thermo Fisher Scientific,Health Care,28392.342,measured_epa,1,net_zero_validated,2030.0
+TMUS,T-Mobile US,Communication Services,,not_disclosed,0,net_zero_validated,2030.0
+TPL,Texas Pacific Land Corporation,Energy,,not_disclosed,0,no_target,
+TPR,"Tapestry, Inc.",Consumer Discretionary,,not_disclosed,0,net_zero_validated,2030.0
+TRGP,Targa Resources,Energy,3858294.17583658,measured_epa,37,no_target,
+TRMB,Trimble Inc.,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+TROW,T. Rowe Price,Financials,,not_disclosed,0,no_target,
+TRV,Travelers Companies (The),Financials,,not_disclosed,0,no_target,
+TSCO,Tractor Supply,Consumer Discretionary,,not_disclosed,0,no_target,
+TSLA,"Tesla, Inc.",Consumer Discretionary,80515.196,measured_epa,2,no_target,
+TSN,Tyson Foods,Consumer Staples,1874907.486,measured_epa,34,targets_set_2c,2030.0
+TT,Trane Technologies,Industrials,,not_disclosed,0,net_zero_validated,2030.0
+TTD,Trade Desk (The),Communication Services,,not_disclosed,0,no_target,
+TTWO,Take-Two Interactive,Communication Services,,not_disclosed,0,no_target,
+TXN,Texas Instruments,Information Technology,1057774.335383,measured_epa,5,targets_set_1.5c,2030.0
+TXT,Textron,Industrials,55579.572,measured_epa,2,no_target,
+TYL,Tyler Technologies,Information Technology,,not_disclosed,0,no_target,
+UAL,United Airlines Holdings,Industrials,,not_disclosed,0,targets_set_2c,2035.0
+UBER,Uber,Industrials,,not_disclosed,0,no_target,
+UDR,"UDR, Inc.",Real Estate,,not_disclosed,0,no_target,
+UHS,Universal Health Services,Health Care,,not_disclosed,0,no_target,
+ULTA,Ulta Beauty,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+UNH,UnitedHealth Group,Health Care,,not_disclosed,0,targets_set_1.5c,2030.0
+UNP,Union Pacific Corporation,Industrials,,not_disclosed,0,targets_set_1.5c,2030.0
+UPS,United Parcel Service,Industrials,,not_disclosed,0,no_target,
+URI,United Rentals,Industrials,,not_disclosed,0,no_target,
+USB,U.S. Bancorp,Financials,,not_disclosed,0,no_target,
+V,Visa Inc.,Financials,,not_disclosed,0,net_zero_validated,2030.0
+VEEV,Veeva Systems,Health Care,,not_disclosed,0,targets_set_1.5c,2035.0
+VICI,Vici Properties,Real Estate,,not_disclosed,0,no_target,
+VLO,Valero Energy,Energy,23517862.268,measured_epa,27,no_target,
+VLTO,Veralto,Industrials,,not_disclosed,0,committed,
+VMC,Vulcan Materials Company,Materials,,not_disclosed,0,no_target,
+VMRK,Vivmark Residential,Real Estate,,not_disclosed,0,no_target,
+VRSK,Verisk Analytics,Industrials,,not_disclosed,0,net_zero_validated,2034.0
+VRSN,Verisign,Information Technology,,not_disclosed,0,no_target,
+VRT,Vertiv,Industrials,,not_disclosed,0,no_target,
+VRTX,Vertex Pharmaceuticals,Health Care,,not_disclosed,0,no_target,
+VST,Vistra Corp.,Utilities,86320993.138,measured_epa,40,targets_set_1.5c,2028.0
+VTR,Ventas,Real Estate,,not_disclosed,0,no_target,
+VTRS,Viatris,Health Care,26031.806,measured_epa,1,targets_set_1.5c,2030.0
+VZ,Verizon,Communication Services,,not_disclosed,0,targets_set_1.5c,2035.0
+WAB,Wabtec,Industrials,,not_disclosed,0,no_target,
+WAT,Waters Corporation,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+WBD,Warner Bros. Discovery,Communication Services,,not_disclosed,0,no_target,
+WDAY,"Workday, Inc.",Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+WDC,Western Digital,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+WEC,WEC Energy Group,Utilities,17623817.60712,measured_epa,17,no_target,
+WELL,Welltower,Real Estate,,not_disclosed,0,no_target,
+WFC,Wells Fargo,Financials,,not_disclosed,0,no_target,
+WM,Waste Management,Industrials,11650459.606,measured_epa,225,no_target,
+WMB,Williams Companies,Energy,,not_disclosed,0,no_target,
+WMT,Walmart,Consumer Staples,,not_disclosed,0,targets_set_1.5c,2031.0
+WRB,W. R. Berkley Corporation,Financials,,not_disclosed,0,no_target,
+WSM,"Williams-Sonoma, Inc.",Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+WST,West Pharmaceutical Services,Health Care,,not_disclosed,0,targets_set_1.5c,2035.0
+WTW,Willis Towers Watson,Financials,,not_disclosed,0,no_target,
+WY,Weyerhaeuser,Real Estate,41144.524,measured_epa,2,targets_set_1.5c,2030.0
+WYNN,Wynn Resorts,Consumer Discretionary,,not_disclosed,0,no_target,
+XEL,Xcel Energy,Utilities,35626381.9706756,measured_epa,31,no_target,
+XOM,ExxonMobil,Energy,,not_disclosed,0,no_target,
+XYL,Xylem Inc.,Industrials,,not_disclosed,0,targets_set_1.5c,2030.0
+XYZ,"Block, Inc.",Financials,,not_disclosed,0,targets_set_1.5c,2030.0
+YUM,Yum! Brands,Consumer Discretionary,,not_disclosed,0,targets_set_1.5c,2030.0
+ZBH,Zimmer Biomet,Health Care,,not_disclosed,0,net_zero_validated,2030.0
+ZBRA,Zebra Technologies,Information Technology,,not_disclosed,0,targets_set_1.5c,2030.0
+ZTS,Zoetis,Health Care,,not_disclosed,0,no_target,

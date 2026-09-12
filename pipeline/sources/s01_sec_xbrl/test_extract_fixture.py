@@ -35,7 +35,13 @@ def _usd(*entries):
 def fixture() -> dict:
     """One company, two fiscal years, with the traps deliberately planted."""
     return {"facts": {"us-gaap": {
-        # Revenue: the FIRST tag in the chain is absent, so the fallback must fire.
+        # THE NEE TRAP: an earlier chain entry that stopped being used in 2012.
+        # Resolving the chain once per company locks onto this and reports
+        # nothing for recent years, even though a later tag has them all.
+        "RevenueFromContractWithCustomerExcludingAssessedTax": _usd(
+            {"start": "2012-01-01", "end": "2012-12-31", "val": 42.0,
+             "form": "10-K", "accn": "z-1", "filed": "2013-02-01"}),
+        # Revenue: the first tag is stale, so the fallback must fire per YEAR.
         "Revenues": _usd(
             {"start": "2024-01-01", "end": "2024-12-31", "val": 1000.0,
              "form": "10-K", "accn": "a-1", "filed": "2025-02-01"},
@@ -81,8 +87,13 @@ def main() -> int:
           f"got {rev.get(2024, {}).get('val')}")
     check("prior year still present", rev.get(2023, {}).get("val") == 950.0)
 
-    tag, _ = _first_hit(doc, TAG_CHAINS["revenue_usd"])
-    check("fallback chain skips the absent first tag", tag == "Revenues", f"got {tag}")
+    from .extract import _resolve
+    res = _resolve(doc, TAG_CHAINS["revenue_usd"])
+    check("stale earlier tag does not block later years",
+          res.get(2024, (None,))[0] == "Revenues", f"got {res.get(2024, (None,))[0]}")
+    check("the stale year itself still resolves to its own tag",
+          res.get(2012, (None,))[0] == "RevenueFromContractWithCustomerExcludingAssessedTax",
+          f"got {res.get(2012, (None,))[0]}")
 
     print("\nfull extract through the writer")
     ticker = next(iter(ticker_to_cik()))

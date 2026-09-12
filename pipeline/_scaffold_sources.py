@@ -383,7 +383,8 @@ def render(sid: str, row: dict, force: bool) -> None:
 
 #: Files a source package owns by hand. --force must never overwrite these;
 #: losing hand-written tag chains to a regeneration is a silent, expensive bug.
-HANDWRITTEN = {"tags.py", "parse.py", "notes.md"}
+HANDWRITTEN = {"tags.py", "parse.py", "rollup.py", "notes.md",
+               "diagnose.py", "test_extract_fixture.py"}
 
 
 def _write(path: Path, text: str, force: bool) -> None:

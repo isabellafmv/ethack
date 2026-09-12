@@ -1,0 +1,501 @@
+ticker,company,sector,sub_industry,cik,legal_name,gics_sector,gics_sub_industry,hq_state,market_cap_usd,shares_outstanding,esg_risk_score_external,esg_controversy_level_external,scope1_tco2e,ghg_facility_count,cogs_usd,energy_cost_usd,revenue_usd,ebit_usd,ebitda_usd,free_cash_flow_usd,capex_usd,rnd_expense_usd,sbti_target_validated,sbti_target_type,target_year,target_baseline_year,target_reduction_pct,target_scope_coverage,buybacks_usd,dividends_paid_usd
+A,Agilent Technologies,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+AAPL,Apple Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+ABBV,AbbVie,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+ABNB,Airbnb,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,,,2023,2026,2026,2026,2026,2026,2026,2023,
+ABT,Abbott Laboratories,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+ACGL,Arch Capital Group,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,
+ACN,Accenture,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,
+ADBE,Adobe Inc.,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+ADI,Analog Devices,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+ADM,Archer Daniels Midland,Consumer Staples,Agricultural Products & Services,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+ADP,Automatic Data Processing,Industrials,Human Resource & Employment Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,,,2023,2026,,,,,,2023,2023
+ADSK,Autodesk,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+AEE,Ameren,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+AEP,American Electric Power,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+AES,AES Corporation,Utilities,Independent Power Producers & Energy Traders,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,,,2023,2023,,2026,,,,,,,2023
+AFL,Aflac,Financials,Life & Health Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+AIG,American International Group,Financials,Multi-line Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+AIZ,Assurant,Financials,Multi-line Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+AJG,Arthur J. Gallagher & Co.,Financials,Insurance Brokers,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,,2023
+AKAM,Akamai Technologies,Information Technology,Internet Services & Infrastructure,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,
+ALB,Albemarle Corporation,Materials,Specialty Chemicals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,2023
+ALGN,Align Technology,Health Care,Health Care Supplies,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+ALL,Allstate,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+ALLE,Allegion,Industrials,Building Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+AMAT,Applied Materials,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+AMCR,Amcor,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+AMD,Advanced Micro Devices,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+AME,Ametek,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+AMGN,Amgen,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+AMP,Ameriprise Financial,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+AMT,American Tower,Real Estate,Telecom Tower REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+AMZN,Amazon,Consumer Discretionary,Broadline Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,
+ANET,Arista Networks,Information Technology,Communications Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+AON,Aon plc,Financials,Insurance Brokers,0,0,0,0,0,2026,2023,,,,,,,2023,2023,,2023,2023,,2026,2026,2026,,,,,2023
+AOS,A. O. Smith,Industrials,Building Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+APA,APA Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,,2023,2023,,,,2026,,,,,,,2023
+APD,Air Products,Materials,Industrial Gases,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,2023
+APH,Amphenol,Information Technology,Electronic Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+APO,Apollo Global Management,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+APP,AppLovin,Communication Services,Advertising,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+APTV,Aptiv,Consumer Discretionary,Automotive Parts & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,
+ARE,Alexandria Real Estate Equities,Real Estate,Office REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,,,,2026,,,,,,2023,2023
+ARES,Ares Management,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,,,,,2026,,,,,,,
+ATO,Atmos Energy,Utilities,Gas Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+AVGO,Broadcom,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,2026,,,,,2023,2023
+AVY,Avery Dennison,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+AWK,American Water Works,Utilities,Water Utilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+AXON,Axon Enterprise,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+AXP,American Express,Financials,Consumer Finance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+AZO,AutoZone,Consumer Discretionary,Automotive Retail,0,0,0,0,0,,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+BA,Boeing,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+BAC,Bank of America,Financials,Diversified Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,
+BALL,Ball Corporation,Materials,"Metal, Glass & Plastic Containers",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+BAX,Baxter International,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+BBY,Best Buy,Consumer Discretionary,Computer & Electronics Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+BDX,Becton Dickinson,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+BEN,Franklin Resources,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+BF.B,Brown–Forman,Consumer Staples,Distillers & Vintners,0,0,0,0,0,2026,2023,,,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+BG,Bunge Global,Consumer Staples,Agricultural Products & Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+BIIB,Biogen,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,
+BKNG,Booking Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+BKR,Baker Hughes,Energy,Oil & Gas Equipment & Services,0,0,0,0,0,2026,2026,,,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+BLDR,Builders FirstSource,Industrials,Building Products,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+BLK,BlackRock,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+BMY,Bristol Myers Squibb,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+BNY,BNY Mellon,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,,,,,,,2023,,,2023,2023,,2026,,,,,,2023,2023
+BR,Broadridge Financial Solutions,Industrials,Data Processing & Outsourced Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+BRK.B,Berkshire Hathaway,Financials,Multi-Sector Holdings,0,0,0,0,0,2026,2026,,,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+BRO,Brown & Brown,Financials,Insurance Brokers,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+BSX,Boston Scientific,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,,2023
+BX,Blackstone Inc.,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,,2023
+BXP,"BXP, Inc.",Real Estate,Office REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,,,,2026,2026,2026,2026,2026,2026,,2023
+C,Citigroup,Financials,Diversified Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CAH,Cardinal Health,Health Care,Health Care Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+CARR,Carrier Global,Industrials,Building Products,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+CASY,Casey's,Consumer Staples,Food Retail,0,0,0,0,0,2026,2023,,,,,,,2023,,,2023,2023,,2026,,,,,,2023,2023
+CAT,Caterpillar Inc.,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+CB,Chubb Limited,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,,,,2026,,,,,,2023,2023
+CBOE,Cboe Global Markets,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CBRE,CBRE Group,Real Estate,Real Estate Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+CCI,Crown Castle,Real Estate,Telecom Tower REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CCL,Carnival Corporation,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,,
+CDNS,Cadence Design Systems,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+CDW,CDW Corporation,Information Technology,Technology Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+CEG,Constellation Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CF,CF Industries,Materials,Fertilizers & Agricultural Chemicals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CFG,Citizens Financial Group,Financials,Regional Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+CHD,Church & Dwight,Consumer Staples,Household Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+CHRW,C.H. Robinson,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CHTR,Charter Communications,Communication Services,Cable & Satellite,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+CI,Cigna,Health Care,Health Care Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,,,,2026,2026,,,,,2023,2023
+CIEN,Ciena,Information Technology,Communications Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+CINF,Cincinnati Financial,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+CL,Colgate-Palmolive,Consumer Staples,Household Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+CLX,Clorox,Consumer Staples,Household Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+CMCSA,Comcast,Communication Services,Cable & Satellite,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+CME,CME Group,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+CMG,Chipotle Mexican Grill,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+CMI,Cummins,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+CMS,CMS Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,2023,2023,2023,2023,,,,2026,,,,,,,
+CNC,Centene Corporation,Health Care,Managed Health Care,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+CNP,CenterPoint Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+COF,Capital One,Financials,Consumer Finance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+COHR,Coherent Corp.,Information Technology,Electronic Components,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+COIN,Coinbase,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,2023,2026,,,,,,2023,
+COO,Cooper Companies (The),Health Care,Health Care Supplies,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+COP,ConocoPhillips,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,,,2023,2026,,,,,,2023,2023
+COR,Cencora,Health Care,Health Care Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+COST,Costco,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CPAY,Corpay,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+CPRT,Copart,Industrials,Diversified Support Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,
+CPT,Camden Property Trust,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,,,,,,2026,,,,,,2023,2023
+CRH,CRH plc,Materials,Construction Materials,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,
+CRL,Charles River Laboratories,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+CRM,Salesforce,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+CRWD,CrowdStrike,Information Technology,Systems Software,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,,
+CSCO,Cisco,Information Technology,Communications Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+CSGP,CoStar Group,Real Estate,Real Estate Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+CSX,CSX Corporation,Industrials,Rail Transportation,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+CTAS,Cintas,Industrials,Diversified Support Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CTSH,Cognizant,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+CTVA,Corteva,Materials,Fertilizers & Agricultural Chemicals,0,0,0,0,0,2026,2023,,,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+CVNA,Carvana,Consumer Discretionary,Automotive Retail,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,,2026,,,,,,,
+CVS,CVS Health,Health Care,Health Care Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+CVX,Chevron Corporation,Energy,Integrated Oil & Gas,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,,,2023,2023,2023,2026,,,,,,2023,2023
+D,Dominion Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,,,,2026,,,,,,,2023
+DAL,Delta Air Lines,Industrials,Passenger Airlines,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,2023,2023,2023,2023,2023,2023,,2026,2026,2026,,,,,2023
+DASH,DoorDash,Consumer Discretionary,Specialized Consumer Services,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+DD,DuPont,Industrials,Industrial Conglomerates,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,2023
+DDOG,Datadog,Information Technology,Application Software,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+DE,Deere & Company,Industrials,Agricultural & Farm Machinery,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+DECK,Deckers Brands,Consumer Discretionary,Footwear,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+DELL,Dell Technologies,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+DG,Dollar General,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+DGX,Quest Diagnostics,Health Care,Health Care Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+DHI,D. R. Horton,Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+DHR,Danaher Corporation,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+DIS,Walt Disney Company (The),Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+DLR,Digital Realty,Real Estate,Data Center REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,2026,2026,2026,,2023
+DLTR,Dollar Tree,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+DOC,Healthpeak Properties,Real Estate,Health Care REITs,0,0,0,0,0,2026,2023,,,,,2023,,2023,,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+DOV,Dover Corporation,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,2026,2026,2023,2023
+DOW,Dow Inc.,Materials,Commodity Chemicals,0,0,0,0,0,2026,2023,,,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+DPZ,Domino's,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+DRI,Darden Restaurants,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+DTE,DTE Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+DUK,Duke Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,
+DVA,DaVita,Health Care,Health Care Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+DVN,Devon Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+DXCM,Dexcom,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,
+EBAY,eBay Inc.,Consumer Discretionary,Broadline Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+ECHO,EchoStar,Communication Services,Wireless Telecommunication Services,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+ECL,Ecolab,Materials,Specialty Chemicals,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+ED,Consolidated Edison,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+EFX,Equifax,Industrials,Research & Consulting Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+EG,Everest Group,Financials,Reinsurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,,,,2026,,,,,,2023,2023
+EIX,Edison International,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+EL,Estée Lauder Companies (The),Consumer Staples,Personal Care Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+ELV,Elevance Health,Health Care,Managed Health Care,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+EME,Emcor,Industrials,Construction & Engineering,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+EMR,Emerson Electric,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+EOG,EOG Resources,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,,,,2026,,,,,,2023,
+EQIX,Equinix,Real Estate,Data Center REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,,2023
+EQT,EQT Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+ERIE,Erie Indemnity,Financials,Insurance Brokers,0,0,0,0,0,2026,2026,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+ES,Eversource Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,,,,,,2023
+ESS,Essex Property Trust,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,,,,2023,
+ETN,Eaton Corporation,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+ETR,Entergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+EVRG,Evergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+EW,Edwards Lifesciences,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+EXC,Exelon,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+EXE,Expand Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+EXPD,Expeditors International,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+EXPE,Expedia Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+EXR,Extra Space Storage,Real Estate,Self-Storage REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+F,Ford Motor Company,Consumer Discretionary,Automobile Manufacturers,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+FANG,Diamondback Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+FAST,Fastenal,Industrials,Trading Companies & Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+FCX,Freeport-McMoRan,Materials,Copper,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+FDS,FactSet,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+FDX,FedEx,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+FDXF,FedEx Freight,Industrials,Cargo Ground Transportation,0,0,0,0,0,2026,2023,,,,,,2023,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+FE,FirstEnergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,2023,2023,2023,,2023,2023,,2026,,,,,,,2023
+FERG,Ferguson Enterprises,Industrials,Trading Companies & Distributors,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+FFIV,"F5, Inc.",Information Technology,Communications Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+FICO,Fair Isaac,Information Technology,Application Software,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+FIS,Fidelity National Information Services,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+FISV,Fiserv,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,
+FITB,Fifth Third Bancorp,Financials,Regional Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+FIX,Comfort Systems USA,Industrials,Construction & Engineering,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+FLEX,Flex Ltd.,Information Technology,Electronic Manufacturing Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,,2026,2026,2026,,,,2023,
+FOX,Fox Corporation (Class B),Communication Services,Broadcasting,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+FRT,Federal Realty Investment Trust,Real Estate,Retail REITs,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,,,,2026,2026,2026,,,,,
+FSLR,First Solar,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,,
+FTNT,Fortinet,Information Technology,Systems Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+FTV,Fortive,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+GD,General Dynamics,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+GDDY,GoDaddy,Information Technology,Internet Services & Infrastructure,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+GE,GE Aerospace,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+GEHC,GE HealthCare,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,,,,,,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+GEN,Gen Digital,Information Technology,Systems Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+GEV,GE Vernova,Industrials,Heavy Electrical Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+GILD,Gilead Sciences,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+GIS,General Mills,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+GL,Globe Life,Financials,Life & Health Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+GLW,Corning Inc.,Information Technology,Electronic Components,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,,,2023,2026,2026,2026,2026,2026,2026,,
+GM,General Motors,Consumer Discretionary,Automobile Manufacturers,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+GNRC,Generac,Industrials,Heavy Electrical Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+GOOGL,Alphabet Inc. (Class A),Communication Services,Interactive Media & Services,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,,,,2023,2023
+GPC,Genuine Parts Company,Consumer Discretionary,Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+GPN,Global Payments,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+GRMN,Garmin,Consumer Discretionary,Consumer Electronics,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,,,,,,,2023
+GS,Goldman Sachs,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+GWW,W. W. Grainger,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+HAL,Halliburton,Energy,Oil & Gas Equipment & Services,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+HAS,Hasbro,Consumer Discretionary,Leisure Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+HBAN,Huntington Bancshares,Financials,Regional Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+HCA,HCA Healthcare,Health Care,Health Care Facilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+HD,Home Depot (The),Consumer Discretionary,Home Improvement Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+HIG,Hartford (The),Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+HII,Huntington Ingalls Industries,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+HLT,Hilton Worldwide,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+HON,Honeywell Technologies,Industrials,Industrial Conglomerates,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+HONA,Honeywell Aerospace,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2026,,,,,,,,,,,,,2026,,,,,,,
+HOOD,Robinhood Markets,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,2023,2026,,,,,,2023,
+HPE,Hewlett Packard Enterprise,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+HPQ,HP Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+HRL,Hormel Foods,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+HSIC,Henry Schein,Health Care,Health Care Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+HST,Host Hotels & Resorts,Real Estate,Hotel & Resort REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,2026,2026,2026,2023,2023
+HSY,Hershey Company (The),Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+HUBB,Hubbell Incorporated,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+HUM,Humana,Health Care,Managed Health Care,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+HWM,Howmet Aerospace,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+IBKR,Interactive Brokers,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,,2026,,,,,,,2023
+IBM,IBM,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,,,,,,,2023
+ICE,Intercontinental Exchange,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+IDXX,Idexx Laboratories,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+IEX,IDEX Corporation,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+IFF,International Flavors & Fragrances,Materials,Specialty Chemicals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+INCY,Incyte,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,,,2023,2026,,,,,,2023,
+INTC,Intel,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+INTU,Intuit,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+INVH,Invitation Homes,Real Estate,Single-Family Residential REITs,0,0,0,0,0,2026,2023,,,,,,,2023,,,,,,2026,,,,,,2023,2023
+IP,International Paper,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+IQV,IQVIA,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+IR,Ingersoll Rand,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+IRM,Iron Mountain,Real Estate,Other Specialized REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,,2023
+ISRG,Intuitive Surgical,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,
+IT,Gartner,Information Technology,IT Consulting & Other Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,,,,2026,2026,2026,2026,2026,2026,2023,
+ITW,Illinois Tool Works,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+IVZ,Invesco,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+J,Jacobs Solutions,Industrials,Construction & Engineering,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+JBHT,J.B. Hunt,Industrials,Cargo Ground Transportation,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+JBL,Jabil,Information Technology,Electronic Manufacturing Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+JCI,Johnson Controls,Industrials,Building Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+JKHY,Jack Henry & Associates,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+JNJ,Johnson & Johnson,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+JPM,JPMorgan Chase,Financials,Diversified Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+KDP,Keurig Dr Pepper,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+KEY,KeyCorp,Financials,Regional Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+KEYS,Keysight Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+KHC,Kraft Heinz,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+KIM,Kimco Realty,Real Estate,Retail REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,,,,2023,2023
+KKR,KKR & Co.,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+KLAC,KLA Corporation,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+KMB,Kimberly-Clark,Consumer Staples,Household Products,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+KMI,Kinder Morgan,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+KO,Coca-Cola Company (The),Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+KR,Kroger,Consumer Staples,Food Retail,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+KVUE,Kenvue,Consumer Staples,Personal Care Products,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+L,Loews Corporation,Financials,Multi-line Insurance,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+LDOS,Leidos,Industrials,Diversified Support Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+LEN,Lennar,Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+LH,Labcorp,Health Care,Health Care Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+LHX,L3Harris,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+LII,Lennox International,Industrials,Building Products,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+LIN,Linde plc,Materials,Industrial Gases,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+LITE,Lumentum,Information Technology,Communications Equipment,0,0,0,0,0,2026,2023,,,,,,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+LLY,Lilly (Eli),Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,,,,2026,,,,,,2023,2023
+LMT,Lockheed Martin,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+LNT,Alliant Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,,,,2026,,,,,,,2023
+LOW,Lowe's,Consumer Discretionary,Home Improvement Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+LRCX,Lam Research,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+LULU,Lululemon Athletica,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+LUV,Southwest Airlines,Industrials,Passenger Airlines,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+LVS,Las Vegas Sands,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+LYB,LyondellBasell,Materials,Specialty Chemicals,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+LYV,Live Nation Entertainment,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+MA,Mastercard,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MAA,Mid-America Apartment Communities,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,,,,2026,,,,,,2023,2023
+MAR,Marriott International,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MAS,Masco,Industrials,Building Products,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+MCD,McDonald's,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MCHP,Microchip Technology,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+MCK,McKesson Corporation,Health Care,Health Care Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MCO,Moody's Corporation,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MDLZ,Mondelez International,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MDT,Medtronic,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+MET,MetLife,Financials,Life & Health Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,,,,2026,2026,,,,,2023,2023
+META,Meta Platforms,Communication Services,Interactive Media & Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MGM,MGM Resorts,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+MKC,McCormick & Company,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MLM,Martin Marietta Materials,Materials,Construction Materials,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MMM,3M,Industrials,Industrial Conglomerates,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MNST,Monster Beverage,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,
+MO,Altria,Consumer Staples,Tobacco,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MOS,Mosaic Company (The),Materials,Fertilizers & Agricultural Chemicals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+MPC,Marathon Petroleum,Energy,Oil & Gas Refining & Marketing,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+MPWR,Monolithic Power Systems,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+MRK,Merck & Co.,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+MRNA,Moderna,Health Care,Biotechnology,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+MRSH,Marsh McLennan,Financials,Insurance Brokers,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+MRVL,Marvell Technology,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MS,Morgan Stanley,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,,2023
+MSCI,MSCI,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+MSFT,Microsoft,Information Technology,Systems Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,,,,2023,2023
+MSI,Motorola Solutions,Information Technology,Communications Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+MTB,M&T Bank,Financials,Regional Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+MTD,Mettler Toledo,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,2023,2026,2026,2026,,,,2023,
+MU,Micron Technology,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,2023,2023,2023,2023,2023,2023,2023,,2026,,,,,,,
+NDAQ,"Nasdaq, Inc.",Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+NDSN,Nordson Corporation,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+NEE,NextEra Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,,,,2026,,,,,,,2023
+NEM,Newmont,Materials,Gold,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+NFLX,Netflix,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+NI,NiSource,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+NKE,"Nike, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+NOC,Northrop Grumman,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+NOW,ServiceNow,Information Technology,Systems Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+NRG,NRG Energy,Utilities,Independent Power Producers & Energy Traders,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+NSC,Norfolk Southern,Industrials,Rail Transportation,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+NTAP,NetApp,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+NTRS,Northern Trust,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+NUE,Nucor,Materials,Steel,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+NVDA,Nvidia,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+NVR,"NVR, Inc.",Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,2023,2023,,2026,,,,,,2023,
+NWS,News Corp (Class B),Communication Services,Publishing,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+NXPI,NXP Semiconductors,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+O,Realty Income,Real Estate,Retail REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,,2023
+ODFL,Old Dominion,Industrials,Cargo Ground Transportation,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+OKE,Oneok,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+OMC,Omnicom Group,Communication Services,Advertising,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+ON,ON Semiconductor,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+ORCL,Oracle Corporation,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+ORLY,O'Reilly Automotive,Consumer Discretionary,Automotive Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+OTIS,Otis Worldwide,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+OXY,Occidental Petroleum,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+PANW,Palo Alto Networks,Information Technology,Systems Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+PAYX,Paychex,Industrials,Human Resource & Employment Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+PCAR,Paccar,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+PCG,PG&E Corporation,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,,2023,2023,,2026,2026,,,,,,2023
+PEG,Public Service Enterprise Group,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+PEP,PepsiCo,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+PFE,Pfizer,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+PFG,Principal Financial Group,Financials,Life & Health Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,,,,2026,2026,,,,,2023,2023
+PG,Procter & Gamble,Consumer Staples,Personal Care Products,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+PGR,Progressive Corporation,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,,2023
+PH,Parker Hannifin,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+PHM,PulteGroup,Consumer Discretionary,Homebuilding,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,2023,2023,,2026,,,,,,2023,2023
+PKG,Packaging Corporation of America,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+PLD,Prologis,Real Estate,Industrial REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,2026,2026,2026,,2023
+PLTR,Palantir Technologies,Information Technology,Application Software,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,
+PM,Philip Morris International,Consumer Staples,Tobacco,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+PNC,PNC Financial Services,Financials,Diversified Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+PNR,Pentair,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+PNW,Pinnacle West Capital,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+PODD,Insulet Corporation,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+PPG,PPG Industries,Materials,Specialty Chemicals,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+PPL,PPL Corporation,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,2023,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+PRU,Prudential Financial,Financials,Life & Health Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,,,,,,2026,,,,,,2023,2023
+PSA,Public Storage,Real Estate,Self-Storage REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,
+PSKY,Paramount Skydance Corporation,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+PSX,Phillips 66,Energy,Oil & Gas Refining & Marketing,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,,,,,2023,2026,,,,,,2023,2023
+PTC,PTC Inc.,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+PWR,Quanta Services,Industrials,Construction & Engineering,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+PYPL,PayPal,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+Q,Qnity Electronics,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,2023
+QCOM,Qualcomm,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+RCL,Royal Caribbean Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+RDDT,Reddit,Communication Services,Interactive Media & Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+REG,Regency Centers,Real Estate,Retail REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,,,,2023,2023
+REGN,Regeneron Pharmaceuticals,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+RF,Regions Financial Corporation,Financials,Regional Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+RJF,Raymond James Financial,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,
+RL,Ralph Lauren Corporation,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,2026,2026,2023,2023
+RMD,ResMed|,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+ROK,Rockwell Automation,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+ROL,"Rollins, Inc.",Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+ROP,Roper Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,,,2023,2026,2026,,,,,2023,2023
+ROST,Ross Stores,Consumer Discretionary,Apparel Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+RSG,Republic Services,Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+RTX,RTX Corporation,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+RVTY,Revvity,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+SBAC,SBA Communications,Real Estate,Telecom Tower REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+SBUX,Starbucks,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+SCHW,Charles Schwab Corporation,Financials,Investment Banking & Brokerage,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+SHW,Sherwin-Williams,Materials,Specialty Chemicals,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,,2026,,,,,,,2023
+SJM,J.M. Smucker Company (The),Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+SLB,Schlumberger,Energy,Oil & Gas Equipment & Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,,2023
+SMCI,Supermicro,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,,
+SNA,Snap-on,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,2023,2026,,,,,,2023,2023
+SNDK,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,,
+SNPS,Synopsys,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+SO,Southern Company,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+SOLV,Solventum,Health Care,Health Care Technology,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,,
+SPG,Simon Property Group,Real Estate,Retail REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+SPGI,S&P Global,Financials,Financial Exchanges & Data,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+SRE,Sempra,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+STE,Steris,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+STLD,Steel Dynamics,Materials,Steel,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+STT,State Street Corporation,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+STX,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,2023,2023
+STZ,Constellation Brands,Consumer Staples,Distillers & Vintners,0,0,0,0,0,2026,2026,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+SW,Smurfit Westrock,Materials,Paper & Plastic Packaging Products & Materials,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+SWK,Stanley Black & Decker,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+SWKS,Skyworks Solutions,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,,,,,,2023,2023
+SYF,Synchrony Financial,Financials,Consumer Finance,0,0,0,0,0,2026,2023,2024,2024,,,,,,2023,2023,,,,2026,,,,,,2023,2023
+SYK,Stryker Corporation,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,,2023
+SYY,Sysco,Consumer Staples,Food Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+T,AT&T,Communication Services,Integrated Telecommunication Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+TAP,Molson Coors Beverage Company,Consumer Staples,Brewers,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+TDG,TransDigm Group,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+TDY,Teledyne Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+TECH,Bio-Techne,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+TEL,TE Connectivity,Information Technology,Electronic Manufacturing Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+TER,Teradyne,Information Technology,Semiconductor Materials & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+TFC,Truist Financial,Financials,Diversified Banks,0,0,0,0,0,2026,2023,,,,,,,2023,2023,,,,,2026,,,,,,2023,2023
+TGT,Target Corporation,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+TJX,TJX Companies,Consumer Discretionary,Apparel Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+TKO,TKO Group Holdings,Communication Services,Movies & Entertainment,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,,2026,,,,,,2023,
+TMO,Thermo Fisher Scientific,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+TMUS,T-Mobile US,Communication Services,Wireless Telecommunication Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,2023
+TPL,Texas Pacific Land Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+TPR,"Tapestry, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+TRGP,Targa Resources,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,,
+TRMB,Trimble Inc.,Information Technology,Application Software,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+TROW,T. Rowe Price,Financials,Asset Management & Custody Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+TRV,Travelers Companies (The),Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+TSCO,Tractor Supply,Consumer Discretionary,Other Specialty Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+TSLA,"Tesla, Inc.",Consumer Discretionary,Automobile Manufacturers,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,2026,,,,,,
+TSN,Tyson Foods,Consumer Staples,Packaged Foods & Meats,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,2026,2026,,2023
+TT,Trane Technologies,Industrials,Building Products,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
+TTD,Trade Desk (The),Communication Services,Advertising,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+TTWO,Take-Two Interactive,Communication Services,Interactive Home Entertainment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+TXN,Texas Instruments,Information Technology,Semiconductors,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+TXT,Textron,Industrials,Aerospace & Defense,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+TYL,Tyler Technologies,Information Technology,Application Software,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+UAL,United Airlines Holdings,Industrials,Passenger Airlines,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,2026,2026,,,,2023,
+UBER,Uber,Industrials,Passenger Ground Transportation,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,
+UDR,"UDR, Inc.",Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,,,,,2023,2023
+UHS,Universal Health Services,Health Care,Health Care Facilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+ULTA,Ulta Beauty,Consumer Discretionary,Other Specialty Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+UNH,UnitedHealth Group,Health Care,Managed Health Care,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+UNP,Union Pacific Corporation,Industrials,Rail Transportation,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+UPS,United Parcel Service,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2023,2024,2024,,,,2023,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+URI,United Rentals,Industrials,Trading Companies & Distributors,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+USB,U.S. Bancorp,Financials,Diversified Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,,,,2026,,,,,,2023,2023
+V,Visa Inc.,Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2026,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+VEEV,Veeva Systems,Health Care,Health Care Technology,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,,,2023,2026,2026,2026,2026,2026,2026,2023,
+VICI,Vici Properties,Real Estate,Hotel & Resort REITs,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,,,,,2026,,,,,,,2023
+VLO,Valero Energy,Energy,Oil & Gas Refining & Marketing,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+VLTO,Veralto,Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,,,,,,2023
+VMC,Vulcan Materials Company,Materials,Construction Materials,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+VMRK,Vivmark Residential,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2023,,,,,,,,2023,,,,,2026,,,,,,2023,2023
+VRSK,Verisk Analytics,Industrials,Research & Consulting Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+VRSN,Verisign,Information Technology,Internet Services & Infrastructure,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+VRT,Vertiv,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+VRTX,Vertex Pharmaceuticals,Health Care,Biotechnology,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
+VST,Vistra Corp.,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+VTR,Ventas,Real Estate,Health Care REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,,,,,2023
+VTRS,Viatris,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,,,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,
+VZ,Verizon,Communication Services,Integrated Telecommunication Services,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,2026,2026,2026,,2023
+WAB,Wabtec,Industrials,Construction Machinery & Heavy Transportation Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+WAT,Waters Corporation,Health Care,Life Sciences Tools & Services,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+WBD,Warner Bros. Discovery,Communication Services,Broadcasting,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,
+WDAY,"Workday, Inc.",Information Technology,Application Software,0,0,0,0,0,2026,2023,,,,,,,2023,2023,,2023,2023,2023,2026,2026,,,,,2023,
+WDC,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals",0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+WEC,WEC Energy Group,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,,,,2026,,,,,,2023,2023
+WELL,Welltower,Real Estate,Health Care REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,2023,2023,,,,,,2026,2026,2026,,,,,2023
+WFC,Wells Fargo,Financials,Diversified Banks,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+WM,Waste Management,Industrials,Environmental & Facilities Services,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+WMB,Williams Companies,Energy,Oil & Gas Storage & Transportation,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+WMT,Walmart,Consumer Staples,Consumer Staples Merchandise Retail,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,,,,,2023,2023
+WRB,W. R. Berkley Corporation,Financials,Property & Casualty Insurance,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,,,,,,2023,2023
+WSM,"Williams-Sonoma, Inc.",Consumer Discretionary,Homefurnishing Retail,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+WST,West Pharmaceutical Services,Health Care,Health Care Supplies,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+WTW,Willis Towers Watson,Financials,Insurance Brokers,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,,2023,2023,,2026,,,,,,2023,2023
+WY,Weyerhaeuser,Real Estate,Timber REITs,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,,,2023,2026,2026,2026,2026,2026,2026,2023,2023
+WYNN,Wynn Resorts,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
+XEL,Xcel Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+XOM,ExxonMobil,Energy,Integrated Oil & Gas,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+XYL,Xylem Inc.,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
+XYZ,"Block, Inc.",Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
+YUM,Yum! Brands,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+ZBH,Zimmer Biomet,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
+ZBRA,Zebra Technologies,Information Technology,Electronic Equipment & Instruments,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,
+ZTS,Zoetis,Health Care,Pharmaceuticals,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,
