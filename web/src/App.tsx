@@ -181,10 +181,8 @@ export default function App() {
       </div>
 
       <ProvenanceFooter
-        // generatedAt={matrix.payload.generated_at}
         schemaVersion={matrix.payload.schema_version}
         analysisYear={matrix.payload.analysis_year}
-        isFixture={matrix.isFixture}
       />
     </div>
   );

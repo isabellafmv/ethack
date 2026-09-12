@@ -60,11 +60,11 @@ export interface ViewConfig {
   defaultAxes: [AxisSlot, AxisSlot, AxisSlot];
 }
 
-const P1_SUBS = registryForPillar("P1").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
-const P2_SUBS = registryForPillar("P2").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
-const P3_SUBS = registryForPillar("P3").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
+export const P1_SUBS = registryForPillar("P1").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
+export const P2_SUBS = registryForPillar("P2").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
+export const P3_SUBS = registryForPillar("P3").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
 
-function bySubId(subs: AxisSlot[], id: string): AxisSlot {
+export function bySubId(subs: AxisSlot[], id: string): AxisSlot {
   const found = subs.find((s) => s.kind === "subscore" && s.id === id);
   if (!found) throw new Error(`view default references unknown sub-score id ${JSON.stringify(id)}`);
   return found;
