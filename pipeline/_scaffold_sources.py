@@ -24,7 +24,7 @@ SLUGS = {
     "S07": "s07_market", "S08": "s08_universe", "S09": "s09_sbti",
     "S10": "s10_reports", "S11": "s11_violation_tracker", "S12": "s12_senate_lda",
     "S13": "s13_cdp", "S14": "s14_kaggle_esg", "S15": "s15_epa_ghgrp",
-    "S19": "s19_epa_egrid",
+    "S18": "s18_epa_echo", "S19": "s19_epa_egrid",
 }
 
 SEC_SOURCES = {"S01", "S02", "S03", "S04", "S05"}
@@ -84,6 +84,48 @@ EXTRA = {
     "S19": "Feeds location-based Scope 2 via the subregion intensity of a company's\n"
            "facility footprint. Depends on entity resolution (S05/S15) being done\n"
            "first -- without a facility list there is nothing to weight.",
+    "S18": "The fallback for S11 (Violation Tracker), which is licence-gated for bulk\n"
+           "export. ECHO's own REST API IS freely pullable (echodata.epa.gov, no\n"
+           "auth, no ToS restriction on automation) -- confirmed live, unlike S11's\n"
+           "Cloudflare-protected site.\n"
+           "\n"
+           "BUT: entity resolution here is name-matching on facility records\n"
+           "(echo_rest_services.get_facilities, p_fn/p_fntype=BEGINS), not a\n"
+           "curated parent mapping like Violation Tracker's. Confirmed live against\n"
+           "the real API: for a company with owned-and-operated sites only\n"
+           "(LOCKHEED MARTIN) this returns ~500 plausible facilities. For a company\n"
+           "with a franchised/branded retail footprint (EXXON MOBIL, CHEVRON) it\n"
+           "also pulls in thousands of independently-owned gas stations that merely\n"
+           "license the brand -- CHEVRON matched 8,059 facilities this way, versus\n"
+           "496 for Lockheed Martin, which is not a real difference in EPA\n"
+           "enforcement exposure, just brand-name noise.\n"
+           "\n"
+           "Given that, penalty_total_usd/penalty_count from S18 are written as\n"
+           "status=IMPUTED (confidence 0.30), never STRUCTURAL -- the numbers are\n"
+           "real EPA data but the company match under a plain name search is not\n"
+           "verified the way S01-S07's CIK/ticker join is. Do not silently upgrade\n"
+           "this to STRUCTURAL without adding real entity resolution (e.g. joining\n"
+           "through the FRS bulk parent-company file, not text search).\n"
+           "\n"
+           "There is also no per-year breakdown available from get_facilities --\n"
+           "TotalPenalties is EPA's own cumulative total since it started tracking\n"
+           "(~2000), not an annual figure. fiscal_year is set to the year the pull\n"
+           "ran, representing 'as observed on this date', not a single year's\n"
+           "penalties. This is a real mismatch with S11's per-case-per-year\n"
+           "granularity -- flag it if the two sources are ever compared directly.\n"
+           "\n"
+           "penalty_count is FEARows + InfFEARows (facilities with a formal or\n"
+           "informal enforcement action) from the same call, not a count of\n"
+           "individual penalty transactions -- cheaper than paginating every\n"
+           "matched facility, and precision does not matter more than the name\n"
+           "match noise already does.\n"
+           "\n"
+           "case_rest_services.get_cases (the endpoint that would give real\n"
+           "per-case, per-year penalty amounts) does NOT filter by company/case\n"
+           "name at all, verified directly against the API and against ECHO's own\n"
+           "public case-search page -- both ignore the name filter and return\n"
+           "unrelated cases. Do not build on p_name for that endpoint; it is a\n"
+           "dead end as of this writing.",
 }
 
 SOURCE_MD = """# {sid} — {name}

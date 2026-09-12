@@ -211,7 +211,7 @@ def test_sources() -> None:
     from .sources import __path__ as spath
     pkgs = sorted(p.name for p in Path(spath[0]).iterdir()
                   if p.is_dir() and p.name.startswith("s"))
-    check("16 source packages exist", len(pkgs) == 16, f"got {len(pkgs)}")
+    check("17 source packages exist", len(pkgs) == 17, f"got {len(pkgs)}")
 
     bad = []
     for pkg in pkgs:
