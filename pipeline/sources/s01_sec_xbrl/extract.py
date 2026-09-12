@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import defaultdict
 from datetime import date
 
 from ...common import cache

@@ -11,7 +11,6 @@ repo as 'SP 500 ESG Risk Ratings.csv'.
 from __future__ import annotations
 
 import argparse
-import shutil
 
 from ...common import cache
 from ...common.paths import DATA

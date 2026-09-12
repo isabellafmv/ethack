@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import argparse
 
-from ...common import cache
 from ...common.entities import tickers
 
 SOURCE = "S11"

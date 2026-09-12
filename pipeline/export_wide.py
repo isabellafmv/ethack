@@ -19,7 +19,6 @@ from __future__ import annotations
 import argparse
 import csv
 import sqlite3
-from collections import defaultdict
 
 from .common.entities import universe
 from .common.fields import FIELDS, VALIDATION_ONLY

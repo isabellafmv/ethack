@@ -5,8 +5,7 @@ the missing fetch belongs in pull.py.
 
 The canonical write pattern:
 
-    from ...common.schema import Observation, Status
-    from ...common.jsonl import ObservationWriter
+        from ...common.jsonl import ObservationWriter
 
     with ObservationWriter(SOURCE) as w:
         w.write(Observation(
@@ -41,10 +40,8 @@ from __future__ import annotations
 
 import argparse
 
-from ...common import cache
 from ...common.entities import tickers
 from ...common.jsonl import ObservationWriter
-from ...common.schema import Observation, Status
 
 from .fields import EMITS
 

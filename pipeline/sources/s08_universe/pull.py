@@ -18,7 +18,6 @@ from __future__ import annotations
 
 import argparse
 import io
-import re
 
 from ...common.paths import UNIVERSE_PATH, ensure_dirs
 

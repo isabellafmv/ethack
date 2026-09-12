@@ -17,7 +17,6 @@ from ...common.paths import UNIVERSE_PATH
 from ...common.schema import Observation, Status, TIMELESS
 from ...common.sec_client import pad_cik
 
-from .fields import EMITS
 from .pull import ENDPOINT
 
 SOURCE = "S08"

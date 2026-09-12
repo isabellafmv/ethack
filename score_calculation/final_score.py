@@ -39,6 +39,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from score_calculation.coverage import renormalized_average
+
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = PROJECT_ROOT / "data"
 ENVIRONMENTAL_PATH = DATA_DIR / "environmental_scores.csv"
@@ -76,17 +78,13 @@ def compute_final_scores() -> pd.DataFrame:
 
     pillar_cols = list(PILLAR_WEIGHTS)
     weights = pd.Series(PILLAR_WEIGHTS)
-    available = df[pillar_cols].notna()
-    weight_matrix = available * weights
-    weight_sum = weight_matrix.sum(axis=1)
-
-    df["final_score"] = (df[pillar_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
-    df["n_pillars_available"] = available.sum(axis=1)
-    df.loc[weight_sum == 0, "final_score"] = pd.NA
+    df["final_score"], _, _ = renormalized_average(df, pillar_cols, weights)
+    df["n_pillars_available"] = df[pillar_cols].notna().sum(axis=1)
 
     confidence_cols = [f"{c}_confidence" for c in pillar_cols]
-    confidence_df = df[confidence_cols].astype(float).fillna(0)
-    df["data_confidence_pct"] = 100 * (confidence_df * weight_matrix.to_numpy()).sum(axis=1) / weight_sum
+    confidence_renamed = pd.Series(PILLAR_WEIGHTS).rename(lambda c: f"{c}_confidence")
+    confidence_score, _, _ = renormalized_average(df, confidence_cols, confidence_renamed)
+    df["data_confidence_pct"] = 100 * confidence_score
 
     columns = [
         "ticker", "company", "sector",

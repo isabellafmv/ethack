@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import json
 import sqlite3
-import sys
 import tempfile
 from pathlib import Path
 
@@ -74,7 +73,7 @@ def fixture() -> dict:
 
 
 def main() -> int:
-    from .extract import extract, _facts_for_tag, _first_hit
+    from .extract import extract, _facts_for_tag
     from .tags import TAG_CHAINS
 
     doc = fixture()

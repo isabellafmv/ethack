@@ -94,6 +94,11 @@ from pathlib import Path
 
 import pandas as pd
 
+from score_calculation.coverage import (
+    apply_disclosure_penalty,
+    disclosure_coverage,
+    renormalized_average,
+)
 from score_calculation.transition.sector_assumptions import (
     DEFAULT_ABATEMENT_COST_USD_PER_TCO2E,
     SECTOR_ABATEMENT_COST_USD_PER_TCO2E,
@@ -152,11 +157,6 @@ PIPELINE_GAP_INDICATORS = {
     "transition_affordability_score",
     "sector_exposure_score",
 }
-
-# Floor applied to a company disclosing none of the category-3 (disclosure
-# gap) indicators -- see the module docstring's transition_score formula.
-DISCLOSURE_COVERAGE_FLOOR = 0.6
-DISCLOSURE_COVERAGE_SLOPE = 0.4
 
 # Blend within regulatory_commitment_score: disclosed SBTi commitment vs. R&D
 # spend as a proxy for innovation capacity (patents would sit here too, once available).
@@ -285,10 +285,8 @@ def _confidence(df: pd.DataFrame) -> pd.DataFrame:
 
     confidence_cols = [f"{c}_confidence" for c in WEIGHTS]
     weights = pd.Series(WEIGHTS, index=WEIGHTS.keys()).rename(lambda c: f"{c}_confidence")
-    available = df[confidence_cols].notna()
-    weight_matrix = available * weights
-    weight_sum = weight_matrix.sum(axis=1)
-    df["data_confidence_pct"] = 100 * (df[confidence_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
+    confidence_score, _, _ = renormalized_average(df, confidence_cols, weights)
+    df["data_confidence_pct"] = 100 * confidence_score
     return df
 
 
@@ -358,25 +356,16 @@ def compute_transition_scores() -> pd.DataFrame:
     # toward 0 just because one term of a sum went NaN.
     sub_cols = list(WEIGHTS)
     weights = pd.Series(WEIGHTS)
-    available = df[sub_cols].notna()
-    weight_matrix = available * weights
-    weight_sum = weight_matrix.sum(axis=1)
-    df["transition_score_raw"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
-    df["n_subscores_available"] = available.sum(axis=1)
-    df.loc[weight_sum == 0, "transition_score_raw"] = pd.NA
+    df["transition_score_raw"], weight_matrix, _ = renormalized_average(df, sub_cols, weights)
+    df["n_subscores_available"] = df[sub_cols].notna().sum(axis=1)
 
     # Coverage penalty: renormalize category-2 (pipeline-gap) indicators out
     # for free, but category-3 (disclosure-gap) ones dock the score. See the
     # module docstring, including the caveat that this is currently a no-op
     # (regulatory_commitment_score is never actually null).
     disclosure_cols = [c for c in sub_cols if c not in PIPELINE_GAP_INDICATORS]
-    disclosure_weight_total = sum(WEIGHTS[c] for c in disclosure_cols)
-    df["transition_disclosure_coverage"] = (
-        weight_matrix[disclosure_cols].sum(axis=1) / disclosure_weight_total
-    )
-    df["transition_score"] = df["transition_score_raw"] * (
-        DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * df["transition_disclosure_coverage"]
-    )
+    df["transition_disclosure_coverage"] = disclosure_coverage(weight_matrix, weights, disclosure_cols)
+    df["transition_score"] = apply_disclosure_penalty(df["transition_score_raw"], df["transition_disclosure_coverage"])
 
     df = _confidence(df)
 

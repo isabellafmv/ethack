@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import re
 
-from ...common.columns import detect as _detect, norm as _norm
+from ...common.columns import detect as _detect
 
 COLUMNS = {
     "company":   ["company name", "company", "organisation", "organization", "name"],

@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Iterable, Iterator
+from typing import Iterator
 
 from .paths import OBSERVATIONS
 from .schema import Observation, SCHEMA_VERSION, SchemaError, validate

@@ -16,7 +16,6 @@ source package, before the record is written -- never downstream.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
 
 # --- canonical units -------------------------------------------------------
 UNITS = {

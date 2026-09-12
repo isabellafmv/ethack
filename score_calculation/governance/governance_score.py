@@ -104,6 +104,12 @@ from pathlib import Path
 
 import pandas as pd
 
+from score_calculation.coverage import (
+    apply_disclosure_penalty,
+    disclosure_coverage,
+    renormalized_average,
+)
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
 WIDE_PATH = DATA_DIR / "wide_FY2025_fallback.csv"
@@ -129,11 +135,6 @@ WEIGHTS = {
 # Empty right now -- all five have real data -- kept explicit for whatever
 # joins this pillar next in that state.
 PIPELINE_GAP_INDICATORS: set[str] = set()
-
-# Floor applied to a company disclosing none of the category-3 (disclosure
-# gap) indicators -- see the module docstring's governance_score formula.
-DISCLOSURE_COVERAGE_FLOOR = 0.6
-DISCLOSURE_COVERAGE_SLOPE = 0.4
 
 FULL_CONFIDENCE = 1.0
 PARTIAL_CONFIDENCE = 0.5
@@ -242,29 +243,20 @@ def compute_governance_scores() -> pd.DataFrame:
 
     sub_cols = list(WEIGHTS)
     weights = pd.Series(WEIGHTS)
-    available = df[sub_cols].notna()
-    weight_matrix = available * weights
-    weight_sum = weight_matrix.sum(axis=1)
-
-    df["governance_score_raw"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
-    df["n_indicators_available"] = available.sum(axis=1)
-    df.loc[weight_sum == 0, "governance_score_raw"] = pd.NA
+    df["governance_score_raw"], weight_matrix, _ = renormalized_average(df, sub_cols, weights)
+    df["n_indicators_available"] = df[sub_cols].notna().sum(axis=1)
 
     # Coverage penalty: renormalize category-2 (pipeline-gap) indicators out
     # for free, but category-3 (disclosure-gap) ones dock the score. See the
     # module docstring.
     disclosure_cols = [c for c in sub_cols if c not in PIPELINE_GAP_INDICATORS]
-    disclosure_weight_total = sum(WEIGHTS[c] for c in disclosure_cols)
-    df["governance_disclosure_coverage"] = (
-        weight_matrix[disclosure_cols].sum(axis=1) / disclosure_weight_total
-    )
-    df["governance_score"] = df["governance_score_raw"] * (
-        DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * df["governance_disclosure_coverage"]
-    )
+    df["governance_disclosure_coverage"] = disclosure_coverage(weight_matrix, weights, disclosure_cols)
+    df["governance_score"] = apply_disclosure_penalty(df["governance_score_raw"], df["governance_disclosure_coverage"])
 
     confidence_cols = [f"{c}_confidence" for c in sub_cols]
-    confidence_df = df[confidence_cols].astype(float).fillna(0)
-    df["data_confidence_pct"] = 100 * (confidence_df * weight_matrix.to_numpy()).sum(axis=1) / weight_sum
+    confidence_weights = weights.rename(lambda c: f"{c}_confidence")
+    confidence_score, _, _ = renormalized_average(df, confidence_cols, confidence_weights)
+    df["data_confidence_pct"] = 100 * confidence_score
 
     columns = [
         "ticker", "company", "sector",

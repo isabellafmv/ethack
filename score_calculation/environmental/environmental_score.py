@@ -98,6 +98,12 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from score_calculation.coverage import (
+    apply_disclosure_penalty,
+    disclosure_coverage,
+    renormalized_average,
+)
+
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 DATA_DIR = PROJECT_ROOT / "data"
 WIDE_PATH = DATA_DIR / "wide_FY2025_fallback.csv"
@@ -118,11 +124,6 @@ _INDICATOR_KEY = {
 # whole universe (not the company's fault) rather than because this specific
 # company doesn't disclose. See the module docstring.
 PIPELINE_GAP_INDICATORS = {"resource_waste_score"}
-
-# Floor applied to a company disclosing none of the category-3 (disclosure
-# gap) indicators -- see the module docstring's environmental_score formula.
-DISCLOSURE_COVERAGE_FLOOR = 0.6
-DISCLOSURE_COVERAGE_SLOPE = 0.4
 
 
 def _materiality_weights_per_sector() -> pd.DataFrame:
@@ -226,36 +227,22 @@ def compute_environmental_scores() -> pd.DataFrame:
     weight_cols = [f"{c}_weight" for c in sub_cols]
     weight_table = _materiality_weights_per_sector().rename(columns=dict(zip(sub_cols, weight_cols)))
     df = df.merge(weight_table, on="sector", how="left")
+    # renormalized_average/disclosure_coverage expect weight columns named
+    # the same as sub_cols (a flat Series does this implicitly; here the
+    # per-sector weight table needs the "_weight" suffix stripped once).
+    weights = df[weight_cols].set_axis(sub_cols, axis=1)
 
-    available = df[sub_cols].notna()
-    weight_matrix = pd.DataFrame(
-        available.to_numpy(dtype=float) * df[weight_cols].to_numpy(dtype=float),
-        columns=sub_cols, index=df.index,
-    )
-    weight_sum = weight_matrix.sum(axis=1)
-
-    with np.errstate(invalid="ignore", divide="ignore"):
-        scores = (
-            df[sub_cols].fillna(0).to_numpy(dtype=float) * weight_matrix.to_numpy(dtype=float)
-        ).sum(axis=1) / weight_sum.to_numpy(dtype=float)
-    df["environmental_score_raw"] = pd.Series(scores, index=df.index).where(weight_sum > 0)
-    df["n_indicators_available"] = available.sum(axis=1)
+    df["environmental_score_raw"], weight_matrix, _ = renormalized_average(df, sub_cols, weights)
+    df["n_indicators_available"] = df[sub_cols].notna().sum(axis=1)
 
     # Coverage penalty: renormalize category-2 (pipeline-gap) indicators out
     # for free, but category-3 (disclosure-gap) ones dock the score. Uses
     # this company's own per-sector weights, since that's the only weight
     # table that exists here. See the module docstring.
     disclosure_cols = [c for c in sub_cols if c not in PIPELINE_GAP_INDICATORS]
-    disclosure_weight_cols = [f"{c}_weight" for c in disclosure_cols]
-    disclosure_weight_total = df[disclosure_weight_cols].sum(axis=1)
-    with np.errstate(invalid="ignore", divide="ignore"):
-        coverage = (
-            weight_matrix[disclosure_cols].sum(axis=1).to_numpy(dtype=float)
-            / disclosure_weight_total.to_numpy(dtype=float)
-        )
-    df["environmental_disclosure_coverage"] = pd.Series(coverage, index=df.index).where(disclosure_weight_total > 0)
-    df["environmental_score"] = df["environmental_score_raw"] * (
-        DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * df["environmental_disclosure_coverage"]
+    df["environmental_disclosure_coverage"] = disclosure_coverage(weight_matrix, weights, disclosure_cols)
+    df["environmental_score"] = apply_disclosure_penalty(
+        df["environmental_score_raw"], df["environmental_disclosure_coverage"]
     )
 
     columns = [
