@@ -1,115 +1,187 @@
 # Claude Code prompt — build the 3D sustainability map (`web/`)
 
-Paste everything below the line into Claude Code, run from the repo root (`ethack/ethack`).
+Rev 2. Paste everything below the line into Claude Code, run from the repo root (`ethack/ethack`).
+
+Rev 1 specified a frontend that consumed a precomputed `data/scores.csv`. That contradicted the
+architecture already written into `pipeline/` in three separate files. This rev reverses the
+scoring boundary. See `## Why the browser scores` below — do not re-litigate it without reading
+those comments first.
 
 ---
 
 ## Context
 
-This is a 24h hackathon repo that ranks the S&P 500 on three sustainability pillars. The data
-pipeline (`pipeline/`) and the scoring layer (`score_calculation/` → `score.py`) are being built
-**in parallel, by other people, right now**. `data/scores.csv` **does not exist yet**.
+24h hackathon repo ranking the S&P 500 on three sustainability pillars. You own `web/` and
+nothing else. Do not scrape. Do not touch `pipeline/` except where Task 0 explicitly says to.
 
-Your job is the frontend, and the single most important property of your work is that it is
-**not blocked by, and does not block, the scoring lane**. You will build against a frozen data
-contract and a fixture generator, and the real `data/scores.csv` will drop in later with zero
-code changes.
+### The architectural line (already decided, already in the code)
 
-Do not scrape anything. Do not compute a pillar score. Do not touch `pipeline/`,
-`score_calculation/`, or anything in `data/` except reading. You own `web/` and nothing else.
+Read these four comments before you write anything:
 
-### What already exists (read these before writing code)
+- `pipeline/export_matrix.py:1-10` — *"DB -> one JSON blob for the browser. Ship it once, score
+  client-side. What this file must NOT do: compute percentiles, weights or composite scores.
+  Those are what the sliders move, and percentiles are sector-relative so they go stale on every
+  filter change... the browser does percentile + weighted sum per tick."*
+- `pipeline/common/units.py:3-4` — *"The line this file defends: percentiles, weights and
+  composite scores are NOT computed before the database."*
+- `pipeline/common/schema.py:47` — confidence weight per status → point opacity.
+- `pipeline/load.py:65` — per-company evidence weight → point opacity.
 
-- `data/wide.csv`, `data/wide_FY2023.csv`, `data/wide_FY2025.csv` — 500 rows, one per ticker,
-  the raw field matrix. `wide_FY2023.csv` is the emissions-aligned export; `wide_FY2025.csv` is
-  financial-only. Companion `*_status.csv` and `*_year.csv` carry per-cell provenance and fiscal year.
-- `data/emissions.csv` — 500 rows: `ticker, company, sector, scope1_tco2e, emissions_source_tier,
-  ghgrp_facility_count, sbti_tier, target_year`.
-- `data/matrix.json` — ~1.9 MB. Shape:
+So: **Python owns harmonised values and provenance. The browser owns percentiles, weights and
+composite scores.** The pillar scores are computed in TypeScript, on every slider tick, from
+`data/matrix.json`. There is no `scores.csv` on the input path.
+
+### Data topology (get this right, it has already misled people)
+
+- `data/matrix.json` — **the integration surface.** ~1.9 MB, in the repo, committed, therefore
+  the only artifact actually shared between teammates. Shape:
   `{schema: {field: {unit, pillar, dtype, description}}, source_priority: [...], urls: [...],
-  companies: [{ticker, name, sector, sub_industry, confidence, fields: {field: {v, u, fy, src, st, c, q, url}}, alternatives: {...}}]}`
-  where `st` is the status enum, `c` the confidence, `q` the **verbatim quote**, and `url` an index
-  into the top-level `urls` array. This is the audit trail. You will use it.
-- `visualize_scores_3d.py` — a throwaway Plotly sketch. Read it for intent, then ignore it.
-- `pipeline/common/fields.py` — 59 canonical field names with pillar tags (`P1`/`P2`/`P3`/`X`).
-  Field names in the contract below must not drift from these.
+  companies: [{ticker, name, sector, sub_industry, confidence, fields: {field: {v,u,fy,src,st,c,q,url}}, alternatives: {...}}]}`
+  `st` = status enum, `c` = confidence, `q` = **verbatim quote**, `url` = index into `urls`.
+- The SQLite DB is at **`~/.cache/ethack/scores.db`**, not in the repo — deliberately, because the
+  repo sits in iCloud Drive and SQLite on a synced filesystem throws `disk I/O error`
+  (`pipeline/common/paths.py`). It is per-machine and rebuildable. **It is not the integration
+  surface and you must never read it from the frontend.**
+- `data/scores.db` (12 KB, 0 rows, missing the `disagreements` and `company_confidence` views) is
+  a **stale decoy** from an older path config. Anyone pointing at it concludes the pipeline is
+  dead. Task 0 deletes it.
+- `data/wide*.csv`, `data/emissions.csv` — flat exports for humans and for the scoring oracle.
+  Not your input.
 
-### The status enum and confidence (fixed, do not invent values)
+### Status enum and confidence (fixed — from `pipeline/common/schema.py`, do not invent values)
 
 | status | meaning | confidence |
 |---|---|---|
 | `structural` | machine-readable API field, no sentence to quote | 1.00 |
 | `quote_verified` | prose claim, quote validated as exact substring | 0.85 |
-| `imputed` | sector median / counterfactual. Never a null. | 0.30 |
-| `not_disclosed` | we looked, nothing was there — **this is a finding, not a gap** | 0.00 |
+| `imputed` | sector median / counterfactual, never a null | 0.30 |
+| `not_disclosed` | we looked, nothing there — **a finding, not a gap** | 0.00 |
 | `quote_failed` | quote claimed, quote did not validate; value discarded | 0.00 |
+
+### Field coverage is thin and that is the point
+
+27 of 59 fields carry data. P1 has 4 of 13 fields and no Scope 2 or Scope 3 at all. `scope1_tco2e`
+exists for ~110 companies and **only for FY2023**. Your scoring registry must degrade honestly
+when inputs are missing — never silently substitute a sector mean and render it as a measurement.
 
 ---
 
-## Task 1 — Freeze the data contract (do this first, in one commit, before any UI)
+## Task 0 — Two small pipeline changes, then stop touching pipeline/
 
-Write `web/src/contract.ts` and `web/CONTRACT.md`. The contract is what the scoring lane will
-target, so it has to be legible to a person who is not reading your TypeScript.
+Get these merged first; everything else depends on them.
 
-`data/scores.csv` — exactly **500 rows**, joined on `ticker`, missing data is a row with a status,
-never an absent row:
+1. **Delete `data/scores.db`** and add it to `.gitignore`. It is a decoy.
+2. **Split the payload.** `matrix.json` is 1.9 MB against a 2 MB budget, and `export_matrix.py`
+   already warns about this. Since the browser now needs the payload *on boot* (it scores from
+   it), split the exporter output:
+   - `data/matrix.json` — values, units, fiscal years, source ids, status, confidence, url index.
+     **No `q`.** Loads on boot. Target < 900 KB.
+   - `data/quotes.json` — `{ticker: {field: quote}}`. Loads lazily on first point click.
+
+   Add `schema_version` (integer, start at 1) and `generated_at` (ISO 8601) to both payloads.
+   Keep the existing `schema` block — it comes from `fields.py` and is how the frontend validates
+   that its scoring inputs exist.
+
+## Task 1 — The scoring registry (the real contract; do this before any UI)
+
+`web/src/scoring/registry.ts` is the single declaration of what a score is. One object per
+sub-score:
+
+```ts
+{
+  id: 'p1_carbon_intensity',
+  pillar: 'P1',
+  label: 'Carbon intensity',
+  polarity: 'lower_is_better',        // stated, never assumed
+  inputs: ['scope1_tco2e', 'revenue_usd'],   // canonical names from fields.py
+  compute: (f) => f.scope1_tco2e / f.revenue_usd,
+  nullPolicy: 'not_disclosed',        // 'not_disclosed' | 'sector_median' | 'zero'
+  basis: 'FY2023',
+}
+```
+
+Non-negotiable properties:
+
+- **`inputs` are canonical `fields.py` names.** On boot, assert every input exists in
+  `payload.schema` and **throw a visible error naming the missing field** if not. This is what
+  keeps one vocabulary across Python and TS instead of two hand-synced ones. A renamed field must
+  break the app loudly, not produce an empty axis on stage.
+- **`polarity` is declared, not inferred.** Carbon-price exposure and carbon intensity are risk
+  measures; board independence is not. The diverging colour scale and the "better/worse than
+  reference" language are meaningless without it. Normalise to *higher is better* exactly once,
+  in the percentile step, using `polarity`.
+- **`nullPolicy` is declared per sub-score.** Defaulting a missing input to the sector median and
+  plotting it as a solid point is the exact failure the project calls *rewarding silence* — it is
+  live in `score_calculation/category_score_utils.py` right now (`_build_sector_intensity` gives
+  non-reporting sectors the lowest observed intensity, so non-reporters score best). Do not
+  reproduce it.
+
+Pipeline (pure functions, each independently testable):
 
 ```
-ticker, company, sector, sub_industry, market_cap_usd, basis_year,
-
-p1_environmental, p2_transition, p3_governance,            # pillar scores, 0–100
-
-p1_carbon_intensity, p1_energy_mix, p1_resource_waste,
-p2_carbon_price_exposure, p2_sector_exposure, p2_regulatory_momentum, p2_innovation,
-p3_board_independence, p3_exec_compensation, p3_controversy_flags,   # sub-scores, 0–100
-
-confidence_overall, confidence_p1, confidence_p2, confidence_p3,     # 0–1
-<every score column above>_status                           # the enum, per cell
+raw fields → compute() → sector percentile (polarity-adjusted) → sub-score 0–100
+           → weighted mean per pillar → pillar score 0–100
+           → weighted mean → composite
 ```
 
-Rules the frontend enforces and displays:
+Percentiles are **within GICS sector**, computed over companies with a real value only —
+`imputed`, `not_disclosed` and `quote_failed` are excluded from the distribution but still
+rendered. Recompute on every weight change and every filter change; at 500×13 this is ~10 ms, so
+do it synchronously in a memoised selector, not in a worker and not in the render loop.
 
-1. Every score is **0–100, higher is better**, already sector-normalised by the scoring lane.
-   The frontend never rescales a raw field into a score.
-2. A `*_status` of `not_disclosed` or `quote_failed` means the accompanying score is
-   **not a number you may plot as if measured**. Render it, but render it as visibly different
-   (see Task 4).
-3. `basis_year` per row. Emissions-derived columns are FY2023-anchored; financial-only columns
-   are FY2025. Surface this in the UI rather than hiding it.
+Default sub-scores (from the pillar spec; all selectable, none hardcoded into a component):
 
-Write a loader that **validates on load** and fails loudly: 500 rows, no unknown columns, no
-score outside 0–100, no status outside the enum, no ticker duplicated. Print a summary table of
-coverage per column to the console on boot. If the file is malformed, show a red banner naming the
-violated rule — do not silently drop rows.
+- **P1 Environmental** — `p1_carbon_intensity`, `p1_energy_mix`, `p1_resource_waste`
+- **P2 Transition** — `p2_carbon_price_exposure`, `p2_sector_exposure`, `p2_regulatory_momentum`,
+  `p2_innovation`
+- **P3 Governance** — `p3_board_independence`, `p3_exec_compensation`, `p3_controversy_flags`
 
-## Task 2 — Fixture generator (so you are never blocked)
+Where a sub-score's inputs are not yet in `matrix.json` (most of P1 and P3), declare it anyway
+with `nullPolicy: 'not_disclosed'` and let it render as an honest empty axis with a coverage
+count. **An axis reading "0 / 500 companies" is a finding.** A fabricated axis is a lie that
+survives until the Q&A.
 
-`web/scripts/make-fixture.ts` (or `.mjs`) writes `web/public/data/scores.fixture.csv`:
+## Task 2 — Weight sliders (this is what the architecture was built for)
 
-- Real tickers, company names, sectors and market caps read from `data/wide.csv` — so sector
-  filters and bubble sizes look right from minute one.
-- Synthetic scores with **deliberately realistic pathology**, because the real data has it:
-  sector-clustered means, within-sector variance, ~110 rows with `structural` emissions status
-  and ~390 `not_disclosed`, a long tail of `imputed`, and a handful of correlated columns.
-- A `--degenerate` flag that produces the current known-bad state (one distinct value per sector,
-  zero within-sector variance) so you can prove the UI *visibly exposes* that failure rather than
-  drawing a pretty cloud over it.
+Three pillar weight sliders plus per-sub-score weights within each pillar. Points move live as
+weights change. Normalise weights to sum to 1 and show the normalised values.
 
-App reads `scores.csv` if present, else the fixture, and shows a persistent amber "FIXTURE DATA"
-badge in the corner whenever it is on the fixture. That badge is not optional — someone will
-demo this by accident.
+Two things that make this a demo moment rather than a gimmick:
 
-## Task 3 — The map
+- **A "rank sensitivity" readout** — how far each company's rank moves across the plausible weight
+  space. A ranking that collapses under a 10% weight change is not a ranking, and the project's
+  own scope doc lists weight-sensitivity as an *output to protect*. Surface it.
+- **Weight presets** — equal, environmental-led, transition-led, governance-led — so you can show
+  the ranking's instability in three clicks instead of dragging on stage.
 
-Vite + React + TypeScript + `three` via `@react-three/fiber` and `@react-three/drei`.
-Live in `web/`, a sibling of `pipeline/` and `score_calculation/`.
+Persist weights to the URL hash so a specific view is shareable and reproducible.
 
-**Install every dependency now, in the first ten minutes.** The final rehearsal happens with wifi
-off: no CDN, no Google Fonts, no runtime network call. `npm run build` must produce something that
-runs from a local static server with the network disabled. Verify that, don't assume it.
+## Task 3 — Fixture generator (so you are never blocked)
 
-Four views. Each view is nothing but a different triple of axis columns — one renderer, one config
-object, not four components:
+`web/scripts/make-fixture.ts` writes `web/public/data/matrix.fixture.json` in the **exact
+`matrix.json` shape** — not a simplified stand-in, or you will debug the shape difference at
+hour 20.
+
+- Real tickers, names, sectors, market caps read from `data/wide.csv`.
+- Realistic pathology: sector-clustered values, ~110 companies with `structural` Scope 1 and ~390
+  `not_disclosed`, a long `imputed` tail, correlated columns, a few `alternatives` entries so the
+  say-do panel has something to show.
+- `--degenerate` reproduces the current known-bad state — one distinct value per GICS sector, zero
+  within-sector variance — so you can prove the UI **exposes** a sector-dummy ranking rather than
+  drawing a pretty cloud over it. Check this. It is the most likely way the real scores fail.
+
+App loads `matrix.json` if present, else the fixture, with a persistent amber **FIXTURE DATA**
+badge. Not optional — someone will demo this by accident.
+
+## Task 4 — The map
+
+Vite + React + TypeScript + `three` via `@react-three/fiber` + `@react-three/drei`, in `web/`.
+
+**Install every dependency in the first ten minutes.** Final rehearsal is with wifi off: no CDN,
+no Google Fonts, no runtime network call. `npm run build`, then serve the build with the network
+disabled and confirm. Verify it, don't assume it.
+
+Four views = four axis triples over one renderer and one config object, not four components:
 
 | view | X | Y | Z |
 |---|---|---|---|
@@ -118,89 +190,108 @@ object, not four components:
 | Transition | `p2_carbon_price_exposure` | `p2_sector_exposure` | `p2_regulatory_momentum` |
 | Governance | `p3_board_independence` | `p3_exec_compensation` | `p3_controversy_flags` |
 
-**Transition has four sub-scores and three axes.** Do not quietly drop `p2_innovation`. Give every
-view three axis dropdowns bound to that pillar's available columns; the table above is the default,
-and the unused fourth stays selectable. This also means new sub-scores need no new code.
+**Transition has four sub-scores and three axes.** Do not silently drop `p2_innovation`. Every
+view gets three axis dropdowns bound to that pillar's registry entries; the table is the default.
+New sub-scores then need no new code.
 
 Encodings:
 
-- **Colour** — the median-relative value on a diverging scale. Not sector. Sector is the filter.
+- **Colour** — reference-relative value, diverging scale. Not sector; sector is the filter.
 - **Size** — `market_cap_usd`, sqrt-scaled, clamped so mega-caps don't eclipse the cloud.
-- **Opacity** — `confidence_overall` (or the pillar-specific confidence in a pillar view).
-  Low-confidence points are ghosts. This is a load-bearing claim of the project, so make it
-  obvious enough to read from the back of a room.
+- **Opacity** — the per-company `confidence` already in `matrix.json` (pillar-specific mean in a
+  pillar view). A bright point in the good corner with low confidence is claiming to be good
+  without evidence — that reading has to be legible from the back of a room.
 
-## Task 4 — Reference point (the interesting part)
+## Task 5 — Reference point
 
-A control that sets what "better/worse" is measured against:
+Sets what "better/worse" is measured against: sector median (default), sector best-in-class,
+index median, or **a named company** (searchable — "show me everything relative to Nvidia").
 
-- Sector median (default)
-- Sector best-in-class
-- Index median
-- **A specific named company** — searchable ticker/name picker, e.g. "show me everything relative
-  to Nvidia"
+- Everything downstream recentres: diverging scale, optional delta axes centred on zero, the
+  reference company pinned and marked.
+- When the reference is a named company, *raw* and *sector-adjusted* are different claims. Put the
+  mode in the label ("vs NVDA, raw" / "vs NVDA, sector-adjusted"). Never pick silently.
+- Because scoring is client-side, the reference statistics come from the **same percentile
+  machinery** as the scores. Do not write a second median implementation — that is how the map
+  ends up contradicting the table.
+- `not_disclosed` and `imputed` points render hollow/wireframe, are excluded from the reference
+  calculation, and get a legend count: *"390 companies do not disclose Scope 1."* That count is a
+  headline finding and belongs on screen.
 
-Everything downstream recomputes against that reference: the diverging colour scale centres on it,
-axes optionally switch to a delta scale centred on zero, and the reference company itself is
-pinned and visually marked. Recompute must be instant at 500 points — do it in a memoised
-selector, not in the render loop.
+## Task 6 — Click a point → the audit trail
 
-Two things that are easy to get wrong and matter:
+The best demo moment available. Clicking opens a detail panel: company header, pillar scores with
+their sub-scores, and **the full derivation** — for each sub-score, the raw input values, their
+fiscal years, source ids, status badges, the computed value, the sector percentile, and the
+weight applied. Then the verbatim quote from `quotes.json` (lazy-loaded on first click) with the
+resolved `urls[url]` as a link.
 
-- When the reference is a named company, a **sector median comparison across sectors is a
-  different claim** than within-sector. Make the mode explicit in the label ("vs NVDA, raw" /
-  "vs NVDA, sector-adjusted"), don't pick silently.
-- Points whose status is `not_disclosed` or `imputed` must not look like measured points sitting
-  at the median. Render them as hollow/wireframe markers, exclude them from the reference
-  calculation, and give the legend a count: *"390 companies do not disclose Scope 1."* That count
-  is one of the project's headline findings — it belongs on screen, not in a footnote.
+Where `alternatives` exists, show it as **"EPA says X, the company says Y"** — that is the
+say–do gap, and `export_matrix.py` already carries the data for it.
 
-## Task 5 — Click a point → the audit trail
+Where status is `not_disclosed`, say so in plain words. Never render a blank.
 
-The best demo moment available, per the project's own scope doc: **click any number, see the
-sentence the company wrote.**
+## Task 7 — Shell
 
-Clicking a point opens a detail panel: company header, the three pillar scores with their
-sub-scores, and for each underlying field pulled from `data/matrix.json` — the value, the fiscal
-year, the source id, the status badge, and where `q` is non-null the **verbatim quote**, with the
-resolved `url` as a link. Where status is `not_disclosed`, say so in plain words instead of
-showing a blank.
-
-`matrix.json` is ~1.9 MB. Lazy-load it on first point click, not on boot.
-
-## Task 6 — Everything else in the shell
-
-- Sector filter (11 GICS sectors), multi-select, with company counts.
+- Sector filter (11 GICS sectors), multi-select, with counts. Filter changes recompute percentiles.
 - Search / jump-to-company.
-- Legend explaining all three encodings, permanently visible.
-- A coverage strip: per selected view, how many of the 500 companies have measured vs imputed vs
-  not-disclosed values on those three axes. Honest coverage on screen is a differentiator here,
-  not an admission.
-- Basis-year note: "Emissions FY2023 (latest GHGRP); financials FY2025. Fiscal year-ends span
-  Jan–Dec, which is standard practice."
-- Camera: orbit + zoom, a reset button, and four preset angles that actually read well — a 3D
-  scatter you cannot orient is worse than a 2D one. Axis labels must stay legible while rotating.
+- Permanent legend covering all three encodings.
+- **Coverage strip** per view: of 500 companies, how many have measured / imputed / not-disclosed
+  values on the three visible axes. Honest coverage on screen is a differentiator, not an
+  admission.
+- **Provenance footer**: `generated_at` from the payload, `schema_version`, and a basis-year note —
+  "Emissions FY2023 (latest GHGRP); financials FY2025. Fiscal year-ends span Jan–Dec, which is
+  standard practice." Go amber if `generated_at` is more than 2 hours old. *"The map is showing
+  yesterday's numbers"* is a classic 2 a.m. hour lost.
+- Camera: orbit + zoom, reset, four presets that actually read well. Axis labels legible at every
+  angle — a 3D scatter you cannot orient is worse than a 2D one.
+
+## Task 8 — `npm run data` and the Python oracle
+
+**`npm run data`** shells out to the exporter and writes straight into `web/public/data/`:
+`python -m pipeline.export_matrix --out web/public/data/matrix.json`. One command. Nobody should
+ever wonder whether the map is showing stale scores, and no symlink or manual copy step should
+exist to go wrong.
+
+**The oracle.** Scoring now has exactly one runtime implementation (TypeScript). That is correct —
+two implementations drift — but it means a formula bug is invisible. So Lane A's Python
+`score.py` becomes a **checker, not a producer**: it computes the same sub-scores at default
+weights from the same `matrix.json` and writes `data/scores_oracle.csv`. Then:
+
+```
+npm run verify:oracle    # asserts TS and Python agree within 1e-6 on all 500 rows × all sub-scores
+```
+
+Print the worst disagreements by ticker and field. This is the project's own instinct — *load a
+second opinion as a separate source rather than merging it* — applied to our own scoring layer.
+It is also the only thing standing between you and a confidently wrong number on a slide.
+
+**Tell Lane A this is the interface** before you write UI: they write `score.py` as a pure
+function `matrix.json → scores_oracle.csv`, not as the map's data source. If they have already
+started the other way, the work is not wasted — the formulas port directly into the registry.
 
 ## Order of work
 
-1. Contract + validating loader + fixture generator. Commit. **Tell the scoring lane the contract
-   is frozen before you write any UI.**
-2. Global view rendering the fixture, with sector filter and legend.
-3. Reference-point machinery with the diverging scale.
-4. The other three views (which should be almost free if the config is right).
-5. Detail panel on `matrix.json`.
-6. Coverage strip, presets, polish.
+1. Task 0 (pipeline split + decoy deletion). Commit. **Tell the team the payload shape is frozen.**
+2. Registry + percentile/weight pipeline + unit tests on synthetic input. Commit.
+3. Fixture generator. Commit.
+4. Global view over the fixture: sector filter, legend, weight sliders.
+5. Reference-point machinery + diverging scale.
+6. The other three views (nearly free if the config is right).
+7. Detail panel + `quotes.json`.
+8. Coverage strip, provenance footer, presets, `verify:oracle`.
 
-Commit after each. Don't build feature 7 before 1–6 are real — the marginal hour is worth more
-proving what's there.
+Commit after each. Don't build feature 9 before 1–8 are real.
 
 ## Checks before you say you're done
 
-- `npm run build`, then serve the build **with the network disabled** and confirm it works.
-- Load the `--degenerate` fixture and confirm the UI makes the sector-dummy pathology visible.
-- Load a truncated / malformed CSV and confirm the red banner appears instead of a silent render.
-- Rotate every view and confirm the axis labels are readable at every angle.
-- Confirm the fixture badge appears on fixture data and disappears on the real file.
+- `npm run build`, serve **with the network disabled**, confirm it works.
+- `--degenerate` fixture: confirm the UI makes the sector-dummy pathology visible.
+- Truncated / malformed payload: confirm a red banner naming the violated rule, not a silent render.
+- A registry entry referencing a field absent from `payload.schema`: confirm it throws by name.
+- `npm run verify:oracle` passes, or prints exactly where TS and Python disagree.
+- Rotate every view; axis labels readable at every angle.
+- Fixture badge appears on fixture data, disappears on the real payload.
 
-Ask me before adding any dependency not needed for the above, and before changing anything outside
-`web/`.
+Ask me before adding any dependency not needed for the above, and before changing anything in
+`pipeline/` beyond Task 0.

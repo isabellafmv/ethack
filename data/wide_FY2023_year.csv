@@ -164,13 +164,13 @@ EOG,EOG Resources,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,
 EQIX,Equinix,Real Estate,Data Center REITs,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,,2023
 EQT,EQT Corporation,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
 ERIE,Erie Indemnity,Financials,Insurance Brokers,0,0,0,0,0,2026,2026,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
-ES,Eversource Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,,,,,,2023
+ES,Eversource Energy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,2026,,,,,,2023
 ESS,Essex Property Trust,Real Estate,Multi-Family Residential REITs,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,,,,2026,2026,2026,,,,2023,
 ETN,Eaton Corporation,Industrials,Electrical Components & Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,,,,2023,2023
 ETR,Entergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
 EVRG,Evergy,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,,,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
 EW,Edwards Lifesciences,Health Care,Health Care Equipment,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
-EXC,Exelon,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
+EXC,Exelon,Utilities,Electric Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
 EXE,Expand Energy,Energy,Oil & Gas Exploration & Production,0,0,0,0,0,2026,2023,,,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
 EXPD,Expeditors International,Industrials,Air Freight & Logistics,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
 EXPE,Expedia Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023
@@ -492,7 +492,7 @@ WTW,Willis Towers Watson,Financials,Insurance Brokers,0,0,0,0,0,2026,2023,2024,2
 WY,Weyerhaeuser,Real Estate,Timber REITs,0,0,0,0,0,2026,2023,2024,2024,2023,2023,2023,,2023,2023,2023,,,2023,2026,2026,2026,2026,2026,2026,2023,2023
 WYNN,Wynn Resorts,Consumer Discretionary,Casinos & Gaming,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,,2026,,,,,,2023,2023
 XEL,Xcel Energy,Utilities,Multi-Utilities,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,,2026,,,,,,,2023
-XOM,ExxonMobil,Energy,Integrated Oil & Gas,0,0,0,0,0,2026,2023,2024,2024,,,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
+XOM,ExxonMobil,Energy,Integrated Oil & Gas,0,0,0,0,0,2026,2023,2024,2024,2023,2023,,,2023,2023,2023,2023,2023,2023,2026,,,,,,2023,2023
 XYL,Xylem Inc.,Industrials,Industrial Machinery & Supplies & Components,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,2023
 XYZ,"Block, Inc.",Financials,Transaction & Payment Processing Services,0,0,0,0,0,2026,2023,,,,,2023,,2023,2023,2023,2023,2023,2023,2026,2026,2026,2026,2026,2026,2023,
 YUM,Yum! Brands,Consumer Discretionary,Restaurants,0,0,0,0,0,2026,2023,2024,2024,,,2023,,2023,2023,2023,2023,2023,,2026,2026,2026,2026,2026,2026,2023,2023

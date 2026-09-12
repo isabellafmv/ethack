@@ -2,14 +2,13 @@
 exposure, innovation & regulatory momentum, and transition affordability,
 combined into one weighted score.
 
-Each sub-metric is built from real, per-company or bottom-up sector data
-(see score_calculation/transition/data_sources/*) rather than hand-picked
-constants:
+Reads Isabella's pipeline output directly (data/wide_FY2025_fallback.csv --
+see pipeline/export_wide.py), not a separately-fetched copy of the same
+data:
 
 - carbon_price_exposure_score: modeled EBITDA erosion under an assumed
-  carbon price. Uses REAL, ownership-weighted EPA GHGRP facility emissions
-  for companies with a matched parent-company record ("measured" tier,
-  ~1/5 of the index per data_sources/epa_ghgrp_company_matches.py); falls
+  carbon price. Uses REAL EPA GHGRP facility emissions (scope1_tco2e) for
+  companies where the pipeline has a measured value ("measured" tier); falls
   back to a sector emissions-intensity benchmark x the company's own EDGAR
   revenue for everyone else ("modelled" tier). emissions_source_tier records
   which applies per company.

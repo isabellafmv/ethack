@@ -131,12 +131,14 @@ def _facility_rows() -> tuple[list[FacilityRow], str]:
     if not parents:
         return [], "no parent file cached -- run pull.py first"
     em = _emissions_index()
-    if not em:
-        return [], ("no facility emissions parsed. The parent file carries no "
-                    "emissions column, so EPA's summary workbook is required: "
-                    "check cache/raw/S15/ for the data_summary_spreadsheets zip.")
-
     pc = parse.detect(parents[0].keys())
+    # Some layouts carry emissions in the parent file itself. EPA's official
+    # one does not — it is facility/parent/ownership only — but a combined
+    # export or a hand-made file may, and refusing it would be gratuitous.
+    if not em and not pc.get("emissions"):
+        return [], ("no facility emissions found. EPA's parent file has no "
+                    "emissions column, so the summary workbook is required: "
+                    "check cache/raw/S15/ for the data_summary_spreadsheets zip.")
     problem = parse.report(pc, ["facility_id", "parent_name"])
     if problem:
         return [], problem
@@ -152,9 +154,12 @@ def _facility_rows() -> tuple[list[FacilityRow], str]:
             yr = parse.number(r.get("_sheet"))
         own = parse.number(r.get(pc["ownership"])) if pc.get("ownership") else None
         state = (str(r.get(pc["state"])).strip() if pc.get("state") else None) or None
+        direct = parse.number(r.get(pc["emissions"])) if pc.get("emissions") else None
         years = [int(yr)] if yr else sorted({y for (f, y) in em if f == fid})
         for y in years:
             val = em.get((fid, y))
+            if val is None:
+                val = direct
             if val is None:
                 continue
             rows.append(FacilityRow(fid, y, normalise_name(pname), own, val, state))
@@ -215,13 +220,27 @@ def extract(ticker_list: list[str] | None = None, *, limit: int | None = None) -
 
         out = w.summary()
 
-    moved = [t for t, py in matched.items()
-             if len({len(a.facilities) for a in py.values()}) > 1]
+    # A footprint change matters for the SPAN you measure a trend over, not
+    # forever. Flagging any change across 13 years excludes almost everyone and
+    # tells you nothing; what matters is whether the count moved between the two
+    # years being compared. Report both so the trajectory window can be chosen
+    # with open eyes.
+    ever, recent = [], []
+    for t, py in matched.items():
+        counts = {y: len(a.facilities) for y, a in py.items()}
+        if len(set(counts.values())) > 1:
+            ever.append(t)
+        ys = sorted(counts)
+        if len(ys) >= 2 and counts[ys[-1]] != counts[ys[-2]]:
+            recent.append(t)
     return (f"{out}\n  matched {len(matched)}/{len(wanted)} constituents "
             f"(~69 expected — deep, not broad: these carry ~82% of index Scope 1)\n"
             f"  {len(unmatched)} GHGRP parents outside the S&P 500 (expected)\n"
-            f"  {len(moved)} companies changed facility count YoY -> EXCLUDE from "
-            f"trajectory scoring: {', '.join(sorted(moved)[:10])}")
+            f"  facility footprint moved in the LATEST year for {len(recent)} companies "
+            f"-> a YoY emissions change for these is not necessarily abatement: "
+            f"{', '.join(sorted(recent)[:10])}\n"
+            f"  moved at some point across the full history: {len(ever)} "
+            f"(use ghg_facility_count per year to pick a stable window)")
 
 
 def main() -> None:

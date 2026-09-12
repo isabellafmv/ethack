@@ -36,7 +36,15 @@ def _rank(src: str) -> int:
     return SOURCE_PRIORITY.index(src) if src in SOURCE_PRIORITY else len(SOURCE_PRIORITY)
 
 
-def export(db_path=DB_PATH, out=MATRIX_PATH) -> dict:
+#: The analysis year the dashboard scores on. Annual FLOWS are pinned to it so
+#: no ranking compares a June year-end's FY2026 against a calendar filer's
+#: FY2025. Snapshots (market cap, SBTi status) pass through — they are true as
+#: of a date and have no period to mismatch. 2023 is the latest year with
+#: EPA-measured emissions, which is what paces the whole framework.
+ANALYSIS_YEAR = 2023
+
+
+def export(db_path=DB_PATH, out=MATRIX_PATH, year: int = ANALYSIS_YEAR) -> dict:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
@@ -44,6 +52,13 @@ def export(db_path=DB_PATH, out=MATRIX_PATH) -> dict:
         "('structural','quote_verified','imputed') ORDER BY fiscal_year DESC"
     ).fetchall()
     conn.close()
+    if year:
+        keep = []
+        for r in rows:
+            spec = FIELDS.get(r["field"])
+            if spec is None or spec.timeless or spec.snapshot or r["fiscal_year"] == year:
+                keep.append(r)
+        rows = keep
 
     # Intern the repeated strings. source_url is the longest field on every
     # record and there are only a few hundred distinct values across 30k
@@ -64,14 +79,23 @@ def export(db_path=DB_PATH, out=MATRIX_PATH) -> dict:
             "v": r["value_num"] if r["value_num"] is not None else r["value_text"],
             "u": r["unit"], "fy": r["fiscal_year"], "src": r["source"],
             "st": r["status"], "c": r["confidence"],
-            "q": r["quote"], "url": intern(r["source_url"]),
+            # The quote IS the demo — click a number, see the sentence. But a
+            # full SBTi target paragraph can run to 1.5 kB; one sentence is
+            # enough to show and keeps the payload inside the offline budget.
+            "q": (r["quote"][:240] + "…") if r["quote"] and len(r["quote"]) > 240
+                 else r["quote"],
+            "url": intern(r["source_url"]),
         }
         cur = best.get(k)
         if cur is None or (_rank(rec["src"]), -rec["fy"]) < (_rank(cur["src"]), -cur["fy"]):
-            if cur is not None:
+            if cur is not None and cur["src"] != rec["src"]:
                 alts[k].append(cur)
             best[k] = rec
-        else:
+        elif rec["src"] != cur["src"]:
+            # An alternative means ANOTHER SOURCE for the same number — that is
+            # the say-do comparison. A different fiscal year of the same source
+            # is not an alternative, it is history, and carrying it here both
+            # bloated the payload and invited mixed-year ranking.
             alts[k].append(rec)
 
     sec = sectors()
@@ -98,6 +122,7 @@ def export(db_path=DB_PATH, out=MATRIX_PATH) -> dict:
         })
 
     payload = {
+        "analysis_year": year,
         "schema": {f: {"unit": s.unit, "pillar": s.pillar, "dtype": s.dtype.__name__,
                        "description": s.description}
                    for f, s in FIELDS.items() if f not in VALIDATION_ONLY},
