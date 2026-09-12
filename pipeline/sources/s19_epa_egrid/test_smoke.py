@@ -19,8 +19,11 @@ def main() -> int:
     from .pull import pull
     from .extract import extract
 
-    pull(sample)
-    print(extract(sample))
+    # S19 is one shared workbook, not a per-ticker fetch -- pull() takes no
+    # ticker list, and extract()'s own `limit` (not a ticker filter) just
+    # caps how many universe rows get written, for a cheap smoke run.
+    pull()
+    print(extract(limit=len(sample)))
     return 0
 
 
