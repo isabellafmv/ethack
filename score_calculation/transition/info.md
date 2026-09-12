@@ -1,0 +1,21 @@
+Ran the actual numbers rather than guessing. Here's the precise breakdown of every zero, sub-metric by sub-metric:
+
+1. carbon_price_exposure_score — 61 companies score exactly 0
+41/61 (67%) are the missing-data bug — no EBITDA on record, so .where(ebitda_usd > 0, CEILING) silently assumes worst-case.
+20/61 (33%) are real — companies with actual positive EBITDA whose modeled carbon cost is still ≥50% of it: 13 Utilities, 3 Materials, and a handful of one-offs (1 each in IT, Consumer Staples, Financials — those last few are worth a manual look, since a single company scoring worst-case in an otherwise-clean sector is exactly the kind of outlier your own docstring says to spot-check).
+2. sector_exposure_score — 31 companies score exactly 0
+All 31 are Utilities — every single one, no exceptions. This isn't missing data at all: it's how min-max normalization works. Whichever sector has the highest emissions intensity is mathematically guaranteed to land at exactly 0, no matter how much worse it is than the runner-up (Materials). It's a real design property worth knowing, not a bug — but it means "0" here means "worst sector," not "worst possible."
+
+3. regulatory_momentum_score — 271 companies score exactly 0 (54% of the index)
+This is the big one, and it's a compounding of one real signal and one data artifact:
+
+All 271 have no SBTi target (sbti_target_validated == 0) — that's a legitimate 0 contribution from 70% of the weight.
+But all 271 also have missing (not zero) rnd_expense_usd — and .fillna(0) treats "R&D wasn't broken out as a line item in this company's 10-K" identically to "spends nothing on R&D." This is the same bug pattern as the EBITDA/FCF issue on your todo list, just in a third place I hadn't flagged explicitly — and it hits far more companies (271) than the other two combined. Practically: most non-tech sectors (utilities, industrials, financials, staples) routinely don't report R&D as a distinct XBRL tag even when they do spend on it, so this sub-metric currently reads as "no momentum" for a huge share of the index for a reason that has nothing to do with climate commitment.
+4. transition_affordability_score — 105 companies score exactly 0
+All 105 (100%) are the missing/non-positive-FCF bug. Zero of them are companies genuinely committed to spending ≥100% of FCF on their transition. This is worth sitting with: your single riskiest, most interesting sub-metric — the one meant to catch "this company promised more than it can afford" — currently has no true positives at all. Every 0 right now is a data gap wearing a signal's clothes.
+
+Measured (GHGRP) vs. modelled (sector proxy)
+Measured: scope1_tco2e comes straight from EPA GHGRP — a real, facility-reported number, but GHGRP only mandates reporting for large stationary emitters (>25,000 tons CO2e/yr). That's why it's only ~110/500 companies, concentrated in utilities/materials/industrials — anything without a big smokestack (most tech, financial, retail, healthcare-services companies) structurally never appears in GHGRP regardless of its actual footprint.
+Modelled: for the other ~390, there's no company-specific number at all — the code takes the sector's aggregate measured intensity (tCO2e per $mm revenue, computed only from that sector's measured companies) and multiplies it by the company's own revenue. It's "you're assumed to pollute at the same rate per dollar as your measured peers." For sectors with zero measured companies (Financials, IT, Communication Services), there isn't even a sector-specific estimate — every company in those three sectors gets the single lowest intensity value observed anywhere, identically, which is a placeholder more than a model.
+Does it make sense?
+The architecture does — tiered confidence, real fallbacks, documented assumptions. But right now, a large share of what looks like signal is actually the same missing-data-as-worst-case bug showing up in three different places (146 companies via EBITDA/FCF, 271 via R&D) — so before the numbers are trustworthy, fixing "missing → null/renormalize" isn't just Tier-1 item #1, it needs to cover rnd_expense_usd too, not only ebitda_usd/free_cash_flow_usd. Want me to implement that fix now across all three?

@@ -10,7 +10,7 @@ OUTPUT_PATH = DATA_DIR / "sp500_scores_3d.html"
 SCORE_FILES = {
     "Environmental": (DATA_DIR / "environmental_scores.csv", "environmental_score"),
     "Transition": (DATA_DIR / "transition_scores.csv", "transition_score"),
-    "Governance": (DATA_DIR / "governance_scores.csv", "governance_capital_stewardship_score"),
+    "Governance": (DATA_DIR / "governance_scores.csv", "governance_score"),
 }
 
 
