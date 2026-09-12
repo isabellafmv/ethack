@@ -5,12 +5,12 @@ Source: https://sciencebasedtargets.org/target-dashboard bulk export
 (files.sciencebasedtargets.org/production/files/companies-excel.xlsx),
 a real, per-company disclosed dataset -- no scraping or NLP needed.
 """
-import difflib
-import re
 from pathlib import Path
 
 import pandas as pd
 import requests
+
+from score_calculation.transition.data_sources.name_matching import best_match, normalize_name
 
 COMPANIES_PATH = Path("data/sp500_companies.csv")
 OUTPUT_PATH = Path("data/sbti_matches.csv")
@@ -27,32 +27,6 @@ MOMENTUM_SCORES = {
     "targets_set_1.5c": 75,
     "net_zero_validated": 100,
 }
-
-SUFFIXES = [
-    "incorporated", "corporation", "company", "holdings", "holding",
-    "group", "limited", "worldwide", "international", "inc", "corp",
-    "co", "plc", "ltd", "llc", "na", "sa", "nv", "se", "ag", "the",
-]
-
-
-def normalize_name(name: str) -> str:
-    name = name.lower()
-    name = re.sub(r"\(class [^)]+\)", "", name)
-    name = re.sub(r"[^a-z0-9\s]", " ", name)  # drop punctuation and stray artifacts (e.g. trailing "|")
-    tokens = [t for t in name.split() if t not in SUFFIXES]
-    return " ".join(tokens).strip()
-
-
-def _fuzzy_match_is_safe(query: str, candidate: str) -> bool:
-    """Guard against same-edit-distance, different-company collisions
-    (e.g. "vertiv" vs "veritiv" are both ratio~0.92 but unrelated firms).
-    Single-token names are only ever matched exactly (too risky to fuzz);
-    multi-token names must agree on every token but the last.
-    """
-    query_tokens, candidate_tokens = query.split(), candidate.split()
-    if len(query_tokens) == 1 or len(candidate_tokens) == 1:
-        return query == candidate
-    return query_tokens[:-1] == candidate_tokens[:-1]
 
 
 def _momentum_tier(row: pd.Series) -> str:
@@ -92,15 +66,7 @@ def fetch_sbti_targets() -> pd.DataFrame:
     rows = []
     for _, row in companies.iterrows():
         normalized = normalize_name(row["company"])
-        match = sbti_lookup.get(normalized)
-        match_quality = "exact" if match else None
-
-        if match is None:
-            close = difflib.get_close_matches(normalized, sbti_names, n=3, cutoff=0.92)
-            safe_close = [c for c in close if _fuzzy_match_is_safe(normalized, c)]
-            if safe_close:
-                match = sbti_lookup[safe_close[0]]
-                match_quality = "fuzzy"
+        match, match_quality = best_match(normalized, sbti_lookup, sbti_names)
 
         if match is None:
             tier = "no_target"

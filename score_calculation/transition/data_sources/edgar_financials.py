@@ -1,7 +1,9 @@
-"""Pull per-company Revenue, Operating Income and D&A from SEC EDGAR's XBRL API.
+"""Pull per-company financials from SEC EDGAR's XBRL API: Revenue, Operating
+Income, D&A, R&D expense, operating cash flow and capex.
 
-Used as the real-data denominator/scale for the Transition pillar's
-carbon-price-exposure metric (EBITDA proxy = OperatingIncomeLoss + D&A).
+Used across the Transition pillar: EBITDA proxy (OperatingIncomeLoss + D&A)
+for carbon-price exposure, free cash flow (OCF - capex) for transition
+affordability, and R&D intensity (R&D / revenue) for regulatory momentum.
 """
 import time
 from pathlib import Path
@@ -27,6 +29,18 @@ D_AND_A_TAGS = [
     "DepreciationDepletionAndAmortization",
     "DepreciationAmortizationAndAccretionNet",
     "DepreciationAndAmortization",
+]
+RND_TAGS = [
+    "ResearchAndDevelopmentExpense",
+    "ResearchAndDevelopmentExpenseExcludingAcquiredInProcessCost",
+]
+OPERATING_CASH_FLOW_TAGS = [
+    "NetCashProvidedByUsedInOperatingActivities",
+    "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations",
+]
+CAPEX_TAGS = [
+    "PaymentsToAcquirePropertyPlantAndEquipment",
+    "PaymentsToAcquireProductiveAssets",
 ]
 
 
@@ -68,10 +82,17 @@ def fetch_financials() -> pd.DataFrame:
         revenue, rev_year = _latest_annual_value(session, cik10, REVENUE_TAGS)
         op_income, _ = _latest_annual_value(session, cik10, OPERATING_INCOME_TAGS)
         d_and_a, _ = _latest_annual_value(session, cik10, D_AND_A_TAGS)
+        rnd, _ = _latest_annual_value(session, cik10, RND_TAGS)
+        op_cash_flow, _ = _latest_annual_value(session, cik10, OPERATING_CASH_FLOW_TAGS)
+        capex, _ = _latest_annual_value(session, cik10, CAPEX_TAGS)
 
         ebitda_proxy = None
         if op_income is not None:
             ebitda_proxy = op_income + (d_and_a or 0.0)
+
+        free_cash_flow = None
+        if op_cash_flow is not None:
+            free_cash_flow = op_cash_flow - (capex or 0.0)
 
         rows.append({
             "ticker": row["ticker"],
@@ -83,8 +104,12 @@ def fetch_financials() -> pd.DataFrame:
             "operating_income_usd": op_income,
             "d_and_a_usd": d_and_a,
             "ebitda_proxy_usd": ebitda_proxy,
+            "rnd_expense_usd": rnd,
+            "operating_cash_flow_usd": op_cash_flow,
+            "capex_usd": capex,
+            "free_cash_flow_usd": free_cash_flow,
         })
-        print(f"[{i + 1}/{len(companies)}] {row['ticker']}: revenue={revenue}, ebitda_proxy={ebitda_proxy}")
+        print(f"[{i + 1}/{len(companies)}] {row['ticker']}: revenue={revenue}, ebitda_proxy={ebitda_proxy}, fcf={free_cash_flow}")
 
     return pd.DataFrame(rows)
 

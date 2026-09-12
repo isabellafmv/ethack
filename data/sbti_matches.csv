@@ -1,0 +1,501 @@
+ticker,company,sector,sbti_matched,match_quality,near_term_status,near_term_target_classification,near_term_target_year,net_zero_status,net_zero_year,momentum_tier,regulatory_momentum_score
+MMM,3M,Industrials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+AOS,A. O. Smith,Industrials,False,,,,,,,no_target,0
+ABT,Abbott Laboratories,Health Care,False,,,,,,,no_target,0
+ABBV,AbbVie,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ACN,Accenture,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+ADBE,Adobe Inc.,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+AMD,Advanced Micro Devices,Information Technology,True,exact,Targets set,Well-below 2°C,2020,,,targets_set_2c,50
+AES,AES Corporation,Utilities,False,,,,,,,no_target,0
+AFL,Aflac,Financials,False,,,,,,,no_target,0
+A,Agilent Technologies,Health Care,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+APD,Air Products,Materials,False,,,,,,,no_target,0
+ABNB,Airbnb,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+AKAM,Akamai Technologies,Information Technology,True,exact,Commitment removed,,,Commitment removed,,no_target,0
+ALB,Albemarle Corporation,Materials,False,,,,,,,no_target,0
+ARE,Alexandria Real Estate Equities,Real Estate,False,,,,,,,no_target,0
+ALGN,Align Technology,Health Care,False,,,,,,,no_target,0
+ALLE,Allegion,Industrials,False,,,,,,,no_target,0
+LNT,Alliant Energy,Utilities,False,,,,,,,no_target,0
+ALL,Allstate,Financials,False,,,,,,,no_target,0
+GOOGL,Alphabet Inc. (Class A),Communication Services,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+MO,Altria,Consumer Staples,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+AMZN,Amazon,Consumer Discretionary,True,exact,Commitment removed,,,,,no_target,0
+AMCR,Amcor,Materials,True,exact,Targets set,1.5°C,FY2033,Targets set,FY2050,net_zero_validated,100
+AEE,Ameren,Utilities,False,,,,,,,no_target,0
+AEP,American Electric Power,Utilities,False,,,,,,,no_target,0
+AXP,American Express,Financials,True,exact,Targets set,1.5°C,2033,Targets set,2050,net_zero_validated,100
+AIG,American International Group,Financials,False,,,,,,,no_target,0
+AMT,American Tower,Real Estate,True,exact,Targets set,Well-below 2°C,2035,,,targets_set_2c,50
+AWK,American Water Works,Utilities,False,,,,,,,no_target,0
+AMP,Ameriprise Financial,Financials,False,,,,,,,no_target,0
+AME,Ametek,Industrials,False,,,,,,,no_target,0
+AMGN,Amgen,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+APH,Amphenol,Information Technology,False,,,,,,,no_target,0
+ADI,Analog Devices,Information Technology,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+AON,Aon plc,Financials,True,exact,Targets set,1.5°C,2032,,,targets_set_1.5c,75
+APA,APA Corporation,Energy,False,,,,,,,no_target,0
+APO,Apollo Global Management,Financials,False,,,,,,,no_target,0
+AAPL,Apple Inc.,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+AMAT,Applied Materials,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+APP,AppLovin,Communication Services,False,,,,,,,no_target,0
+APTV,Aptiv,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ACGL,Arch Capital Group,Financials,False,,,,,,,no_target,0
+ADM,Archer Daniels Midland,Consumer Staples,True,exact,Commitment removed,,,,,no_target,0
+ARES,Ares Management,Financials,False,,,,,,,no_target,0
+ANET,Arista Networks,Information Technology,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+AJG,Arthur J. Gallagher & Co.,Financials,False,,,,,,,no_target,0
+AIZ,Assurant,Financials,False,,,,,,,no_target,0
+T,AT&T,Communication Services,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ATO,Atmos Energy,Utilities,False,,,,,,,no_target,0
+ADSK,Autodesk,Information Technology,True,exact,Targets set,1.5°C,FY2031,,,targets_set_1.5c,75
+ADP,Automatic Data Processing,Industrials,False,,,,,,,no_target,0
+AZO,AutoZone,Consumer Discretionary,False,,,,,,,no_target,0
+AVY,Avery Dennison,Materials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+AXON,Axon Enterprise,Industrials,False,,,,,,,no_target,0
+BKR,Baker Hughes,Energy,False,,,,,,,no_target,0
+BALL,Ball Corporation,Materials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+BAC,Bank of America,Financials,False,,,,,,,no_target,0
+BAX,Baxter International,Health Care,False,,,,,,,no_target,0
+BDX,Becton Dickinson,Health Care,False,,,,,,,no_target,0
+BRK.B,Berkshire Hathaway,Financials,False,,,,,,,no_target,0
+BBY,Best Buy,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+TECH,Bio-Techne,Health Care,True,exact,Targets set,1.5°C,FY2031,,,targets_set_1.5c,75
+BIIB,Biogen,Health Care,True,exact,Commitment removed,,,Commitment removed,,no_target,0
+BLK,BlackRock,Financials,False,,,,,,,no_target,0
+BX,Blackstone Inc.,Financials,False,,,,,,,no_target,0
+XYZ,"Block, Inc.",Financials,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+BNY,BNY Mellon,Financials,False,,,,,,,no_target,0
+BA,Boeing,Industrials,False,,,,,,,no_target,0
+BKNG,Booking Holdings,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+BSX,Boston Scientific,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+BMY,Bristol Myers Squibb,Health Care,True,exact,Targets set,1.5°C,2033,Targets set,2050,net_zero_validated,100
+AVGO,Broadcom,Information Technology,True,exact,Commitment removed,,,,,no_target,0
+BR,Broadridge Financial Solutions,Industrials,True,exact,Targets set,1.5°C,FY2033,Targets set,FY2050,net_zero_validated,100
+BRO,Brown & Brown,Financials,False,,,,,,,no_target,0
+BF.B,Brown–Forman,Consumer Staples,False,,,,,,,no_target,0
+BLDR,Builders FirstSource,Industrials,False,,,,,,,no_target,0
+BG,Bunge Global,Consumer Staples,False,,,,,,,no_target,0
+BXP,"BXP, Inc.",Real Estate,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+CHRW,C.H. Robinson,Industrials,False,,,,,,,no_target,0
+CDNS,Cadence Design Systems,Information Technology,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+CPT,Camden Property Trust,Real Estate,False,,,,,,,no_target,0
+COF,Capital One,Financials,False,,,,,,,no_target,0
+CAH,Cardinal Health,Health Care,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+CCL,Carnival Corporation,Consumer Discretionary,False,,,,,,,no_target,0
+CARR,Carrier Global,Industrials,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+CVNA,Carvana,Consumer Discretionary,False,,,,,,,no_target,0
+CASY,Casey's,Consumer Staples,False,,,,,,,no_target,0
+CAT,Caterpillar Inc.,Industrials,False,,,,,,,no_target,0
+CBOE,Cboe Global Markets,Financials,False,,,,,,,no_target,0
+CBRE,CBRE Group,Real Estate,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+CDW,CDW Corporation,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+COR,Cencora,Health Care,True,exact,Targets set,1.5°C,FY2032,,,targets_set_1.5c,75
+CNC,Centene Corporation,Health Care,False,,,,,,,no_target,0
+CNP,CenterPoint Energy,Utilities,False,,,,,,,no_target,0
+CF,CF Industries,Materials,False,,,,,,,no_target,0
+CRL,Charles River Laboratories,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+SCHW,Charles Schwab Corporation,Financials,False,,,,,,,no_target,0
+CHTR,Charter Communications,Communication Services,False,,,,,,,no_target,0
+CVX,Chevron Corporation,Energy,False,,,,,,,no_target,0
+CMG,Chipotle Mexican Grill,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+CB,Chubb Limited,Financials,False,,,,,,,no_target,0
+CHD,Church & Dwight,Consumer Staples,True,exact,Targets set,1.5°C,2031,,,targets_set_1.5c,75
+CIEN,Ciena,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+CI,Cigna,Health Care,True,exact,Committed,,,,,committed,25
+CINF,Cincinnati Financial,Financials,False,,,,,,,no_target,0
+CTAS,Cintas,Industrials,False,,,,,,,no_target,0
+CSCO,Cisco,Information Technology,False,,,,,,,no_target,0
+C,Citigroup,Financials,False,,,,,,,no_target,0
+CFG,Citizens Financial Group,Financials,False,,,,,,,no_target,0
+CLX,Clorox,Consumer Staples,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+CME,CME Group,Financials,False,,,,,,,no_target,0
+CMS,CMS Energy,Utilities,False,,,,,,,no_target,0
+KO,Coca-Cola Company (The),Consumer Staples,False,,,,,,,no_target,0
+CTSH,Cognizant,Information Technology,False,,,,,,,no_target,0
+COHR,Coherent Corp.,Information Technology,False,,,,,,,no_target,0
+COIN,Coinbase,Financials,False,,,,,,,no_target,0
+CL,Colgate-Palmolive,Consumer Staples,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+CMCSA,Comcast,Communication Services,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+FIX,Comfort Systems USA,Industrials,False,,,,,,,no_target,0
+COP,ConocoPhillips,Energy,False,,,,,,,no_target,0
+ED,Consolidated Edison,Utilities,False,,,,,,,no_target,0
+STZ,Constellation Brands,Consumer Staples,False,,,,,,,no_target,0
+CEG,Constellation Energy,Utilities,False,,,,,,,no_target,0
+COO,Cooper Companies (The),Health Care,False,,,,,,,no_target,0
+CPRT,Copart,Industrials,False,,,,,,,no_target,0
+GLW,Corning Inc.,Information Technology,True,exact,Targets set,1.5°C,2028,,,targets_set_1.5c,75
+CPAY,Corpay,Financials,False,,,,,,,no_target,0
+CTVA,Corteva,Materials,False,,,,,,,no_target,0
+CSGP,CoStar Group,Real Estate,True,exact,Targets set,1.5°C,2033,Targets set,2050,net_zero_validated,100
+COST,Costco,Consumer Staples,False,,,,,,,no_target,0
+CRH,CRH plc,Materials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+CRWD,CrowdStrike,Information Technology,True,exact,Targets set,1.5°C,FY2031,Commitment removed,,targets_set_1.5c,75
+CCI,Crown Castle,Real Estate,False,,,,,,,no_target,0
+CSX,CSX Corporation,Industrials,True,exact,Targets set,Well-below 2°C,2029,,,targets_set_2c,50
+CMI,Cummins,Industrials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+CVS,CVS Health,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+DHR,Danaher Corporation,Health Care,True,exact,Targets set,1.5°C,2035,Targets set,2050,net_zero_validated,100
+DRI,Darden Restaurants,Consumer Discretionary,False,,,,,,,no_target,0
+DDOG,Datadog,Information Technology,False,,,,,,,no_target,0
+DVA,DaVita,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+DECK,Deckers Brands,Consumer Discretionary,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+DE,Deere & Company,Industrials,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+DELL,Dell Technologies,Information Technology,True,exact,Targets set,1.5°C,FY2031,Targets set,FY2051,net_zero_validated,100
+DAL,Delta Air Lines,Industrials,True,exact,Targets set,Well-below 2°C,2035,Committed,,targets_set_2c,50
+DVN,Devon Energy,Energy,False,,,,,,,no_target,0
+DXCM,Dexcom,Health Care,True,exact,Commitment removed,,,,,no_target,0
+FANG,Diamondback Energy,Energy,False,,,,,,,no_target,0
+DLR,Digital Realty,Real Estate,True,exact,Targets set,1.5°C,2030,Committed,,targets_set_1.5c,75
+DG,Dollar General,Consumer Staples,False,,,,,,,no_target,0
+DLTR,Dollar Tree,Consumer Staples,False,,,,,,,no_target,0
+D,Dominion Energy,Utilities,False,,,,,,,no_target,0
+DPZ,Domino's,Consumer Discretionary,False,,,,,,,no_target,0
+DASH,DoorDash,Consumer Discretionary,False,,,,,,,no_target,0
+DOV,Dover Corporation,Industrials,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+DOW,Dow Inc.,Materials,False,,,,,,,no_target,0
+DHI,D. R. Horton,Consumer Discretionary,False,,,,,,,no_target,0
+DTE,DTE Energy,Utilities,False,,,,,,,no_target,0
+DUK,Duke Energy,Utilities,False,,,,,,,no_target,0
+DD,DuPont,Industrials,False,,,,,,,no_target,0
+ETN,Eaton Corporation,Industrials,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+EBAY,eBay Inc.,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,Targets set,2045,net_zero_validated,100
+ECHO,EchoStar,Communication Services,False,,,,,,,no_target,0
+ECL,Ecolab,Materials,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+EIX,Edison International,Utilities,False,,,,,,,no_target,0
+EW,Edwards Lifesciences,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ELV,Elevance Health,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+EME,Emcor,Industrials,True,exact,Commitment removed,,,,,no_target,0
+EMR,Emerson Electric,Industrials,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2045,net_zero_validated,100
+ETR,Entergy,Utilities,False,,,,,,,no_target,0
+EOG,EOG Resources,Energy,False,,,,,,,no_target,0
+EQT,EQT Corporation,Energy,False,,,,,,,no_target,0
+EFX,Equifax,Industrials,True,exact,Targets set,1.5°C,2032,,,targets_set_1.5c,75
+EQIX,Equinix,Real Estate,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+ERIE,Erie Indemnity,Financials,False,,,,,,,no_target,0
+ESS,Essex Property Trust,Real Estate,True,exact,Targets set,1.5°C,2034,,,targets_set_1.5c,75
+EL,Estée Lauder Companies (The),Consumer Staples,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+EG,Everest Group,Financials,False,,,,,,,no_target,0
+EVRG,Evergy,Utilities,False,,,,,,,no_target,0
+ES,Eversource Energy,Utilities,True,exact,Commitment removed,,,,,no_target,0
+EXC,Exelon,Utilities,False,,,,,,,no_target,0
+EXE,Expand Energy,Energy,False,,,,,,,no_target,0
+EXPE,Expedia Group,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+EXPD,Expeditors International,Industrials,False,,,,,,,no_target,0
+EXR,Extra Space Storage,Real Estate,False,,,,,,,no_target,0
+XOM,ExxonMobil,Energy,False,,,,,,,no_target,0
+FFIV,"F5, Inc.",Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+FDS,FactSet,Financials,False,,,,,,,no_target,0
+FICO,Fair Isaac,Information Technology,False,,,,,,,no_target,0
+FAST,Fastenal,Industrials,False,,,,,,,no_target,0
+FRT,Federal Realty Investment Trust,Real Estate,False,,,,,,,no_target,0
+FDX,FedEx,Industrials,True,exact,Targets set,1.5°C,FY2035,,,targets_set_1.5c,75
+FDXF,FedEx Freight,Industrials,False,,,,,,,no_target,0
+FERG,Ferguson Enterprises,Industrials,False,,,,,,,no_target,0
+FIS,Fidelity National Information Services,Financials,False,,,,,,,no_target,0
+FITB,Fifth Third Bancorp,Financials,False,,,,,,,no_target,0
+FSLR,First Solar,Information Technology,True,exact,Targets set,1.5°C,2028,Targets set,2050,net_zero_validated,100
+FE,FirstEnergy,Utilities,False,,,,,,,no_target,0
+FISV,Fiserv,Financials,False,,,,,,,no_target,0
+FLEX,Flex Ltd.,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+F,Ford Motor Company,Consumer Discretionary,True,exact,Targets set,1.5°C/Well-below 2°C,2035,Commitment removed,,targets_set_2c,50
+FTNT,Fortinet,Information Technology,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+FTV,Fortive,Industrials,False,,,,,,,no_target,0
+FOX,Fox Corporation (Class B),Communication Services,False,,,,,,,no_target,0
+BEN,Franklin Resources,Financials,False,,,,,,,no_target,0
+FCX,Freeport-McMoRan,Materials,True,exact,Commitment removed,,,,,no_target,0
+GRMN,Garmin,Consumer Discretionary,False,,,,,,,no_target,0
+IT,Gartner,Information Technology,True,exact,Targets set,1.5°C,2029,,,targets_set_1.5c,75
+GE,GE Aerospace,Industrials,False,,,,,,,no_target,0
+GEHC,GE HealthCare,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+GEV,GE Vernova,Industrials,False,,,,,,,no_target,0
+GEN,Gen Digital,Information Technology,False,,,,,,,no_target,0
+GNRC,Generac,Industrials,False,,,,,,,no_target,0
+GD,General Dynamics,Industrials,False,,,,,,,no_target,0
+GIS,General Mills,Consumer Staples,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+GM,General Motors,Consumer Discretionary,True,exact,Targets set,1.5°C/Well-below 2°C,2035,Commitment removed,,targets_set_2c,50
+GPC,Genuine Parts Company,Consumer Discretionary,False,,,,,,,no_target,0
+GILD,Gilead Sciences,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+GPN,Global Payments,Financials,False,,,,,,,no_target,0
+GL,Globe Life,Financials,False,,,,,,,no_target,0
+GDDY,GoDaddy,Information Technology,False,,,,,,,no_target,0
+GS,Goldman Sachs,Financials,False,,,,,,,no_target,0
+HAL,Halliburton,Energy,False,,,,,,,no_target,0
+HIG,Hartford (The),Financials,False,,,,,,,no_target,0
+HAS,Hasbro,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+HCA,HCA Healthcare,Health Care,False,,,,,,,no_target,0
+DOC,Healthpeak Properties,Real Estate,True,exact,Targets set,Well-below 2°C,2033,,,targets_set_2c,50
+HSIC,Henry Schein,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+HSY,Hershey Company (The),Consumer Staples,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+HPE,Hewlett Packard Enterprise,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+HLT,Hilton Worldwide,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+HD,Home Depot (The),Consumer Discretionary,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+HONA,Honeywell Aerospace,Industrials,False,,,,,,,no_target,0
+HON,Honeywell Technologies,Industrials,False,,,,,,,no_target,0
+HRL,Hormel Foods,Consumer Staples,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+HST,Host Hotels & Resorts,Real Estate,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+HWM,Howmet Aerospace,Industrials,False,,,,,,,no_target,0
+HPQ,HP Inc.,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+HUBB,Hubbell Incorporated,Industrials,False,,,,,,,no_target,0
+HUM,Humana,Health Care,True,exact,Targets set,1.5°C,2029,,,targets_set_1.5c,75
+HBAN,Huntington Bancshares,Financials,False,,,,,,,no_target,0
+HII,Huntington Ingalls Industries,Industrials,False,,,,,,,no_target,0
+IBM,IBM,Information Technology,False,,,,,,,no_target,0
+IEX,IDEX Corporation,Industrials,False,,,,,,,no_target,0
+IDXX,Idexx Laboratories,Health Care,False,,,,,,,no_target,0
+ITW,Illinois Tool Works,Industrials,False,,,,,,,no_target,0
+INCY,Incyte,Health Care,False,,,,,,,no_target,0
+IR,Ingersoll Rand,Industrials,True,exact,Targets set,1.5°C,2034,Targets set,2050,net_zero_validated,100
+PODD,Insulet Corporation,Health Care,False,,,,,,,no_target,0
+INTC,Intel,Information Technology,False,,,,,,,no_target,0
+IBKR,Interactive Brokers,Financials,False,,,,,,,no_target,0
+ICE,Intercontinental Exchange,Financials,False,,,,,,,no_target,0
+IFF,International Flavors & Fragrances,Materials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+IP,International Paper,Materials,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+INTU,Intuit,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+ISRG,Intuitive Surgical,Health Care,False,,,,,,,no_target,0
+IVZ,Invesco,Financials,False,,,,,,,no_target,0
+INVH,Invitation Homes,Real Estate,False,,,,,,,no_target,0
+IQV,IQVIA,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+IRM,Iron Mountain,Real Estate,True,exact,Targets set,1.5°C,2033,Targets set,2040,net_zero_validated,100
+JBHT,J.B. Hunt,Industrials,False,,,,,,,no_target,0
+JBL,Jabil,Information Technology,True,exact,Commitment removed,,,Commitment removed,,no_target,0
+JKHY,Jack Henry & Associates,Financials,False,,,,,,,no_target,0
+J,Jacobs Solutions,Industrials,False,,,,,,,no_target,0
+JNJ,Johnson & Johnson,Health Care,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+JCI,Johnson Controls,Industrials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+JPM,JPMorgan Chase,Financials,False,,,,,,,no_target,0
+KVUE,Kenvue,Consumer Staples,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+KDP,Keurig Dr Pepper,Consumer Staples,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+KEY,KeyCorp,Financials,False,,,,,,,no_target,0
+KEYS,Keysight Technologies,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+KMB,Kimberly-Clark,Consumer Staples,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+KIM,Kimco Realty,Real Estate,False,,,,,,,no_target,0
+KMI,Kinder Morgan,Energy,False,,,,,,,no_target,0
+KKR,KKR & Co.,Financials,False,,,,,,,no_target,0
+KLAC,KLA Corporation,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+KHC,Kraft Heinz,Consumer Staples,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+KR,Kroger,Consumer Staples,True,exact,Commitment removed,,,,,no_target,0
+LHX,L3Harris,Industrials,False,,,,,,,no_target,0
+LH,Labcorp,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+LRCX,Lam Research,Information Technology,True,exact,Targets set,1.5°C,2034,,,targets_set_1.5c,75
+LVS,Las Vegas Sands,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+LDOS,Leidos,Industrials,False,,,,,,,no_target,0
+LEN,Lennar,Consumer Discretionary,False,,,,,,,no_target,0
+LII,Lennox International,Industrials,True,exact,Targets set,Well-below 2°C,2034,,,targets_set_2c,50
+LLY,Lilly (Eli),Health Care,False,,,,,,,no_target,0
+LIN,Linde plc,Materials,True,exact,Targets set,Well-below 2°C,2035,,,targets_set_2c,50
+LYV,Live Nation Entertainment,Communication Services,False,,,,,,,no_target,0
+LMT,Lockheed Martin,Industrials,False,,,,,,,no_target,0
+L,Loews Corporation,Financials,False,,,,,,,no_target,0
+LOW,Lowe's,Consumer Discretionary,False,,,,,,,no_target,0
+LULU,Lululemon Athletica,Consumer Discretionary,False,,,,,,,no_target,0
+LITE,Lumentum,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+LYB,LyondellBasell,Materials,False,,,,,,,no_target,0
+MTB,M&T Bank,Financials,False,,,,,,,no_target,0
+MPC,Marathon Petroleum,Energy,False,,,,,,,no_target,0
+MAR,Marriott International,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+MRSH,Marsh McLennan,Financials,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+MLM,Martin Marietta Materials,Materials,True,exact,Targets set,1.5°C,2035,,,targets_set_1.5c,75
+MRVL,Marvell Technology,Information Technology,True,exact,Targets set,1.5°C,FY2030,Commitment removed,,targets_set_1.5c,75
+MAS,Masco,Industrials,False,,,,,,,no_target,0
+MA,Mastercard,Financials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+MKC,McCormick & Company,Consumer Staples,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+MCD,McDonald's,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+MCK,McKesson Corporation,Health Care,True,exact,Targets set,1.5°C,FY2032,,,targets_set_1.5c,75
+MDT,Medtronic,Health Care,True,exact,Targets set,1.5°C,FY2034,Commitment removed,,targets_set_1.5c,75
+MRK,Merck & Co.,Health Care,False,,,,,,,no_target,0
+META,Meta Platforms,Communication Services,True,exact,Targets set,1.5°C,2031,Commitment removed,,targets_set_1.5c,75
+MET,MetLife,Financials,True,exact,Committed,,,,,committed,25
+MTD,Mettler Toledo,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+MGM,MGM Resorts,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+MCHP,Microchip Technology,Information Technology,False,,,,,,,no_target,0
+MU,Micron Technology,Information Technology,False,,,,,,,no_target,0
+MSFT,Microsoft,Information Technology,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+MAA,Mid-America Apartment Communities,Real Estate,False,,,,,,,no_target,0
+MRNA,Moderna,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2045,net_zero_validated,100
+TAP,Molson Coors Beverage Company,Consumer Staples,False,,,,,,,no_target,0
+MDLZ,Mondelez International,Consumer Staples,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+MPWR,Monolithic Power Systems,Information Technology,False,,,,,,,no_target,0
+MNST,Monster Beverage,Consumer Staples,True,exact,Commitment removed,,,,,no_target,0
+MCO,Moody's Corporation,Financials,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+MS,Morgan Stanley,Financials,False,,,,,,,no_target,0
+MOS,Mosaic Company (The),Materials,False,,,,,,,no_target,0
+MSI,Motorola Solutions,Information Technology,False,,,,,,,no_target,0
+MSCI,MSCI,Financials,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+NDAQ,"Nasdaq, Inc.",Financials,True,exact,Targets set,1.5°C,2032,Targets set,2050,net_zero_validated,100
+NTAP,NetApp,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+NFLX,Netflix,Communication Services,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+NEM,Newmont,Materials,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+NWS,News Corp (Class B),Communication Services,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+NEE,NextEra Energy,Utilities,False,,,,,,,no_target,0
+NKE,"Nike, Inc.",Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+NI,NiSource,Utilities,False,,,,,,,no_target,0
+NDSN,Nordson Corporation,Industrials,False,,,,,,,no_target,0
+NSC,Norfolk Southern,Industrials,True,exact,Targets set,Well-below 2°C,2034,,,targets_set_2c,50
+NTRS,Northern Trust,Financials,True,exact,Committed,,,Committed,,committed,25
+NOC,Northrop Grumman,Industrials,False,,,,,,,no_target,0
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,False,,,,,,,no_target,0
+NRG,NRG Energy,Utilities,True,exact,Targets set,1.5°C,2025,Commitment removed,,targets_set_1.5c,75
+NUE,Nucor,Materials,False,,,,,,,no_target,0
+NVDA,Nvidia,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+NVR,"NVR, Inc.",Consumer Discretionary,False,,,,,,,no_target,0
+NXPI,NXP Semiconductors,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ORLY,O'Reilly Automotive,Consumer Discretionary,False,,,,,,,no_target,0
+OXY,Occidental Petroleum,Energy,False,,,,,,,no_target,0
+ODFL,Old Dominion,Industrials,False,,,,,,,no_target,0
+OMC,Omnicom Group,Communication Services,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ON,ON Semiconductor,Information Technology,False,,,,,,,no_target,0
+OKE,Oneok,Energy,False,,,,,,,no_target,0
+ORCL,Oracle Corporation,Information Technology,False,,,,,,,no_target,0
+OTIS,Otis Worldwide,Industrials,True,exact,Targets set,1.5°C,2033,,,targets_set_1.5c,75
+PCAR,Paccar,Industrials,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+PKG,Packaging Corporation of America,Materials,False,,,,,,,no_target,0
+PLTR,Palantir Technologies,Information Technology,True,exact,Commitment removed,,,,,no_target,0
+PANW,Palo Alto Networks,Information Technology,True,exact,Targets set,1.5°C,FY2027,Targets set,FY2040,net_zero_validated,100
+PSKY,Paramount Skydance Corporation,Communication Services,False,,,,,,,no_target,0
+PH,Parker Hannifin,Industrials,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+PAYX,Paychex,Industrials,False,,,,,,,no_target,0
+PYPL,PayPal,Financials,True,exact,Targets set,1.5°C,2025,,,targets_set_1.5c,75
+PNR,Pentair,Industrials,False,,,,,,,no_target,0
+PEP,PepsiCo,Consumer Staples,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+PFE,Pfizer,Health Care,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+PCG,PG&E Corporation,Utilities,True,exact,Commitment removed,,,,,no_target,0
+PM,Philip Morris International,Consumer Staples,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+PSX,Phillips 66,Energy,False,,,,,,,no_target,0
+PNW,Pinnacle West Capital,Utilities,False,,,,,,,no_target,0
+PNC,PNC Financial Services,Financials,False,,,,,,,no_target,0
+PPG,PPG Industries,Materials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+PPL,PPL Corporation,Utilities,False,,,,,,,no_target,0
+PFG,Principal Financial Group,Financials,True,exact,Commitment removed,,,,,no_target,0
+PG,Procter & Gamble,Consumer Staples,True,exact,Targets set,1.5°C,FY2030,Commitment removed,,targets_set_1.5c,75
+PGR,Progressive Corporation,Financials,False,,,,,,,no_target,0
+PLD,Prologis,Real Estate,True,exact,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+PRU,Prudential Financial,Financials,False,,,,,,,no_target,0
+PEG,Public Service Enterprise Group,Utilities,False,,,,,,,no_target,0
+PTC,PTC Inc.,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+PSA,Public Storage,Real Estate,False,,,,,,,no_target,0
+PHM,PulteGroup,Consumer Discretionary,False,,,,,,,no_target,0
+PWR,Quanta Services,Industrials,False,,,,,,,no_target,0
+QCOM,Qualcomm,Information Technology,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+DGX,Quest Diagnostics,Health Care,False,,,,,,,no_target,0
+Q,Qnity Electronics,Information Technology,False,,,,,,,no_target,0
+RL,Ralph Lauren Corporation,Consumer Discretionary,True,exact,Targets set,1.5°C,FY2030,Commitment removed,,targets_set_1.5c,75
+RJF,Raymond James Financial,Financials,False,,,,,,,no_target,0
+RDDT,Reddit,Communication Services,False,,,,,,,no_target,0
+RTX,RTX Corporation,Industrials,False,,,,,,,no_target,0
+O,Realty Income,Real Estate,False,,,,,,,no_target,0
+REG,Regency Centers,Real Estate,False,,,,,,,no_target,0
+REGN,Regeneron Pharmaceuticals,Health Care,False,,,,,,,no_target,0
+RF,Regions Financial Corporation,Financials,False,,,,,,,no_target,0
+RSG,Republic Services,Industrials,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+RMD,ResMed|,Health Care,True,exact,Commitment removed,,,Commitment removed,,no_target,0
+RVTY,Revvity,Health Care,True,exact,Commitment removed,,,,,no_target,0
+HOOD,Robinhood Markets,Financials,False,,,,,,,no_target,0
+ROK,Rockwell Automation,Industrials,True,exact,Targets set,1.5°C,FY2033,Targets set,FY2050,net_zero_validated,100
+ROL,"Rollins, Inc.",Industrials,False,,,,,,,no_target,0
+ROP,Roper Technologies,Information Technology,True,exact,Commitment removed,,,,,no_target,0
+ROST,Ross Stores,Consumer Discretionary,False,,,,,,,no_target,0
+RCL,Royal Caribbean Group,Consumer Discretionary,False,,,,,,,no_target,0
+SPGI,S&P Global,Financials,True,exact,Targets set,1.5°C,2025,Targets set,2040,net_zero_validated,100
+CRM,Salesforce,Information Technology,False,,,,,,,no_target,0
+SNDK,Sandisk,Information Technology,True,exact,Committed,,,Committed,,committed,25
+SBAC,SBA Communications,Real Estate,True,exact,Targets set,1.5°C,FY2033,,,targets_set_1.5c,75
+SLB,Schlumberger,Energy,False,,,,,,,no_target,0
+STX,Seagate Technology,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+SRE,Sempra,Utilities,False,,,,,,,no_target,0
+NOW,ServiceNow,Information Technology,True,exact,Targets set,1.5°C,2026,,,targets_set_1.5c,75
+SHW,Sherwin-Williams,Materials,False,,,,,,,no_target,0
+SPG,Simon Property Group,Real Estate,True,exact,Targets set,1.5°C,2035,,,targets_set_1.5c,75
+SWKS,Skyworks Solutions,Information Technology,False,,,,,,,no_target,0
+SJM,J.M. Smucker Company (The),Consumer Staples,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+SW,Smurfit Westrock,Materials,False,,,,,,,no_target,0
+SNA,Snap-on,Industrials,False,,,,,,,no_target,0
+SOLV,Solventum,Health Care,True,exact,Committed,,,Committed,,committed,25
+SO,Southern Company,Utilities,False,,,,,,,no_target,0
+LUV,Southwest Airlines,Industrials,False,,,,,,,no_target,0
+SWK,Stanley Black & Decker,Industrials,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+SBUX,Starbucks,Consumer Discretionary,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+STT,State Street Corporation,Financials,False,,,,,,,no_target,0
+STLD,Steel Dynamics,Materials,False,,,,,,,no_target,0
+STE,Steris,Health Care,True,exact,Committed,,,,,committed,25
+SYK,Stryker Corporation,Health Care,True,exact,Commitment removed,,,,,no_target,0
+SMCI,Supermicro,Information Technology,False,,,,,,,no_target,0
+SYF,Synchrony Financial,Financials,False,,,,,,,no_target,0
+SNPS,Synopsys,Information Technology,True,exact,Targets set,1.5°C,2032,,,targets_set_1.5c,75
+SYY,Sysco,Consumer Staples,True,exact,Targets set,Well-below 2°C,2030,,,targets_set_2c,50
+TMUS,T-Mobile US,Communication Services,True,fuzzy,Targets set,1.5°C,2030,Targets set,2040,net_zero_validated,100
+TROW,T. Rowe Price,Financials,False,,,,,,,no_target,0
+TTWO,Take-Two Interactive,Communication Services,False,,,,,,,no_target,0
+TPR,"Tapestry, Inc.",Consumer Discretionary,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2050,net_zero_validated,100
+TRGP,Targa Resources,Energy,False,,,,,,,no_target,0
+TGT,Target Corporation,Consumer Staples,True,exact,Targets set,2°C,2030,Committed,,targets_set_2c,50
+TEL,TE Connectivity,Information Technology,True,exact,Targets set,1.5°C,2032,,,targets_set_1.5c,75
+TDY,Teledyne Technologies,Information Technology,False,,,,,,,no_target,0
+TER,Teradyne,Information Technology,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+TSLA,"Tesla, Inc.",Consumer Discretionary,True,exact,Commitment removed,,,,,no_target,0
+TXN,Texas Instruments,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+TPL,Texas Pacific Land Corporation,Energy,False,,,,,,,no_target,0
+TXT,Textron,Industrials,False,,,,,,,no_target,0
+TMO,Thermo Fisher Scientific,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+TJX,TJX Companies,Consumer Discretionary,False,,,,,,,no_target,0
+TKO,TKO Group Holdings,Communication Services,False,,,,,,,no_target,0
+TTD,Trade Desk (The),Communication Services,False,,,,,,,no_target,0
+TSCO,Tractor Supply,Consumer Discretionary,True,exact,Commitment removed,,,,,no_target,0
+TT,Trane Technologies,Industrials,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+TDG,TransDigm Group,Industrials,False,,,,,,,no_target,0
+TRV,Travelers Companies (The),Financials,False,,,,,,,no_target,0
+TRMB,Trimble Inc.,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+TFC,Truist Financial,Financials,False,,,,,,,no_target,0
+TYL,Tyler Technologies,Information Technology,False,,,,,,,no_target,0
+TSN,Tyson Foods,Consumer Staples,True,exact,Targets set,2°C,2030,,,targets_set_2c,50
+USB,U.S. Bancorp,Financials,False,,,,,,,no_target,0
+UBER,Uber,Industrials,False,,,,,,,no_target,0
+UDR,"UDR, Inc.",Real Estate,True,exact,Commitment removed,,,,,no_target,0
+ULTA,Ulta Beauty,Consumer Discretionary,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+UNP,Union Pacific Corporation,Industrials,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+UAL,United Airlines Holdings,Industrials,True,exact,Targets set,Well-below 2°C,2035,Commitment removed,,targets_set_2c,50
+UPS,United Parcel Service,Industrials,False,,,,,,,no_target,0
+URI,United Rentals,Industrials,False,,,,,,,no_target,0
+UNH,UnitedHealth Group,Health Care,True,exact,Targets set,1.5°C,2030,Committed,,targets_set_1.5c,75
+UHS,Universal Health Services,Health Care,False,,,,,,,no_target,0
+VLO,Valero Energy,Energy,False,,,,,,,no_target,0
+VEEV,Veeva Systems,Health Care,True,exact,Targets set,1.5°C,FY2035,,,targets_set_1.5c,75
+VTR,Ventas,Real Estate,False,,,,,,,no_target,0
+VLTO,Veralto,Industrials,True,exact,Committed,,,,,committed,25
+VRSN,Verisign,Information Technology,False,,,,,,,no_target,0
+VRSK,Verisk Analytics,Industrials,True,exact,Targets set,1.5°C,2034,Targets set,2050,net_zero_validated,100
+VZ,Verizon,Communication Services,True,exact,Targets set,1.5°C,2035,Committed,,targets_set_1.5c,75
+VRTX,Vertex Pharmaceuticals,Health Care,False,,,,,,,no_target,0
+VRT,Vertiv,Industrials,False,,,,,,,no_target,0
+VTRS,Viatris,Health Care,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+VICI,Vici Properties,Real Estate,False,,,,,,,no_target,0
+V,Visa Inc.,Financials,True,exact,Targets set,1.5°C,FY2030,Targets set,FY2040,net_zero_validated,100
+VST,Vistra Corp.,Utilities,True,exact,Targets set,1.5°C,2028,,,targets_set_1.5c,75
+VMRK,Vivmark Residential,Real Estate,False,,,,,,,no_target,0
+VMC,Vulcan Materials Company,Materials,False,,,,,,,no_target,0
+WRB,W. R. Berkley Corporation,Financials,False,,,,,,,no_target,0
+GWW,W. W. Grainger,Industrials,False,,,,,,,no_target,0
+WAB,Wabtec,Industrials,False,,,,,,,no_target,0
+WMT,Walmart,Consumer Staples,True,exact,Targets set,1.5°C,FY2031,Commitment removed,,targets_set_1.5c,75
+DIS,Walt Disney Company (The),Communication Services,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+WBD,Warner Bros. Discovery,Communication Services,False,,,,,,,no_target,0
+WM,Waste Management,Industrials,False,,,,,,,no_target,0
+WAT,Waters Corporation,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+WEC,WEC Energy Group,Utilities,False,,,,,,,no_target,0
+WFC,Wells Fargo,Financials,False,,,,,,,no_target,0
+WELL,Welltower,Real Estate,False,,,,,,,no_target,0
+WST,West Pharmaceutical Services,Health Care,True,exact,Targets set,1.5°C,2035,,,targets_set_1.5c,75
+WDC,Western Digital,Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+WY,Weyerhaeuser,Real Estate,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+WSM,"Williams-Sonoma, Inc.",Consumer Discretionary,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+WMB,Williams Companies,Energy,False,,,,,,,no_target,0
+WTW,Willis Towers Watson,Financials,False,,,,,,,no_target,0
+WDAY,"Workday, Inc.",Information Technology,True,exact,Targets set,1.5°C,FY2030,,,targets_set_1.5c,75
+WYNN,Wynn Resorts,Consumer Discretionary,False,,,,,,,no_target,0
+XEL,Xcel Energy,Utilities,False,,,,,,,no_target,0
+XYL,Xylem Inc.,Industrials,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+YUM,Yum! Brands,Consumer Discretionary,True,exact,Targets set,1.5°C,2030,Commitment removed,,targets_set_1.5c,75
+ZBRA,Zebra Technologies,Information Technology,True,exact,Targets set,1.5°C,2030,,,targets_set_1.5c,75
+ZBH,Zimmer Biomet,Health Care,True,exact,Targets set,1.5°C,2030,Targets set,2050,net_zero_validated,100
+ZTS,Zoetis,Health Care,False,,,,,,,no_target,0
