@@ -7,7 +7,7 @@
 // call synchronously from a memoised selector on every slider tick.
 
 import { percentileRank, weightedMeanSkippingNulls, median } from "./percentile";
-import { REGISTRY, type Pillar, type RawInputs, type SubScoreDef } from "./registry";
+import { REGISTRY, type GapKind, type Pillar, type RawInputs, type SubScoreDef } from "./registry";
 import { MEASURED_STATUSES, TRUSTED_STATUSES, type Company } from "./types";
 
 export const PILLARS: Pillar[] = ["P1", "P2", "P3"];
@@ -132,8 +132,75 @@ export interface SubScoreResult {
 
 export interface PillarResult {
   pillar: Pillar;
+  /** Final score after the disclosure-coverage penalty below. */
   score: number | null;
+  /** Pre-penalty weighted mean of available sub-scores -- kept for
+   * auditability, matching score_calculation's own *_score_raw columns. */
+  scoreRaw: number | null;
+  /** 1.0 when every disclosure-gap sub-score in this pillar is present,
+   * scaling down toward 0 as more of them are missing. Sub-scores tagged
+   * 'pipeline_gap' are excluded from this ratio -- their absence isn't the
+   * company's fault, so it isn't penalised (see GapKind in registry.ts). */
+  disclosureCoverage: number;
   subScores: SubScoreResult[];
+}
+
+/** Floor/slope for the disclosure-coverage penalty below -- mirrors
+ * score_calculation's DISCLOSURE_COVERAGE_FLOOR/_SLOPE exactly (every
+ * pillar file there uses these same two constants). */
+export const DISCLOSURE_COVERAGE_FLOOR = 0.6;
+export const DISCLOSURE_COVERAGE_SLOPE = 0.4;
+
+export interface AggregationEntry {
+  id: string;
+  /** The entry's own 0-100 score, or null if unavailable. */
+  value: number | null;
+  weight: number;
+  /** Whether this entry counts as "disclosed" for coverage purposes --
+   * independent of whether a nullPolicy substitution (e.g. 'sector_median')
+   * produced a stand-in `value` anyway. A substituted stand-in is not real
+   * disclosure. */
+  disclosed: boolean;
+  gapKind?: GapKind;
+}
+
+/**
+ * Combines a pillar's sub-scores (or, in referenceColor.ts, a reference
+ * point's pillar-level values) into one score, applying score_calculation's
+ * disclosure-coverage penalty on top of the plain renormalized weighted
+ * mean: `pillarScoreRaw` already renormalizes around whatever is missing for
+ * free, which by itself rewards under-disclosure exactly as much as full
+ * disclosure whenever the few present entries happen to score well.
+ *
+ *     score = scoreRaw * (DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * disclosureCoverage)
+ *
+ * disclosureCoverage is the weight-share of disclosure-gap entries that are
+ * actually present, so 1.0 when every one of them is, floor at 0.6 as more
+ * go missing. Entries tagged 'pipeline_gap' (a data source not pulled for
+ * the whole universe) are excluded from that ratio entirely.
+ *
+ * Deliberately NOT applied a second time across pillars into the composite
+ * (matching final_score.py, which is a plain renormalized average of the
+ * three already-penalized pillar scores) -- callers must use
+ * weightedMeanSkippingNulls directly for that step, not this function.
+ */
+export function aggregateWithDisclosurePenalty(
+  entries: readonly AggregationEntry[]
+): { score: number | null; scoreRaw: number | null; disclosureCoverage: number } {
+  const scoreRaw = weightedMeanSkippingNulls(entries.map((e) => ({ value: e.value, weight: e.weight })));
+
+  let coverageWeightTotal = 0;
+  let coverageWeightPresent = 0;
+  for (const e of entries) {
+    if (e.gapKind === "pipeline_gap") continue;
+    coverageWeightTotal += e.weight;
+    if (e.disclosed) coverageWeightPresent += e.weight;
+  }
+  const disclosureCoverage = coverageWeightTotal > 0 ? coverageWeightPresent / coverageWeightTotal : 1;
+
+  const score =
+    scoreRaw === null ? null : scoreRaw * (DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * disclosureCoverage);
+  return { score, scoreRaw, disclosureCoverage };
 }
 
 export interface CompanyScoreResult {
@@ -261,10 +328,19 @@ export function computeScores(
         return { id: sub.id, statusClass: r.statusClass, rawValue, score, coverageN: distribution.length };
       });
 
-      const pillarScore = weightedMeanSkippingNulls(
-        subResults.map((r) => ({ value: r.score, weight: subW[r.id] ?? 1 }))
+      const { score, scoreRaw, disclosureCoverage } = aggregateWithDisclosurePenalty(
+        subResults.map((r) => {
+          const sub = subs.find((s) => s.id === r.id)!;
+          return {
+            id: r.id,
+            value: r.score,
+            weight: subW[r.id] ?? 1,
+            disclosed: r.statusClass !== "unavailable",
+            gapKind: sub.gapKind,
+          };
+        })
       );
-      pillarResults[pillar] = { pillar, score: pillarScore, subScores: subResults };
+      pillarResults[pillar] = { pillar, score, scoreRaw, disclosureCoverage, subScores: subResults };
     }
 
     const composite = weightedMeanSkippingNulls(

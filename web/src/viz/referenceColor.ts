@@ -1,11 +1,12 @@
 // Extends reference.ts's per-sub-score reference values up to pillar and
 // composite axes (needed because the Global view's axes ARE pillar scores),
-// using the exact same weightedMeanSkippingNulls/normalizedWeights functions
-// pipeline.ts uses to build those aggregates in the first place. Reusing
-// those, rather than re-deriving "how sub-scores combine" here, is what
-// keeps the coloured map and the scored table from ever disagreeing.
+// using the exact same aggregateWithDisclosurePenalty/weightedMeanSkippingNulls/
+// normalizedWeights functions pipeline.ts uses to build those aggregates in
+// the first place. Reusing those, rather than re-deriving "how sub-scores
+// combine" here, is what keeps the coloured map and the scored table from
+// ever disagreeing.
 import { weightedMeanSkippingNulls } from "../scoring/percentile";
-import { normalizedWeights, weightsForSector, PILLARS, type WeightsState } from "../scoring/pipeline";
+import { aggregateWithDisclosurePenalty, normalizedWeights, weightsForSector, PILLARS, type WeightsState } from "../scoring/pipeline";
 import { registryForPillar, type Pillar } from "../scoring/registry";
 import type { ReferenceValues } from "../scoring/reference";
 import { type AxisSlot } from "./views";
@@ -22,10 +23,21 @@ export function referenceScoreForAxis(
 ): number | null {
   const { pillars: pillarW, subscores: subW } = normalizedWeights(weightsForSector(weights, sector));
 
+  // Same disclosure-coverage penalty the scored companies themselves go
+  // through (see pipeline.ts's aggregateWithDisclosurePenalty) -- otherwise
+  // the reference point (sector median/best, a named company) would sit on
+  // a different basis than the points being compared against it, and the
+  // coloured map and the scored table would disagree.
   const pillarScore = (pillar: Pillar): number | null =>
-    weightedMeanSkippingNulls(
-      registryForPillar(pillar).map((s) => ({ value: refValues.get(s.id)?.score ?? null, weight: subW[s.id] ?? 1 }))
-    );
+    aggregateWithDisclosurePenalty(
+      registryForPillar(pillar).map((s) => ({
+        id: s.id,
+        value: refValues.get(s.id)?.score ?? null,
+        weight: subW[s.id] ?? 1,
+        disclosed: (refValues.get(s.id)?.raw ?? null) !== null,
+        gapKind: s.gapKind,
+      }))
+    ).score;
 
   if (axis.kind === "subscore") return refValues.get(axis.id)?.score ?? null;
   if (axis.kind === "pillar") return pillarScore(axis.pillar);

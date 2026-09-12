@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  aggregateWithDisclosurePenalty,
   computeScores,
   defaultWeights,
   resolveInputs,
@@ -108,7 +109,9 @@ describe("computeScores: aggregation", () => {
       makeCompany("A", "Health Care", {
         scope1_tco2e: field(100),
         revenue_usd: field(1_000_000),
-        // renewable/total electricity and waste_diverted_pct: all missing
+        // grid_intensity, cogs_usd: missing. waste_diverted_pct is missing
+        // too, but p1_resource_waste is gapKind 'pipeline_gap' -- excluded
+        // from disclosure coverage below, same as this renormalized mean.
       }),
       makeCompany("B", "Health Care", {
         scope1_tco2e: field(900),
@@ -118,9 +121,27 @@ describe("computeScores: aggregation", () => {
     const scores = computeScores(companies, defaultWeights());
     const p1 = scores.get("A")!.pillars.P1;
     const onlyDefinedSub = p1.subScores.find((s) => s.id === "p1_carbon_intensity")!;
-    // Only one of three P1 sub-scores has data; the pillar score must equal
-    // that one sub-score's value, not be dragged down by the two nulls.
-    expect(p1.score).toBeCloseTo(onlyDefinedSub.score!);
+    // Only one of four P1 sub-scores has data; the RAW pillar score must
+    // equal that one sub-score's value, not be dragged down by the nulls.
+    expect(p1.scoreRaw).toBeCloseTo(onlyDefinedSub.score!);
+  });
+
+  it("applies the disclosure-coverage penalty on top of the raw pillar score, excluding pipeline-gap sub-scores", () => {
+    const companies = [
+      makeCompany("A", "Health Care", {
+        scope1_tco2e: field(100),
+        revenue_usd: field(1_000_000),
+        // P1 has 3 disclosure-gap sub-scores (carbon_intensity, energy_mix,
+        // input_efficiency) and 1 pipeline-gap one (resource_waste, which
+        // doesn't count against coverage at all). Only carbon_intensity is
+        // present here, so disclosure coverage = 1 of 3 = 1/3.
+      }),
+      makeCompany("B", "Health Care", { scope1_tco2e: field(900), revenue_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const p1 = scores.get("A")!.pillars.P1;
+    expect(p1.disclosureCoverage).toBeCloseTo(1 / 3);
+    expect(p1.score).toBeCloseTo(p1.scoreRaw! * (0.6 + 0.4 * (1 / 3)));
   });
 
   it("composite responds to pillar weights", () => {
@@ -247,8 +268,8 @@ describe("computeScores: p2_regulatory_momentum (real registry sub-score, sector
 describe("computeScores: p2_carbon_price_exposure (real registry sub-score, ceiling mapping)", () => {
   it("maps 0% EBITDA erosion to best and >=50% erosion to worst, pre-percentile", () => {
     const companies = [
-      makeCompany("A", "Energy", { scope1_tco2e: field(0), scope2_location_tco2e: field(0), ebitda_usd: field(1_000_000) }),
-      makeCompany("B", "Energy", { scope1_tco2e: field(500_000), scope2_location_tco2e: field(0), ebitda_usd: field(1_000_000) }),
+      makeCompany("A", "Energy", { scope1_tco2e: field(0), ebitda_usd: field(1_000_000) }),
+      makeCompany("B", "Energy", { scope1_tco2e: field(500_000), ebitda_usd: field(1_000_000) }),
     ];
     const scores = computeScores(companies, defaultWeights());
     const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
@@ -258,14 +279,38 @@ describe("computeScores: p2_carbon_price_exposure (real registry sub-score, ceil
     expect(a.score!).toBeGreaterThan(b.score!); // higher_is_better on the already-oriented value
   });
 
+  it("applies the $100/ton assumed carbon price, not just a bare emissions-to-EBITDA ratio", () => {
+    // 5,000 tCO2e at $100/ton = $500,000 carbon cost against $1,000,000
+    // EBITDA -- exactly 50% erosion, i.e. exactly at the ceiling (score 0).
+    // A version of this formula missing the price multiplier (an actual bug
+    // this sub-score once had) would read this as 0.5% erosion and score
+    // ~99, nowhere near the ceiling -- this guards against that regressing.
+    const companies = [
+      makeCompany("A", "Energy", { scope1_tco2e: field(5_000), ebitda_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
+    expect(a.rawValue).toBeCloseTo(0);
+  });
+
   it("is null (not a false best score) when EBITDA is negative", () => {
     const companies = [
-      makeCompany("A", "Energy", { scope1_tco2e: field(100), scope2_location_tco2e: field(0), ebitda_usd: field(-1) }),
+      makeCompany("A", "Energy", { scope1_tco2e: field(100), ebitda_usd: field(-1) }),
     ];
     const scores = computeScores(companies, defaultWeights());
     const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
     expect(a.statusClass).toBe("measured"); // every input IS disclosed
     expect(a.rawValue).toBeNull(); // the ratio just isn't meaningful
+    expect(a.score).toBeNull();
+  });
+
+  it("is unavailable when scope1_tco2e is missing, even with EBITDA present (no scope2 or modelled-tier fallback)", () => {
+    const companies = [
+      makeCompany("A", "Energy", { ebitda_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
+    expect(a.statusClass).toBe("unavailable");
     expect(a.score).toBeNull();
   });
 });
@@ -355,5 +400,134 @@ describe("resolveInputs: nullPolicy 'sector_median' (via computeScores)", () => 
     const c = scores.get("C")!.pillars.P3.subScores[0];
     expect(c.rawValue).toBe(6); // median(4, 8)
     expect(c.score).toBe(50);
+  });
+});
+
+describe("aggregateWithDisclosurePenalty", () => {
+  it("is a no-op (score === scoreRaw) when every disclosure-gap entry is present", () => {
+    const result = aggregateWithDisclosurePenalty([
+      { id: "a", value: 80, weight: 1, disclosed: true },
+      { id: "b", value: 40, weight: 1, disclosed: true },
+    ]);
+    expect(result.disclosureCoverage).toBe(1);
+    expect(result.score).toBeCloseTo(result.scoreRaw!);
+    expect(result.scoreRaw).toBeCloseTo(60);
+  });
+
+  it("floors at 0.6x the raw score when every disclosure-gap entry is missing", () => {
+    const result = aggregateWithDisclosurePenalty([
+      { id: "a", value: null, weight: 1, disclosed: false },
+      { id: "b", value: 100, weight: 1, disclosed: false },
+    ]);
+    expect(result.disclosureCoverage).toBe(0);
+    expect(result.scoreRaw).toBeCloseTo(100); // renormalizes around the one present value
+    expect(result.score).toBeCloseTo(60); // 100 * (0.6 + 0.4*0)
+  });
+
+  it("excludes pipeline-gap entries from the coverage ratio entirely", () => {
+    const result = aggregateWithDisclosurePenalty([
+      { id: "a", value: 90, weight: 1, disclosed: true },
+      { id: "pipeline", value: null, weight: 1, disclosed: false, gapKind: "pipeline_gap" },
+    ]);
+    // Only "a" (disclosure-gap) counts toward coverage, and it's present.
+    expect(result.disclosureCoverage).toBe(1);
+    expect(result.score).toBeCloseTo(result.scoreRaw!);
+  });
+
+  it("treats a nullPolicy-substituted value as NOT disclosed for coverage even though it produced a score", () => {
+    const result = aggregateWithDisclosurePenalty([
+      { id: "a", value: 70, weight: 1, disclosed: true },
+      { id: "b", value: 50, weight: 1, disclosed: false }, // e.g. sector_median substitution
+    ]);
+    expect(result.disclosureCoverage).toBeCloseTo(0.5);
+    expect(result.scoreRaw).toBeCloseTo(60); // both values count toward the raw mean
+    expect(result.score).toBeCloseTo(60 * 0.8); // 0.6 + 0.4*0.5
+  });
+
+  it("returns null score/scoreRaw when nothing is available at all", () => {
+    const result = aggregateWithDisclosurePenalty([{ id: "a", value: null, weight: 1, disclosed: false }]);
+    expect(result.scoreRaw).toBeNull();
+    expect(result.score).toBeNull();
+  });
+});
+
+describe("computeScores: p1_energy_mix (real registry sub-score, grid-intensity regional proxy)", () => {
+  it("scores lower grid carbon intensity higher (lower_is_better)", () => {
+    const companies = [
+      makeCompany("A", "Utilities", { grid_intensity_kgco2e_per_mwh: field(200) }),
+      makeCompany("B", "Utilities", { grid_intensity_kgco2e_per_mwh: field(800) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P1.subScores.find((s) => s.id === "p1_energy_mix")!;
+    const b = scores.get("B")!.pillars.P1.subScores.find((s) => s.id === "p1_energy_mix")!;
+    expect(a.score!).toBeGreaterThan(b.score!);
+  });
+
+  it("is null when a non-US-headquartered company has no grid to map to", () => {
+    const companies = [
+      makeCompany("A", "Utilities", {}), // no grid_intensity_kgco2e_per_mwh
+      makeCompany("B", "Utilities", { grid_intensity_kgco2e_per_mwh: field(500) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P1.subScores.find((s) => s.id === "p1_energy_mix")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+});
+
+describe("computeScores: p3_exec_compensation (real registry sub-score, compensation alignment)", () => {
+  it("means the two booleans and the capped performance period", () => {
+    const companies = [
+      makeCompany("A", "Financials", {
+        has_clawback_policy: field(true),
+        has_psu_plan: field(true),
+        performance_period_years: field(3), // capped at 3 -> 100
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_exec_compensation")!;
+    // (100 + 100 + 100) / 3 = 100
+    expect(a.rawValue).toBeCloseTo(100);
+  });
+
+  it("caps performance_period_years at 3 -- a longer period doesn't score above 100", () => {
+    const companies = [
+      makeCompany("A", "Financials", {
+        has_clawback_policy: field(false),
+        has_psu_plan: field(false),
+        performance_period_years: field(10), // clipped to 3 -> 100
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_exec_compensation")!;
+    // (0 + 0 + 100) / 3 = 33.33
+    expect(a.rawValue).toBeCloseTo(100 / 3);
+  });
+
+  it("is unavailable (not silently scored) now that the dead comp_tied_to_emissions_target field is gone", () => {
+    const companies = [
+      makeCompany("A", "Financials", { has_clawback_policy: field(true), has_psu_plan: field(true) }),
+      // performance_period_years missing -- this sub-score used to require a
+      // field (comp_tied_to_emissions_target) that real data never has at
+      // all, making it permanently unavailable; it must not still gate on a
+      // field the pipeline can actually supply.
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_exec_compensation")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+});
+
+describe("computeScores: p3_controversy_flags (real registry sub-score, penalty dollar total)", () => {
+  it("scores a lower penalty total higher (lower_is_better)", () => {
+    const companies = [
+      makeCompany("A", "Industrials", { penalty_total_usd: field(0) }),
+      makeCompany("B", "Industrials", { penalty_total_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_controversy_flags")!;
+    const b = scores.get("B")!.pillars.P3.subScores.find((s) => s.id === "p3_controversy_flags")!;
+    expect(a.score!).toBeGreaterThan(b.score!);
   });
 });

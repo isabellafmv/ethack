@@ -74,13 +74,13 @@ export const VIEWS: ViewConfig[] = [
   {
     id: "P1",
     label: "Environmental",
-    // Four sub-scores, three axes. p1_energy_mix is reachable via the
-    // dropdown but not a default -- it's 0/500 covered in real data today,
-    // while p1_carbon_intensity and the newer p1_input_efficiency actually
-    // have companies on them. Defaulting to two empty axes out of three
-    // would undercut the entire reason input_efficiency was added.
+    // Four sub-scores, three axes. p1_resource_waste is reachable via the
+    // dropdown but not a default -- it's 0/500 covered (S16/S17/S26 aren't
+    // pulled), while the other three are all real, well-covered data:
+    // p1_carbon_intensity, p1_input_efficiency, and p1_energy_mix (now the
+    // grid-intensity regional proxy from S19, 475/500 -- see registry.ts).
     options: P1_SUBS,
-    defaultAxes: [bySubId(P1_SUBS, "p1_carbon_intensity"), bySubId(P1_SUBS, "p1_input_efficiency"), bySubId(P1_SUBS, "p1_resource_waste")],
+    defaultAxes: [bySubId(P1_SUBS, "p1_carbon_intensity"), bySubId(P1_SUBS, "p1_input_efficiency"), bySubId(P1_SUBS, "p1_energy_mix")],
   },
   {
     id: "P2",

@@ -23,6 +23,14 @@
 export type Pillar = "P1" | "P2" | "P3";
 export type Polarity = "higher_is_better" | "lower_is_better";
 export type NullPolicy = "not_disclosed" | "sector_median" | "zero";
+/** 'pipeline_gap': null because the data source hasn't been pulled for
+ * effectively the whole universe -- nobody's fault, so it's excluded from
+ * the disclosure-coverage penalty in pipeline.ts (renormalizing around it
+ * for free is already correct and this must not double-count that). Default
+ * is 'disclosure_gap': a company-specific absence of otherwise-available
+ * data counts against that pillar's disclosure coverage. Mirrors
+ * score_calculation's PIPELINE_GAP_INDICATORS / disclosure-gap taxonomy. */
+export type GapKind = "pipeline_gap" | "disclosure_gap";
 
 /** Raw canonical-field values for one company, coerced to number (booleans
  * become 1/0). Only ever contains the inputs a sub-score declared, and only
@@ -44,6 +52,8 @@ export interface SubScoreDef {
   optionalInputs?: string[];
   compute: (f: RawInputs) => number;
   nullPolicy: NullPolicy;
+  /** Defaults to 'disclosure_gap' when omitted -- see GapKind. */
+  gapKind?: GapKind;
   basis: string;
 }
 
@@ -75,10 +85,20 @@ export const REGISTRY: SubScoreDef[] = [
   {
     id: "p1_energy_mix",
     pillar: "P1",
-    label: "Renewable energy share",
-    polarity: "higher_is_better",
-    inputs: ["renewable_electricity_mwh", "total_electricity_mwh"],
-    compute: (f) => pct(f.renewable_electricity_mwh, f.total_electricity_mwh),
+    label: "Grid carbon intensity",
+    polarity: "lower_is_better",
+    // Modelled on score_calculation/environmental/environmental_score.py's
+    // _energy_mix_score. The spec's own fields (renewable/total electricity,
+    // S10/S21) have never been pulled -- 0/500 real coverage -- so this is a
+    // REGIONAL PROXY instead, from S19 (EPA eGRID): the carbon intensity of
+    // the electricity grid where a company is headquartered. Every company
+    // in the same US state shares the identical value, by construction --
+    // coarser than the spec's own indicator would be, but a real published
+    // government number, not a reconstruction of something else. ~475/500
+    // covered; the rest are non-US-headquartered companies with no US grid
+    // to map to.
+    inputs: ["grid_intensity_kgco2e_per_mwh"],
+    compute: (f) => f.grid_intensity_kgco2e_per_mwh,
     nullPolicy: "not_disclosed",
     basis: "FY2023",
   },
@@ -90,6 +110,12 @@ export const REGISTRY: SubScoreDef[] = [
     inputs: ["waste_diverted_pct"],
     compute: (f) => f.waste_diverted_pct,
     nullPolicy: "not_disclosed",
+    // Matches environmental_score.py's PIPELINE_GAP_INDICATORS: the real
+    // spec indicator here needs S16 (EPA TRI), S17 (EPA RSEI), or S26 (WRI
+    // Aqueduct) -- none pulled, 0/500, for the whole universe. Not a
+    // company-specific disclosure gap, so it must not count against P1's
+    // disclosure-coverage penalty.
+    gapKind: "pipeline_gap",
     basis: "FY2023",
   },
   {
@@ -117,22 +143,36 @@ export const REGISTRY: SubScoreDef[] = [
     pillar: "P2",
     label: "Carbon-price exposure",
     polarity: "higher_is_better",
-    inputs: ["scope1_tco2e", "scope2_location_tco2e", "ebitda_usd"],
+    inputs: ["scope1_tco2e", "ebitda_usd"],
     // Ceiling-mapped, modelled on transition_score.py's _ceiling_score: an
-    // assumed $100/ton carbon price against (Scope 1 + Scope 2), as a share
-    // of EBITDA, clipped to 0-50% erosion and mapped so 0% erosion -> 100
-    // (best) and >=50% erosion -> 0 (worst). compute() already returns an
-    // oriented 0-100 value here, which is why polarity is higher_is_better
-    // even though the underlying risk (erosion) is a "lower is better"
-    // quantity -- percentile-ranking a pre-oriented score a second time
-    // would double-flip it if polarity stayed lower_is_better.
-    // Deliberately NOT using transition_score.py's sector-benchmark fallback
-    // for non-reporters (estimated_emissions_tco2e) -- that's the exact
-    // "reward silence" pattern this project exists to avoid. A company
-    // missing scope1/scope2 stays honestly excluded via nullPolicy below.
+    // assumed $100/ton carbon price (ASSUMED_CARBON_PRICE_USD_PER_TON) against
+    // Scope 1 emissions, as a share of EBITDA, clipped to 0-50% erosion and
+    // mapped so 0% erosion -> 100 (best) and >=50% erosion -> 0 (worst).
+    // compute() already returns an oriented 0-100 value here, which is why
+    // polarity is higher_is_better even though the underlying risk (erosion)
+    // is a "lower is better" quantity -- percentile-ranking a pre-oriented
+    // score a second time would double-flip it if polarity stayed
+    // lower_is_better.
+    //
+    // Two deliberate divergences from transition_score.py's
+    // carbon_price_exposure_score:
+    // 1. Scope 1 only, not Scope 1+2 -- matches what GHGRP actually
+    //    publishes (facility-level Scope 1 combustion emissions; GHGRP
+    //    doesn't report Scope 2) and matches Python's own
+    //    estimated_emissions_tco2e, which is scope1_tco2e alone.
+    //    scope2_location_tco2e has 0/500 real coverage in this pipeline --
+    //    requiring it (as an earlier version of this sub-score did) made
+    //    this whole sub-score permanently unavailable for every company,
+    //    a real bug, not a design choice.
+    // 2. NOT using transition_score.py's sector-benchmark fallback for
+    //    non-reporters (estimated_emissions_tco2e's "modelled" tier) --
+    //    that's the exact "reward silence" pattern this project exists to
+    //    avoid. A company missing scope1_tco2e stays honestly excluded via
+    //    nullPolicy below, same stance as p1_carbon_intensity.
     compute: (f) => {
       if (f.ebitda_usd <= 0) return NaN; // <=0, not ===0: negative EBITDA
-      const pctErosion = ((f.scope1_tco2e + f.scope2_location_tco2e) * 100) / f.ebitda_usd;
+      const carbonCostUsd = f.scope1_tco2e * 100; // ASSUMED_CARBON_PRICE_USD_PER_TON
+      const pctErosion = (carbonCostUsd * 100) / f.ebitda_usd;
       const clipped = Math.max(0, Math.min(50, pctErosion));
       return 100 * (1 - clipped / 50);
     },
@@ -186,6 +226,16 @@ export const REGISTRY: SubScoreDef[] = [
     pillar: "P3",
     label: "Board independence",
     polarity: "higher_is_better",
+    // governance_score.py's _board_independence_score blends this ratio with
+    // whether a lead independent director is named (lead_independent_director,
+    // 495/500 covered vs this ratio's 135/500) -- deliberately NOT ported
+    // here. That blend needs "mean of independently-available components",
+    // which this registry's inputs/optionalInputs model can't express without
+    // either gating on both (losing the 360 companies that have only the
+    // lead-director flag) or zero-filling the ratio when absent (a false
+    // "0% independent" for companies that simply don't disclose board
+    // composition -- exactly the reward/punish-silence pattern this project
+    // avoids). Left as ratio-only, a documented scope cut, not a silent gap.
     inputs: ["independent_director_count", "board_size"],
     compute: (f) => pct(f.independent_director_count, f.board_size),
     nullPolicy: "not_disclosed",
@@ -194,11 +244,24 @@ export const REGISTRY: SubScoreDef[] = [
   {
     id: "p3_exec_compensation",
     pillar: "P3",
-    label: "Climate-linked pay design",
+    label: "Compensation alignment",
     polarity: "higher_is_better",
-    inputs: ["comp_tied_to_emissions_target", "has_clawback_policy", "has_psu_plan"],
-    compute: (f) =>
-      ((f.comp_tied_to_emissions_target + f.has_clawback_policy + f.has_psu_plan) / 3) * 100,
+    inputs: ["has_clawback_policy", "has_psu_plan", "performance_period_years"],
+    // Modelled on governance_score.py's _compensation_alignment_score: mean
+    // of the two booleans and the LTI performance period, capped at 3 years
+    // (longer periods reward long-term thinking; 3+ years is already a
+    // strong signal, more isn't better). Replaces comp_tied_to_emissions_target,
+    // which is in the pillar spec's four booleans but S04 doesn't actually
+    // emit it -- 0/500, structurally, not a temporary gap -- so requiring it
+    // made this sub-score permanently unavailable for the whole universe, a
+    // real bug rather than an honest data gap. Relabelled from "Climate-linked
+    // pay design" to "Compensation alignment" since none of its three real
+    // components are climate-specific -- this measures general pay-governance
+    // structure, and the label should say so honestly.
+    compute: (f) => {
+      const performanceComponent = (Math.min(f.performance_period_years, 3) / 3) * 100;
+      return (f.has_clawback_policy * 100 + f.has_psu_plan * 100 + performanceComponent) / 3;
+    },
     nullPolicy: "not_disclosed",
     basis: "FY2023",
   },
@@ -207,8 +270,21 @@ export const REGISTRY: SubScoreDef[] = [
     pillar: "P3",
     label: "Penalty record",
     polarity: "lower_is_better",
-    inputs: ["penalty_count"],
-    compute: (f) => f.penalty_count,
+    inputs: ["penalty_total_usd"],
+    // Modelled on governance_score.py's _controversy_score: a dollar total
+    // of EPA ECHO penalties, not a raw count -- the spec's own note is that
+    // penalty COUNT correlates with facility count and should really be
+    // normalised per facility, which this pipeline doesn't have a reliable
+    // figure for either; a dollar total is at least an absolute magnitude,
+    // not an artifact of how many facilities happen to file separately.
+    // Python ranks this UNIVERSE-WIDE (not per-sector), reasoning that most
+    // companies genuinely have $0 in penalties and that tie shouldn't be
+    // split arbitrarily by sector -- kept SECTOR-relative here instead,
+    // matching every other sub-score in this registry's distribution scope;
+    // switching just this one to a universe-wide distribution needs a second
+    // distribution-builder, a bigger change than this pass makes. Documented
+    // divergence, not an oversight.
+    compute: (f) => f.penalty_total_usd,
     nullPolicy: "not_disclosed",
     basis: "FY2023",
   },
