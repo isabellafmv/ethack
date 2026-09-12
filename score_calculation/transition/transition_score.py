@@ -31,6 +31,13 @@ data:
 
 WEIGHTS below are provisional -- intended to be reviewed against the raw
 sub-scores (all kept in the output CSV) before being finalized.
+
+A company's transition_score is a weighted average over whichever sub-scores
+it actually has (renormalized), never a silent worst-case default for a
+missing one -- missing EBITDA, FCF, or R&D used to be treated as "erosion/
+cost so bad it hit the ceiling" or "spends nothing," which was the single
+largest source of 0-scores in the pillar and had nothing to do with the
+company's actual transition risk. See info.md for the before/after numbers.
 """
 from pathlib import Path
 
@@ -170,18 +177,31 @@ def compute_transition_scores() -> pd.DataFrame:
     df = _estimate_emissions(df)
 
     # --- Carbon-price exposure ---
+    # No EBITDA on record is a data gap, not "erosion so bad it hit the
+    # ceiling" -- null it and let the final weighting skip it, rather than
+    # silently scoring these companies as maximally exposed (see info.md;
+    # this used to be the largest single cause of 0-scores in the pillar).
     df["carbon_price_cost_usd"] = df["estimated_emissions_tco2e"] * ASSUMED_CARBON_PRICE_USD_PER_TON
-    df["pct_ebitda_erosion"] = 100 * df["carbon_price_cost_usd"] / df["ebitda_usd"]
-    erosion_for_scoring = df["pct_ebitda_erosion"].clip(lower=0).where(df["ebitda_usd"] > 0, CARBON_PRICE_EROSION_CEILING_PCT)
-    df["carbon_price_exposure_score"] = _ceiling_score(erosion_for_scoring, CARBON_PRICE_EROSION_CEILING_PCT)
+    df["pct_ebitda_erosion"] = (100 * df["carbon_price_cost_usd"] / df["ebitda_usd"]).where(df["ebitda_usd"] > 0)
+    df["carbon_price_exposure_score"] = _ceiling_score(
+        df["pct_ebitda_erosion"].clip(lower=0), CARBON_PRICE_EROSION_CEILING_PCT
+    )
 
     # --- Regulatory momentum: SBTi tier blended with R&D intensity ---
+    # rnd_expense_usd absent means "not broken out as its own XBRL line item",
+    # not "spends nothing on R&D" (most non-tech sectors never tag it
+    # separately even when they do spend) -- so a missing R&D figure drops
+    # that half of the blend entirely rather than defaulting it to 0, which
+    # used to force this sub-score toward "no momentum" for 54% of the index
+    # regardless of their actual SBTi status. See info.md.
     df["momentum_tier"] = df.apply(_momentum_tier, axis=1)
-    sbti_score = df["momentum_tier"].map(MOMENTUM_SCORES).fillna(0)
-    df["rnd_intensity_pct"] = 100 * df["rnd_expense_usd"].fillna(0) / df["revenue_usd"]
-    rnd_score = (100 * df["rnd_intensity_pct"].clip(lower=0, upper=RND_INTENSITY_CAP_PCT) / RND_INTENSITY_CAP_PCT).fillna(0)
-    df["regulatory_momentum_score"] = (
-        MOMENTUM_SUBWEIGHTS["sbti"] * sbti_score + MOMENTUM_SUBWEIGHTS["rnd_intensity"] * rnd_score
+    sbti_score = df["momentum_tier"].map(MOMENTUM_SCORES).astype(float)
+    df["rnd_intensity_pct"] = 100 * df["rnd_expense_usd"] / df["revenue_usd"]
+    rnd_score = (100 * df["rnd_intensity_pct"].clip(lower=0, upper=RND_INTENSITY_CAP_PCT) / RND_INTENSITY_CAP_PCT)
+    has_rnd = rnd_score.notna()
+    df["regulatory_momentum_score"] = sbti_score.where(
+        ~has_rnd,
+        MOMENTUM_SUBWEIGHTS["sbti"] * sbti_score + MOMENTUM_SUBWEIGHTS["rnd_intensity"] * rnd_score,
     )
 
     # --- Transition affordability ---
@@ -199,13 +219,28 @@ def compute_transition_scores() -> pd.DataFrame:
     df["annualized_transition_cost_usd"] = (
         df["emissions_reduction_needed_tco2e"] * df["abatement_cost_usd_per_tco2e"] / df["years_to_target"]
     )
-    df["pct_fcf_committed"] = 100 * df["annualized_transition_cost_usd"] / df["free_cash_flow_usd"]
-    affordability_for_scoring = df["pct_fcf_committed"].clip(lower=0).where(
-        df["free_cash_flow_usd"] > 0, AFFORDABILITY_COST_CEILING_PCT
+    # Missing or non-positive FCF is a data gap, not "committed >=100% of
+    # cash flow" -- null it rather than defaulting to worst-case. Before this
+    # fix, every single 0 on this sub-score came from a missing FCF figure,
+    # never a genuinely over-committed company (see info.md).
+    df["pct_fcf_committed"] = (100 * df["annualized_transition_cost_usd"] / df["free_cash_flow_usd"]).where(
+        df["free_cash_flow_usd"] > 0
     )
-    df["transition_affordability_score"] = _ceiling_score(affordability_for_scoring, AFFORDABILITY_COST_CEILING_PCT)
+    df["transition_affordability_score"] = _ceiling_score(
+        df["pct_fcf_committed"].clip(lower=0), AFFORDABILITY_COST_CEILING_PCT
+    )
 
-    df["transition_score"] = sum(df[col] * w for col, w in WEIGHTS.items())
+    # Weighted average over whichever sub-scores a company actually has,
+    # renormalized -- a missing sub-score no longer drags the composite
+    # toward 0 just because one term of a sum went NaN.
+    sub_cols = list(WEIGHTS)
+    weights = pd.Series(WEIGHTS)
+    available = df[sub_cols].notna()
+    weight_matrix = available * weights
+    weight_sum = weight_matrix.sum(axis=1)
+    df["transition_score"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
+    df["n_subscores_available"] = available.sum(axis=1)
+    df.loc[weight_sum == 0, "transition_score"] = pd.NA
 
     columns = [
         "ticker", "company", "sector",
@@ -216,7 +251,7 @@ def compute_transition_scores() -> pd.DataFrame:
         "rnd_intensity_pct", "momentum_tier", "regulatory_momentum_score",
         "target_basis", "target_reduction_pct", "target_year", "years_to_target",
         "abatement_cost_usd_per_tco2e", "pct_fcf_committed", "transition_affordability_score",
-        "transition_score",
+        "n_subscores_available", "transition_score",
     ]
     return df[columns]
 
