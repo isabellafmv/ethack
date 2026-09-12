@@ -3,6 +3,7 @@ cache/
 # Derived artifacts — rebuilt by `python -m pipeline.load`
 data/scores.db
 data/matrix.json
+data/quotes.json
 data/manifest.csv
 __pycache__/
 *.pyc

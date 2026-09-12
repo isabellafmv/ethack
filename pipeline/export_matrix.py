@@ -8,6 +8,12 @@ slider latency; the maths itself is ~10ms in JS.
 So we ship harmonised VALUES plus per-observation confidence, and the browser
 does percentile + weighted sum per tick. It also means the demo works with the
 wifi off, which is the point of rehearsing that way.
+
+Two payloads, not one:
+  matrix.json  values, units, fiscal years, source ids, status, confidence,
+               url index. No verbatim quotes. Loads on boot; budget 900 KB.
+  quotes.json  {ticker: {field: quote}}. Loads lazily on first point click --
+               the quote is the demo, but it is not needed to draw a point.
 """
 
 from __future__ import annotations
@@ -16,10 +22,17 @@ import argparse
 import json
 import sqlite3
 from collections import defaultdict
+from datetime import datetime, timezone
+from pathlib import Path
 
 from .common.entities import sectors, universe
 from .common.fields import FIELDS, VALIDATION_ONLY
 from .common.paths import DB_PATH, MATRIX_PATH
+
+#: Bump when the payload SHAPE changes (new/renamed top-level keys, a field
+#: record's keys change meaning). The frontend asserts this on boot so a shape
+#: drift fails loudly instead of silently misreading old keys.
+PAYLOAD_SCHEMA_VERSION = 1
 
 #: When two sources report the same field, which one the map shows by default.
 #: Measured beats reported beats modelled. The others stay in `alternatives`
@@ -44,7 +57,8 @@ def _rank(src: str) -> int:
 ANALYSIS_YEAR = 2023
 
 
-def export(db_path=DB_PATH, out=MATRIX_PATH, year: int = ANALYSIS_YEAR) -> dict:
+def export(db_path=DB_PATH, out=MATRIX_PATH, quotes_out=None,
+           year: int = ANALYSIS_YEAR) -> dict:
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row
     rows = conn.execute(
@@ -101,15 +115,24 @@ def export(db_path=DB_PATH, out=MATRIX_PATH, year: int = ANALYSIS_YEAR) -> dict:
     sec = sectors()
     meta = {r["ticker"]: r for r in universe()}
     companies = []
+    quotes: dict[str, dict[str, str]] = {}
     for t in sorted({k[0] for k in best}):
         vals = {f: best[(t, f)] for (tk, f) in best if tk == t}
         n = len(vals)
+        # Quotes are the click-through demo but not needed to render a point,
+        # so they ship in a separate lazy-loaded payload -- see quotes_out
+        # below. `fields` on the boot payload never carries `q`.
+        t_quotes = {f: rec["q"] for f, rec in vals.items() if rec.get("q")}
+        if t_quotes:
+            quotes[t] = t_quotes
+        matrix_fields = {f: {k: v for k, v in rec.items() if k != "q"}
+                          for f, rec in vals.items()}
         companies.append({
             "ticker": t,
             "name": meta.get(t, {}).get("company", t),
             "sector": sec.get(t, "Unknown"),
             "sub_industry": meta.get(t, {}).get("sub_industry", ""),
-            "fields": vals,
+            "fields": matrix_fields,
             # Alternatives exist so a click can show "EPA says X, the company
             # says Y". Two is enough for that; the quote belongs to the chosen
             # value, and carrying it on every alternative doubled the payload.
@@ -121,7 +144,11 @@ def export(db_path=DB_PATH, out=MATRIX_PATH, year: int = ANALYSIS_YEAR) -> dict:
             "confidence": round(sum(v["c"] for v in vals.values()) / n, 3) if n else 0.0,
         })
 
+    generated_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+
     payload = {
+        "schema_version": PAYLOAD_SCHEMA_VERSION,
+        "generated_at": generated_at,
         "analysis_year": year,
         "schema": {f: {"unit": s.unit, "pillar": s.pillar, "dtype": s.dtype.__name__,
                        "description": s.description}
@@ -131,13 +158,26 @@ def export(db_path=DB_PATH, out=MATRIX_PATH, year: int = ANALYSIS_YEAR) -> dict:
         "urls": [u for u, _ in sorted(urls.items(), key=lambda kv: kv[1])],
         "companies": companies,
     }
+    out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(payload, separators=(",", ":")), encoding="utf-8")
     kb = out.stat().st_size / 1024
     print(f"wrote {out} -- {len(companies)} companies, {kb:.0f} KB")
-    if kb > 2000:
-        print("  WARNING: over 2 MB. Trim fields or drop quotes from the payload "
-              "and fetch them on click.")
+    if kb > 900:
+        print("  WARNING: over the 900 KB boot budget. Trim fields shipped in "
+              "matrix.json -- quotes already live in the lazy quotes.json.")
+
+    quotes_payload = {
+        "schema_version": PAYLOAD_SCHEMA_VERSION,
+        "generated_at": generated_at,
+        "quotes": quotes,
+    }
+    quotes_out = Path(quotes_out) if quotes_out else out.parent / "quotes.json"
+    quotes_out.parent.mkdir(parents=True, exist_ok=True)
+    quotes_out.write_text(json.dumps(quotes_payload, separators=(",", ":")), encoding="utf-8")
+    qkb = quotes_out.stat().st_size / 1024
+    print(f"wrote {quotes_out} -- {qkb:.0f} KB")
+
     return payload
 
 
@@ -145,6 +185,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--db", default=str(DB_PATH))
     ap.add_argument("--out", default=str(MATRIX_PATH))
+    ap.add_argument("--quotes-out", default=None,
+                     help="default: quotes.json next to --out")
     a = ap.parse_args()
-    from pathlib import Path
-    export(a.db, Path(a.out))
+    export(a.db, Path(a.out), Path(a.quotes_out) if a.quotes_out else None)
