@@ -3,7 +3,8 @@ from pathlib import Path
 import pandas as pd
 
 
-COMPANIES_PATH = Path("data/sp500_companies.csv")
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+COMPANIES_PATH = PROJECT_ROOT / "data/sp500_companies.csv"
 
 SECTOR_BASELINES = {
     "resource_efficiency": {

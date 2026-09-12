@@ -8,18 +8,9 @@ DATA_DIR = Path("data")
 OUTPUT_PATH = DATA_DIR / "sp500_scores_3d.html"
 
 SCORE_FILES = {
-    "Resource and operational efficiency": (
-        DATA_DIR / "resource_efficiency_scores.csv",
-        "resource_efficiency_score",
-    ),
-    "Structural/disruption risk": (
-        DATA_DIR / "structural_disruption_risk_scores.csv",
-        "structural_disruption_risk_score",
-    ),
-    "Governance and capital stewardship": (
-        DATA_DIR / "governance_capital_stewardship_scores.csv",
-        "governance_capital_stewardship_score",
-    ),
+    "Environmental": (DATA_DIR / "environmental_scores.csv", "environmental_score"),
+    "Transition": (DATA_DIR / "transition_scores.csv", "transition_score"),
+    "Governance": (DATA_DIR / "governance_scores.csv", "governance_capital_stewardship_score"),
 }
 
 
@@ -53,23 +44,23 @@ def load_scores() -> pd.DataFrame:
 def create_visualization(scores: pd.DataFrame) -> None:
     figure = px.scatter_3d(
         scores,
-        x="Resource and operational efficiency",
-        y="Structural/disruption risk",
-        z="Governance and capital stewardship",
+        x="Environmental",
+        y="Transition",
+        z="Governance",
         color="sector",
         hover_name="company",
         hover_data={
             "ticker": True,
             "sector": True,
-            "Resource and operational efficiency": True,
-            "Structural/disruption risk": True,
-            "Governance and capital stewardship": True,
+            "Environmental": True,
+            "Transition": True,
+            "Governance": True,
         },
-        title="S&P 500 Company Category Scores",
+        title="S&P 500 Pillar Scores",
         labels={
-            "Resource and operational efficiency": "Resource and operational efficiency",
-            "Structural/disruption risk": "Structural/disruption risk",
-            "Governance and capital stewardship": "Governance and capital stewardship",
+            "Environmental": "Environmental",
+            "Transition": "Transition",
+            "Governance": "Governance",
         },
     )
     figure.update_traces(marker={"size": 5, "opacity": 0.8})
