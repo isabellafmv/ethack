@@ -49,17 +49,26 @@ export function referenceScoreForAxis(
  * whatever blend sits between them. `delta === null` (no reference to
  * compare against at all -- a different situation from "tied with the
  * reference") is the one case that still needs a distinct neutral grey,
- * since it isn't a point on this scale at all. `t` is a delta on the 0-100
- * score scale, clamped to +/-40 (deltas rarely exceed that in practice;
- * clamping keeps a handful of extreme companies from washing out the rest
- * of the scale). */
+ * since it isn't a point on this scale at all.
+ *
+ * `t` is a delta on the 0-100 score scale, clamped to +/-CLAMP. This is
+ * `avgDelta` from ScatterView -- the MEAN across every currently-visible
+ * axis, which is a materially narrower distribution than any single axis's
+ * own delta (independent per-axis deltas partially cancel out when
+ * averaged). Measured against the real matrix: median |avgDelta| ~11,
+ * p75 ~17, p95 ~26, max observed ~36 -- a +/-40 clamp (sized for a single
+ * axis) left most companies within the muddy middle third of the scale.
+ * Clamping at 20 instead means a middling company still reads as a clear
+ * lean rather than "basically the same colour as everyone else", while the
+ * ~10% most extreme companies per axis-set legitimately max out solid. */
+const CLAMP = 20;
 const NO_REFERENCE_RGB = [150, 150, 148];
 const WORSE_RGB = [228, 108, 10]; // #E46C0A -- "worse"
 const BETTER_RGB = [170, 182, 68]; // #AAB644 -- "better"
 
 export function divergingColor(delta: number | null): string {
   if (delta === null) return `rgb(${NO_REFERENCE_RGB.join(",")})`;
-  const t = Math.max(-40, Math.min(40, delta)) / 40; // -1..1
+  const t = Math.max(-CLAMP, Math.min(CLAMP, delta)) / CLAMP; // -1..1
   return lerpColor(WORSE_RGB, BETTER_RGB, (t + 1) / 2);
 }
 

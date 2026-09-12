@@ -4,13 +4,23 @@
 // every slider tick): 30 resampled computeScores() calls is cheap once, but
 // running it on every drag frame would make the sliders feel laggy for no
 // benefit -- the composite recompute itself already happens live.
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { PILLARS, normalizedWeights, type WeightsState } from "../scoring/pipeline";
 import { registryForPillar, type Pillar } from "../scoring/registry";
 import { PRESETS, type PresetId, type WeightMode, applyPreset } from "../scoring/weights";
 import { rankSensitivity, type RankSpread } from "../scoring/rankSensitivity";
 import { PILLAR_SCORE_NAMES } from "../viz/views";
 import type { Company } from "../scoring/types";
+
+const SLIDER_MAX = 3;
+/** The displayed percentage AND the fill bar both have to track this same
+ * value/max ratio -- the same one the native thumb itself is positioned by
+ * (0-3, not each pillar's normalized 0-100% share of the total, which
+ * depends on the OTHER two sliders too). A slider can only ever honestly
+ * represent its OWN position; showing the normalized share next to it read
+ * as "the number and the dot disagree" the moment more than one slider
+ * differed from its default, because they were never the same quantity. */
+const rawPct = (value: number) => Math.round((value / SLIDER_MAX) * 100);
 
 export function WeightPanel({
   weights, onChange, companies, weightMode, onChangeWeightMode, materialityStatus, sensitivityWeights,
@@ -83,29 +93,45 @@ export function WeightPanel({
 
       {PILLARS.map((pillar) => (
         <div key={pillar} className="weight-group">
-          <div className="weight-row">
+          {/* Its own stacked layout, not the 3-column weight-row grid the
+              sub-score rows use below -- "Environmental Impact"/"Transition
+              risk" are long enough that giving them a fixed label column
+              wide enough to avoid truncating squeezed the slider track down
+              to a few px in this sidebar's width (the actual cause of a
+              "the fill doesn't show" report -- it was rendering, just inside
+              an invisibly narrow track, not a browser bug). A full-width
+              label row above a full-width slider row has room for both. */}
+          <div className="weight-row-top">
             <label>{PILLAR_SCORE_NAMES[pillar]}</label>
+            <span className="weight-value">{Math.round(normalized.pillars[pillar] * 100)}%</span>
+          </div>
+          <div
+            className={isMateriality ? "range-wrap range-wrap--disabled" : "range-wrap"}
+            style={{ "--fill": `${rawPct(weights.pillars[pillar] ?? 1)}%` } as CSSProperties}
+          >
             <input
-              type="range" min={0} max={3} step={0.05}
+              type="range" min={0} max={SLIDER_MAX} step={0.05}
               value={weights.pillars[pillar] ?? 1}
               disabled={isMateriality}
               onChange={(e) => setPillarWeight(pillar, Number(e.target.value))}
-              style={{ background: `linear-gradient(to right, var(--ink) ${Math.round(normalized.pillars[pillar] * 100)}%, var(--ink-12) 0)` }}
             />
-            <span className="weight-value">{Math.round(normalized.pillars[pillar] * 100)}%</span>
           </div>
           <details>
             <summary>Sub-scores</summary>
             {registryForPillar(pillar).map((sub) => (
               <div key={sub.id} className="weight-row weight-row--sub">
                 <label>{sub.label}</label>
-                <input
-                  type="range" min={0} max={3} step={0.05}
-                  value={weights.subscores[sub.id] ?? 1}
-                  disabled={isMateriality}
-                  onChange={(e) => setSubWeight(sub.id, Number(e.target.value))}
-                  style={{ background: `linear-gradient(to right, var(--ink) ${Math.round((normalized.subscores[sub.id] ?? 0) * 100)}%, var(--ink-12) 0)` }}
-                />
+                <div
+                  className={isMateriality ? "range-wrap range-wrap--disabled" : "range-wrap"}
+                  style={{ "--fill": `${rawPct(weights.subscores[sub.id] ?? 1)}%` } as CSSProperties}
+                >
+                  <input
+                    type="range" min={0} max={SLIDER_MAX} step={0.05}
+                    value={weights.subscores[sub.id] ?? 1}
+                    disabled={isMateriality}
+                    onChange={(e) => setSubWeight(sub.id, Number(e.target.value))}
+                  />
+                </div>
                 <span className="weight-value">{Math.round((normalized.subscores[sub.id] ?? 0) * 100)}%</span>
               </div>
             ))}

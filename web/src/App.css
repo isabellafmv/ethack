@@ -174,25 +174,36 @@ input[type="radio"] { accent-color: var(--accent); }
    palette across browsers, and the flat "black fill on light track" look
    needs an explicit per-value gradient (set inline, see WeightPanel.tsx)
    rather than relying on browser defaults. */
-input[type="range"] {
+/* Custom flat/square slider, drawn as two plain absolutely-positioned
+   layers (track + fill) BEHIND a fully transparent native range input,
+   rather than via any browser's native track/progress/runnable-track
+   pseudo-elements -- those differ enough between Chrome/Safari (fill via
+   the base element's own background) and Firefox (fill via a distinct
+   ::-moz-range-progress box with its own native width-tracking) that
+   relying on either broke in the other. This way only the thumb is native;
+   the visible track and fill are ordinary CSS this project already
+   controls everywhere else. `--fill` is set inline per-slider in
+   WeightPanel.tsx from the same percentage already shown as text. */
+.range-wrap { position: relative; display: flex; align-items: center; width: 100%; height: 14px; }
+.range-wrap::before, .range-wrap::after {
+  content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  height: 6px; border-radius: 999px; pointer-events: none;
+}
+.range-wrap::before { width: 100%; background: var(--ink-12); }
+.range-wrap::after { width: var(--fill, 0%); background: var(--ink); }
+.range-wrap.range-wrap--disabled::after { background: var(--ink-35); }
+
+.range-wrap input[type="range"] {
+  position: relative; z-index: 1;
   -webkit-appearance: none; appearance: none;
-  width: 100%; height: 6px; margin: 0;
-  border-radius: 999px;
-  background: var(--ink-12);
+  width: 100%; height: 14px; margin: 0;
+  background: transparent;
   outline: none;
 }
-/* Safari renders its own opaque track chrome unless the runnable-track
-   pseudo-element is ALSO explicitly reset to transparent -- without this,
-   the base element's own background (the inline progress-fill gradient set
-   per-slider in WeightPanel.tsx) gets painted over, and the native thumb
-   shows through oversized. Chrome doesn't need this rule but tolerates it. */
-input[type="range"]::-webkit-slider-runnable-track {
-  -webkit-appearance: none;
-  width: 100%; height: 6px;
-  background: transparent;
-  border-radius: 999px;
-}
-input[type="range"]::-webkit-slider-thumb {
+.range-wrap input[type="range"]::-webkit-slider-runnable-track { -webkit-appearance: none; background: transparent; height: 6px; }
+.range-wrap input[type="range"]::-moz-range-track { background: transparent; height: 6px; }
+.range-wrap input[type="range"]::-moz-range-progress { background: transparent; } /* fill is drawn by ::after above, not Firefox's native progress box */
+.range-wrap input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 14px; height: 14px; border-radius: 50%;
   background: var(--ink);
@@ -200,12 +211,9 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
   margin-top: -4px; /* (track 6px - thumb 14px) / 2 -- centers the thumb on the track in WebKit, which doesn't always do this automatically */
 }
-input[type="range"]::-moz-range-track { height: 6px; background: transparent; border-radius: 999px; }
-input[type="range"]::-moz-range-progress { height: 6px; background: var(--ink); border-radius: 999px; }
-input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border: 2px solid var(--bg); border-radius: 50%; background: var(--ink); cursor: pointer; }
-input[type="range"]:disabled::-webkit-slider-thumb { background: var(--ink-35); }
-input[type="range"]:disabled::-moz-range-thumb { background: var(--ink-35); }
-input[type="range"]:disabled::-moz-range-progress { background: var(--ink-35); }
+.range-wrap input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border: 2px solid var(--bg); border-radius: 50%; background: var(--ink); cursor: pointer; }
+.range-wrap input[type="range"]:disabled::-webkit-slider-thumb { background: var(--ink-35); }
+.range-wrap input[type="range"]:disabled::-moz-range-thumb { background: var(--ink-35); }
 
 .axis-pickers { display: flex; gap: 2rem; padding: 1.1rem 2rem 0.75rem; }
 .axis-picker { display: flex; align-items: center; gap: 0.4rem; }
@@ -269,11 +277,17 @@ input[type="range"]:disabled::-moz-range-progress { background: var(--ink-35); }
 .preset-materiality--active { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700; }
 .materiality-explainer { font-size: 0.72rem; color: var(--ink-55); margin: -0.5rem 0 1rem; line-height: 1.5; }
 .weight-group { margin-bottom: 1.4rem; }
-.weight-row { display: grid; grid-template-columns: 132px 1fr 40px; align-items: center; gap: 0.6rem; font-size: 0.78rem; margin: 0.35rem 0; }
-.weight-row--sub { grid-template-columns: 130px 1fr 40px; }
+.weight-row { display: grid; grid-template-columns: 130px 1fr 40px; align-items: center; gap: 0.6rem; font-size: 0.78rem; margin: 0.35rem 0; }
 .weight-row label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .weight-row input:disabled { opacity: 0.35; }
 .weight-value { text-align: right; color: var(--ink-55); }
+/* Pillar rows (Environmental Impact/Transition risk/Governance) get their
+   own full-width label line above a full-width slider line, rather than the
+   3-column grid the (shorter-labelled) sub-score rows below use -- those
+   pillar names are long enough that a fixed label column wide enough not to
+   truncate them left almost no room for the slider track itself. */
+.weight-row-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.85rem; font-weight: 600; margin: 0.5rem 0 0.4rem; }
+.weight-row-top .weight-value { font-weight: 400; }
 details summary { cursor: pointer; font-size: 0.75rem; color: var(--ink-55); margin: 0.3rem 0; }
 
 .rank-sensitivity { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--ink); }
