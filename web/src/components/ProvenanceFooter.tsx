@@ -18,11 +18,10 @@ export function ProvenanceFooter({
 
   return (
     <footer className={`provenance-footer${stale ? " provenance-footer--stale" : ""}`}>
-      <span>Generated {ageLabel} ago ({generatedAt})</span>
+      {/* <span>Generated {ageLabel} ago ({generatedAt})</span> */}
       <span>schema v{schemaVersion}</span>
       <span>
-        Emissions FY{analysisYear} (latest GHGRP); financials FY2025. Fiscal
-        year-ends span Jan-Dec, which is standard practice.
+        Emissions FY{analysisYear} (latest GHGRP); financials FY2025.
       </span>
       {stale && <span className="provenance-footer-warning">STALE &gt; 2h</span>}
     </footer>

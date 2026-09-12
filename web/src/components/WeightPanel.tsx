@@ -9,9 +9,8 @@ import { PILLARS, normalizedWeights, type WeightsState } from "../scoring/pipeli
 import { registryForPillar, type Pillar } from "../scoring/registry";
 import { PRESETS, type PresetId, type WeightMode, applyPreset } from "../scoring/weights";
 import { rankSensitivity, type RankSpread } from "../scoring/rankSensitivity";
+import { PILLAR_SCORE_NAMES } from "../viz/views";
 import type { Company } from "../scoring/types";
-
-const PILLAR_LABELS: Record<Pillar, string> = { P1: "Environmental", P2: "Transition", P3: "Governance" };
 
 export function WeightPanel({
   weights, onChange, companies, weightMode, onChangeWeightMode, materialityStatus, sensitivityWeights,
@@ -85,7 +84,7 @@ export function WeightPanel({
       {PILLARS.map((pillar) => (
         <div key={pillar} className="weight-group">
           <div className="weight-row">
-            <label>{PILLAR_LABELS[pillar]}</label>
+            <label>{PILLAR_SCORE_NAMES[pillar]}</label>
             <input
               type="range" min={0} max={3} step={0.05}
               value={weights.pillars[pillar] ?? 1}

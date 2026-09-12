@@ -16,9 +16,18 @@ export function axisKey(axis: AxisSlot): string {
   return axis.kind === "subscore" ? `sub:${axis.id}` : axis.kind === "pillar" ? `pillar:${axis.pillar}` : "composite";
 }
 
+/** The pillar's actual score name, used everywhere a pillar is named (axis
+ * pickers, the weight panel, the coverage strip) so there's exactly one
+ * place to keep them in sync. */
+export const PILLAR_SCORE_NAMES: Record<Pillar, string> = {
+  P1: "Environmental Impact",
+  P2: "Transition risk",
+  P3: "Governance",
+};
+
 export function axisLabel(axis: AxisSlot): string {
   if (axis.kind === "composite") return "Composite";
-  if (axis.kind === "pillar") return `${axis.pillar} score`;
+  if (axis.kind === "pillar") return PILLAR_SCORE_NAMES[axis.pillar];
   return subScoreById(axis.id).label;
 }
 
@@ -71,35 +80,39 @@ export const VIEWS: ViewConfig[] = [
     ],
     defaultAxes: [{ kind: "pillar", pillar: "P1" }, { kind: "pillar", pillar: "P2" }, { kind: "pillar", pillar: "P3" }],
   },
-  {
-    id: "P1",
-    label: "Environmental",
-    // Four sub-scores, three axes. p1_resource_waste is reachable via the
-    // dropdown but not a default -- it's 0/500 covered (S16/S17/S26 aren't
-    // pulled), while the other three are all real, well-covered data:
-    // p1_carbon_intensity, p1_input_efficiency, and p1_energy_mix (now the
-    // grid-intensity regional proxy from S19, 475/500 -- see registry.ts).
-    options: P1_SUBS,
-    defaultAxes: [bySubId(P1_SUBS, "p1_carbon_intensity"), bySubId(P1_SUBS, "p1_input_efficiency"), bySubId(P1_SUBS, "p1_energy_mix")],
-  },
-  {
-    id: "P2",
-    label: "Transition",
-    // Four sub-scores, three axes -- p2_innovation is reachable via the
-    // dropdown (options carries all four) even though it's not a default.
-    options: P2_SUBS,
-    defaultAxes: [P2_SUBS[0], P2_SUBS[1], P2_SUBS[2]],
-  },
-  {
-    id: "P3",
-    label: "Governance",
-    // Four sub-scores, three axes -- the inverse of P2's situation: the
-    // NEW sub-score (p3_capital_stewardship) is the well-covered one and
-    // belongs in the default three; p3_controversy_flags (0/500 covered
-    // today) moves to dropdown-only.
-    options: P3_SUBS,
-    defaultAxes: [bySubId(P3_SUBS, "p3_board_independence"), bySubId(P3_SUBS, "p3_exec_compensation"), bySubId(P3_SUBS, "p3_capital_stewardship")],
-  },
+  // Per-pillar views (Environmental/Transition/Governance) are parked here,
+  // not deleted -- only "Global" is exposed as a tab for now. Their configs
+  // (and P1_SUBS/P2_SUBS/P3_SUBS above) are kept working and type-checked so
+  // re-enabling is a one-line uncomment, not a rebuild.
+  // {
+  //   id: "P1",
+  //   label: "Environmental",
+  //   // Four sub-scores, three axes. p1_resource_waste is reachable via the
+  //   // dropdown but not a default -- it's 0/500 covered (S16/S17/S26 aren't
+  //   // pulled), while the other three are all real, well-covered data:
+  //   // p1_carbon_intensity, p1_input_efficiency, and p1_energy_mix (now the
+  //   // grid-intensity regional proxy from S19, 475/500 -- see registry.ts).
+  //   options: P1_SUBS,
+  //   defaultAxes: [bySubId(P1_SUBS, "p1_carbon_intensity"), bySubId(P1_SUBS, "p1_input_efficiency"), bySubId(P1_SUBS, "p1_energy_mix")],
+  // },
+  // {
+  //   id: "P2",
+  //   label: "Transition",
+  //   // Four sub-scores, three axes -- p2_innovation is reachable via the
+  //   // dropdown (options carries all four) even though it's not a default.
+  //   options: P2_SUBS,
+  //   defaultAxes: [P2_SUBS[0], P2_SUBS[1], P2_SUBS[2]],
+  // },
+  // {
+  //   id: "P3",
+  //   label: "Governance",
+  //   // Four sub-scores, three axes -- the inverse of P2's situation: the
+  //   // NEW sub-score (p3_capital_stewardship) is the well-covered one and
+  //   // belongs in the default three; p3_controversy_flags (0/500 covered
+  //   // today) moves to dropdown-only.
+  //   options: P3_SUBS,
+  //   defaultAxes: [bySubId(P3_SUBS, "p3_board_independence"), bySubId(P3_SUBS, "p3_exec_compensation"), bySubId(P3_SUBS, "p3_capital_stewardship")],
+  // },
 ];
 
 export function viewById(id: ViewConfig["id"]): ViewConfig {

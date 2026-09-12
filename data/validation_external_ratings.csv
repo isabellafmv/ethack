@@ -1,501 +1,501 @@
-ticker,company,sector,sub_industry,esg_controversy_level_external,esg_risk_score_external
-A,Agilent Technologies,Health Care,Life Sciences Tools & Services,Low,13.6
-AAPL,Apple Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",Low,17.2
-ABBV,AbbVie,Health Care,Biotechnology,Medium,29.9
+ticker,company,sector,sub_industry,esg_risk_score_external,esg_controversy_level_external
+A,Agilent Technologies,Health Care,Life Sciences Tools & Services,13.6,Low
+AAPL,Apple Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",17.2,Low
+ABBV,AbbVie,Health Care,Biotechnology,29.9,Medium
 ABNB,Airbnb,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",,
-ABT,Abbott Laboratories,Health Care,Health Care Equipment,Medium,24.8
-ACGL,Arch Capital Group,Financials,Property & Casualty Insurance,Medium,22.5
-ACN,Accenture,Information Technology,IT Consulting & Other Services,Negligible,9.8
-ADBE,Adobe Inc.,Information Technology,Application Software,Low,13.1
-ADI,Analog Devices,Information Technology,Semiconductors,Medium,22.9
-ADM,Archer Daniels Midland,Consumer Staples,Agricultural Products & Services,High,31.8
-ADP,Automatic Data Processing,Industrials,Human Resource & Employment Services,Low,13.8
-ADSK,Autodesk,Information Technology,Application Software,Low,16.8
-AEE,Ameren,Utilities,Multi-Utilities,Medium,27.2
-AEP,American Electric Power,Utilities,Electric Utilities,Medium,26.1
-AES,AES Corporation,Utilities,Independent Power Producers & Energy Traders,Medium,26.7
-AFL,Aflac,Financials,Life & Health Insurance,Low,18.3
-AIG,American International Group,Financials,Multi-line Insurance,Medium,24.2
-AIZ,Assurant,Financials,Multi-line Insurance,Medium,24.1
-AJG,Arthur J. Gallagher & Co.,Financials,Insurance Brokers,Medium,21.2
-AKAM,Akamai Technologies,Information Technology,Internet Services & Infrastructure,Low,17.0
-ALB,Albemarle Corporation,Materials,Specialty Chemicals,Medium,26.6
+ABT,Abbott Laboratories,Health Care,Health Care Equipment,24.8,Medium
+ACGL,Arch Capital Group,Financials,Property & Casualty Insurance,22.5,Medium
+ACN,Accenture,Information Technology,IT Consulting & Other Services,9.8,Negligible
+ADBE,Adobe Inc.,Information Technology,Application Software,13.1,Low
+ADI,Analog Devices,Information Technology,Semiconductors,22.9,Medium
+ADM,Archer Daniels Midland,Consumer Staples,Agricultural Products & Services,31.8,High
+ADP,Automatic Data Processing,Industrials,Human Resource & Employment Services,13.8,Low
+ADSK,Autodesk,Information Technology,Application Software,16.8,Low
+AEE,Ameren,Utilities,Multi-Utilities,27.2,Medium
+AEP,American Electric Power,Utilities,Electric Utilities,26.1,Medium
+AES,AES Corporation,Utilities,Independent Power Producers & Energy Traders,26.7,Medium
+AFL,Aflac,Financials,Life & Health Insurance,18.3,Low
+AIG,American International Group,Financials,Multi-line Insurance,24.2,Medium
+AIZ,Assurant,Financials,Multi-line Insurance,24.1,Medium
+AJG,Arthur J. Gallagher & Co.,Financials,Insurance Brokers,21.2,Medium
+AKAM,Akamai Technologies,Information Technology,Internet Services & Infrastructure,17.0,Low
+ALB,Albemarle Corporation,Materials,Specialty Chemicals,26.6,Medium
 ALGN,Align Technology,Health Care,Health Care Supplies,,
-ALL,Allstate,Financials,Property & Casualty Insurance,Medium,22.0
-ALLE,Allegion,Industrials,Building Products,Medium,21.8
-AMAT,Applied Materials,Information Technology,Semiconductor Materials & Equipment,Low,12.7
+ALL,Allstate,Financials,Property & Casualty Insurance,22.0,Medium
+ALLE,Allegion,Industrials,Building Products,21.8,Medium
+AMAT,Applied Materials,Information Technology,Semiconductor Materials & Equipment,12.7,Low
 AMCR,Amcor,Materials,Paper & Plastic Packaging Products & Materials,,
 AMD,Advanced Micro Devices,Information Technology,Semiconductors,,
-AME,Ametek,Industrials,Electrical Components & Equipment,Medium,23.9
-AMGN,Amgen,Health Care,Biotechnology,Medium,22.0
-AMP,Ameriprise Financial,Financials,Asset Management & Custody Banks,Medium,20.3
-AMT,American Tower,Real Estate,Telecom Tower REITs,Low,10.9
-AMZN,Amazon,Consumer Discretionary,Broadline Retail,High,30.6
-ANET,Arista Networks,Information Technology,Communications Equipment,Low,16.7
+AME,Ametek,Industrials,Electrical Components & Equipment,23.9,Medium
+AMGN,Amgen,Health Care,Biotechnology,22.0,Medium
+AMP,Ameriprise Financial,Financials,Asset Management & Custody Banks,20.3,Medium
+AMT,American Tower,Real Estate,Telecom Tower REITs,10.9,Low
+AMZN,Amazon,Consumer Discretionary,Broadline Retail,30.6,High
+ANET,Arista Networks,Information Technology,Communications Equipment,16.7,Low
 AON,Aon plc,Financials,Insurance Brokers,,
-AOS,A. O. Smith,Industrials,Building Products,Medium,25.4
-APA,APA Corporation,Energy,Oil & Gas Exploration & Production,High,38.8
-APD,Air Products,Materials,Industrial Gases,Low,12.3
-APH,Amphenol,Information Technology,Electronic Components,Low,19.6
+AOS,A. O. Smith,Industrials,Building Products,25.4,Medium
+APA,APA Corporation,Energy,Oil & Gas Exploration & Production,38.8,High
+APD,Air Products,Materials,Industrial Gases,12.3,Low
+APH,Amphenol,Information Technology,Electronic Components,19.6,Low
 APO,Apollo Global Management,Financials,Asset Management & Custody Banks,,
 APP,AppLovin,Communication Services,Advertising,,
-APTV,Aptiv,Consumer Discretionary,Automotive Parts & Equipment,Low,10.7
-ARE,Alexandria Real Estate Equities,Real Estate,Office REITs,Low,13.9
+APTV,Aptiv,Consumer Discretionary,Automotive Parts & Equipment,10.7,Low
+ARE,Alexandria Real Estate Equities,Real Estate,Office REITs,13.9,Low
 ARES,Ares Management,Financials,Asset Management & Custody Banks,,
-ATO,Atmos Energy,Utilities,Gas Utilities,High,34.6
-AVGO,Broadcom,Information Technology,Semiconductors,Low,20.0
-AVY,Avery Dennison,Materials,Paper & Plastic Packaging Products & Materials,Low,16.1
-AWK,American Water Works,Utilities,Water Utilities,Medium,21.6
+ATO,Atmos Energy,Utilities,Gas Utilities,34.6,High
+AVGO,Broadcom,Information Technology,Semiconductors,20.0,Low
+AVY,Avery Dennison,Materials,Paper & Plastic Packaging Products & Materials,16.1,Low
+AWK,American Water Works,Utilities,Water Utilities,21.6,Medium
 AXON,Axon Enterprise,Industrials,Aerospace & Defense,,
-AXP,American Express,Financials,Consumer Finance,Low,18.6
-AZO,AutoZone,Consumer Discretionary,Automotive Retail,Low,11.0
-BA,Boeing,Industrials,Aerospace & Defense,High,39.6
-BAC,Bank of America,Financials,Diversified Banks,Medium,28.3
-BALL,Ball Corporation,Materials,"Metal, Glass & Plastic Containers",Low,12.1
-BAX,Baxter International,Health Care,Health Care Equipment,Medium,23.6
-BBY,Best Buy,Consumer Discretionary,Computer & Electronics Retail,Low,15.9
-BDX,Becton Dickinson,Health Care,Health Care Equipment,Medium,23.8
-BEN,Franklin Resources,Financials,Asset Management & Custody Banks,Low,18.3
+AXP,American Express,Financials,Consumer Finance,18.6,Low
+AZO,AutoZone,Consumer Discretionary,Automotive Retail,11.0,Low
+BA,Boeing,Industrials,Aerospace & Defense,39.6,High
+BAC,Bank of America,Financials,Diversified Banks,28.3,Medium
+BALL,Ball Corporation,Materials,"Metal, Glass & Plastic Containers",12.1,Low
+BAX,Baxter International,Health Care,Health Care Equipment,23.6,Medium
+BBY,Best Buy,Consumer Discretionary,Computer & Electronics Retail,15.9,Low
+BDX,Becton Dickinson,Health Care,Health Care Equipment,23.8,Medium
+BEN,Franklin Resources,Financials,Asset Management & Custody Banks,18.3,Low
 BF.B,Brown–Forman,Consumer Staples,Distillers & Vintners,,
-BG,Bunge Global,Consumer Staples,Agricultural Products & Services,High,32.9
-BIIB,Biogen,Health Care,Biotechnology,Medium,22.2
-BKNG,Booking Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Low,19.2
+BG,Bunge Global,Consumer Staples,Agricultural Products & Services,32.9,High
+BIIB,Biogen,Health Care,Biotechnology,22.2,Medium
+BKNG,Booking Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",19.2,Low
 BKR,Baker Hughes,Energy,Oil & Gas Equipment & Services,,
 BLDR,Builders FirstSource,Industrials,Building Products,,
-BLK,BlackRock,Financials,Asset Management & Custody Banks,Low,18.3
-BMY,Bristol Myers Squibb,Health Care,Pharmaceuticals,Medium,22.7
+BLK,BlackRock,Financials,Asset Management & Custody Banks,18.3,Low
+BMY,Bristol Myers Squibb,Health Care,Pharmaceuticals,22.7,Medium
 BNY,BNY Mellon,Financials,Asset Management & Custody Banks,,
-BR,Broadridge Financial Solutions,Industrials,Data Processing & Outsourced Services,Low,16.6
+BR,Broadridge Financial Solutions,Industrials,Data Processing & Outsourced Services,16.6,Low
 BRK.B,Berkshire Hathaway,Financials,Multi-Sector Holdings,,
-BRO,Brown & Brown,Financials,Insurance Brokers,Medium,20.5
-BSX,Boston Scientific,Health Care,Health Care Equipment,Medium,23.1
-BX,Blackstone Inc.,Financials,Asset Management & Custody Banks,Medium,23.4
-BXP,"BXP, Inc.",Real Estate,Office REITs,Low,12.5
-C,Citigroup,Financials,Diversified Banks,Medium,29.2
-CAH,Cardinal Health,Health Care,Health Care Distributors,Low,14.9
+BRO,Brown & Brown,Financials,Insurance Brokers,20.5,Medium
+BSX,Boston Scientific,Health Care,Health Care Equipment,23.1,Medium
+BX,Blackstone Inc.,Financials,Asset Management & Custody Banks,23.4,Medium
+BXP,"BXP, Inc.",Real Estate,Office REITs,12.5,Low
+C,Citigroup,Financials,Diversified Banks,29.2,Medium
+CAH,Cardinal Health,Health Care,Health Care Distributors,14.9,Low
 CARR,Carrier Global,Industrials,Building Products,,
 CASY,Casey's,Consumer Staples,Food Retail,,
-CAT,Caterpillar Inc.,Industrials,Construction Machinery & Heavy Transportation Equipment,High,36.2
-CB,Chubb Limited,Financials,Property & Casualty Insurance,Medium,23.6
-CBOE,Cboe Global Markets,Financials,Financial Exchanges & Data,Medium,21.0
-CBRE,CBRE Group,Real Estate,Real Estate Services,Negligible,8.0
-CCI,Crown Castle,Real Estate,Telecom Tower REITs,Low,10.1
-CCL,Carnival Corporation,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Medium,24.5
-CDNS,Cadence Design Systems,Information Technology,Application Software,Low,12.0
-CDW,CDW Corporation,Information Technology,Technology Distributors,Negligible,9.2
+CAT,Caterpillar Inc.,Industrials,Construction Machinery & Heavy Transportation Equipment,36.2,High
+CB,Chubb Limited,Financials,Property & Casualty Insurance,23.6,Medium
+CBOE,Cboe Global Markets,Financials,Financial Exchanges & Data,21.0,Medium
+CBRE,CBRE Group,Real Estate,Real Estate Services,8.0,Negligible
+CCI,Crown Castle,Real Estate,Telecom Tower REITs,10.1,Low
+CCL,Carnival Corporation,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",24.5,Medium
+CDNS,Cadence Design Systems,Information Technology,Application Software,12.0,Low
+CDW,CDW Corporation,Information Technology,Technology Distributors,9.2,Negligible
 CEG,Constellation Energy,Utilities,Electric Utilities,,
-CF,CF Industries,Materials,Fertilizers & Agricultural Chemicals,Medium,29.3
-CFG,Citizens Financial Group,Financials,Regional Banks,Medium,23.5
-CHD,Church & Dwight,Consumer Staples,Household Products,Low,19.9
-CHRW,C.H. Robinson,Industrials,Air Freight & Logistics,Low,19.3
-CHTR,Charter Communications,Communication Services,Cable & Satellite,Medium,24.7
-CI,Cigna,Health Care,Health Care Services,Low,11.6
+CF,CF Industries,Materials,Fertilizers & Agricultural Chemicals,29.3,Medium
+CFG,Citizens Financial Group,Financials,Regional Banks,23.5,Medium
+CHD,Church & Dwight,Consumer Staples,Household Products,19.9,Low
+CHRW,C.H. Robinson,Industrials,Air Freight & Logistics,19.3,Low
+CHTR,Charter Communications,Communication Services,Cable & Satellite,24.7,Medium
+CI,Cigna,Health Care,Health Care Services,11.6,Low
 CIEN,Ciena,Information Technology,Communications Equipment,,
-CINF,Cincinnati Financial,Financials,Property & Casualty Insurance,Medium,25.6
-CL,Colgate-Palmolive,Consumer Staples,Household Products,Medium,26.2
-CLX,Clorox,Consumer Staples,Household Products,Medium,21.6
-CMCSA,Comcast,Communication Services,Cable & Satellite,Medium,23.1
-CME,CME Group,Financials,Financial Exchanges & Data,Low,17.8
-CMG,Chipotle Mexican Grill,Consumer Discretionary,Restaurants,Medium,20.7
-CMI,Cummins,Industrials,Construction Machinery & Heavy Transportation Equipment,Low,19.3
-CMS,CMS Energy,Utilities,Multi-Utilities,Medium,21.7
-CNC,Centene Corporation,Health Care,Managed Health Care,Low,19.9
-CNP,CenterPoint Energy,Utilities,Multi-Utilities,Medium,28.7
-COF,Capital One,Financials,Consumer Finance,Medium,22.5
+CINF,Cincinnati Financial,Financials,Property & Casualty Insurance,25.6,Medium
+CL,Colgate-Palmolive,Consumer Staples,Household Products,26.2,Medium
+CLX,Clorox,Consumer Staples,Household Products,21.6,Medium
+CMCSA,Comcast,Communication Services,Cable & Satellite,23.1,Medium
+CME,CME Group,Financials,Financial Exchanges & Data,17.8,Low
+CMG,Chipotle Mexican Grill,Consumer Discretionary,Restaurants,20.7,Medium
+CMI,Cummins,Industrials,Construction Machinery & Heavy Transportation Equipment,19.3,Low
+CMS,CMS Energy,Utilities,Multi-Utilities,21.7,Medium
+CNC,Centene Corporation,Health Care,Managed Health Care,19.9,Low
+CNP,CenterPoint Energy,Utilities,Multi-Utilities,28.7,Medium
+COF,Capital One,Financials,Consumer Finance,22.5,Medium
 COHR,Coherent Corp.,Information Technology,Electronic Components,,
 COIN,Coinbase,Financials,Financial Exchanges & Data,,
-COO,Cooper Companies (The),Health Care,Health Care Supplies,Low,17.5
-COP,ConocoPhillips,Energy,Oil & Gas Exploration & Production,High,33.9
-COR,Cencora,Health Care,Health Care Distributors,Low,12.8
-COST,Costco,Consumer Staples,Consumer Staples Merchandise Retail,Medium,23.3
+COO,Cooper Companies (The),Health Care,Health Care Supplies,17.5,Low
+COP,ConocoPhillips,Energy,Oil & Gas Exploration & Production,33.9,High
+COR,Cencora,Health Care,Health Care Distributors,12.8,Low
+COST,Costco,Consumer Staples,Consumer Staples Merchandise Retail,23.3,Medium
 CPAY,Corpay,Financials,Transaction & Payment Processing Services,,
-CPRT,Copart,Industrials,Diversified Support Services,Low,16.0
-CPT,Camden Property Trust,Real Estate,Multi-Family Residential REITs,Low,16.1
+CPRT,Copart,Industrials,Diversified Support Services,16.0,Low
+CPT,Camden Property Trust,Real Estate,Multi-Family Residential REITs,16.1,Low
 CRH,CRH plc,Materials,Construction Materials,,
 CRL,Charles River Laboratories,Health Care,Life Sciences Tools & Services,,
-CRM,Salesforce,Information Technology,Application Software,Low,14.9
+CRM,Salesforce,Information Technology,Application Software,14.9,Low
 CRWD,CrowdStrike,Information Technology,Systems Software,,
-CSCO,Cisco,Information Technology,Communications Equipment,Low,13.9
-CSGP,CoStar Group,Real Estate,Real Estate Services,Medium,21.9
-CSX,CSX Corporation,Industrials,Rail Transportation,Medium,21.9
-CTAS,Cintas,Industrials,Diversified Support Services,Low,18.1
-CTSH,Cognizant,Information Technology,IT Consulting & Other Services,Low,14.7
+CSCO,Cisco,Information Technology,Communications Equipment,13.9,Low
+CSGP,CoStar Group,Real Estate,Real Estate Services,21.9,Medium
+CSX,CSX Corporation,Industrials,Rail Transportation,21.9,Medium
+CTAS,Cintas,Industrials,Diversified Support Services,18.1,Low
+CTSH,Cognizant,Information Technology,IT Consulting & Other Services,14.7,Low
 CTVA,Corteva,Materials,Fertilizers & Agricultural Chemicals,,
 CVNA,Carvana,Consumer Discretionary,Automotive Retail,,
-CVS,CVS Health,Health Care,Health Care Services,Medium,22.0
-CVX,Chevron Corporation,Energy,Integrated Oil & Gas,High,36.6
-D,Dominion Energy,Utilities,Multi-Utilities,Medium,26.4
-DAL,Delta Air Lines,Industrials,Passenger Airlines,High,30.3
+CVS,CVS Health,Health Care,Health Care Services,22.0,Medium
+CVX,Chevron Corporation,Energy,Integrated Oil & Gas,36.6,High
+D,Dominion Energy,Utilities,Multi-Utilities,26.4,Medium
+DAL,Delta Air Lines,Industrials,Passenger Airlines,30.3,High
 DASH,DoorDash,Consumer Discretionary,Specialized Consumer Services,,
-DD,DuPont,Industrials,Industrial Conglomerates,Medium,28.6
+DD,DuPont,Industrials,Industrial Conglomerates,28.6,Medium
 DDOG,Datadog,Information Technology,Application Software,,
-DE,Deere & Company,Industrials,Agricultural & Farm Machinery,Low,20.0
+DE,Deere & Company,Industrials,Agricultural & Farm Machinery,20.0,Low
 DECK,Deckers Brands,Consumer Discretionary,Footwear,,
 DELL,Dell Technologies,Information Technology,"Technology Hardware, Storage & Peripherals",,
-DG,Dollar General,Consumer Staples,Consumer Staples Merchandise Retail,Low,17.6
-DGX,Quest Diagnostics,Health Care,Health Care Services,Medium,21.2
-DHI,D. R. Horton,Consumer Discretionary,Homebuilding,Medium,21.0
-DHR,Danaher Corporation,Health Care,Life Sciences Tools & Services,Low,11.9
-DIS,Walt Disney Company (The),Communication Services,Movies & Entertainment,Low,15.7
-DLR,Digital Realty,Real Estate,Data Center REITs,Low,12.6
-DLTR,Dollar Tree,Consumer Staples,Consumer Staples Merchandise Retail,Medium,20.1
+DG,Dollar General,Consumer Staples,Consumer Staples Merchandise Retail,17.6,Low
+DGX,Quest Diagnostics,Health Care,Health Care Services,21.2,Medium
+DHI,D. R. Horton,Consumer Discretionary,Homebuilding,21.0,Medium
+DHR,Danaher Corporation,Health Care,Life Sciences Tools & Services,11.9,Low
+DIS,Walt Disney Company (The),Communication Services,Movies & Entertainment,15.7,Low
+DLR,Digital Realty,Real Estate,Data Center REITs,12.6,Low
+DLTR,Dollar Tree,Consumer Staples,Consumer Staples Merchandise Retail,20.1,Medium
 DOC,Healthpeak Properties,Real Estate,Health Care REITs,,
-DOV,Dover Corporation,Industrials,Industrial Machinery & Supplies & Components,Medium,25.9
+DOV,Dover Corporation,Industrials,Industrial Machinery & Supplies & Components,25.9,Medium
 DOW,Dow Inc.,Materials,Commodity Chemicals,,
-DPZ,Domino's,Consumer Discretionary,Restaurants,Medium,29.2
-DRI,Darden Restaurants,Consumer Discretionary,Restaurants,Medium,27.5
-DTE,DTE Energy,Utilities,Multi-Utilities,Medium,29.8
-DUK,Duke Energy,Utilities,Electric Utilities,Medium,27.0
-DVA,DaVita,Health Care,Health Care Services,Medium,22.6
-DVN,Devon Energy,Energy,Oil & Gas Exploration & Production,High,33.8
-DXCM,Dexcom,Health Care,Health Care Equipment,Medium,24.0
-EBAY,eBay Inc.,Consumer Discretionary,Broadline Retail,Low,17.6
+DPZ,Domino's,Consumer Discretionary,Restaurants,29.2,Medium
+DRI,Darden Restaurants,Consumer Discretionary,Restaurants,27.5,Medium
+DTE,DTE Energy,Utilities,Multi-Utilities,29.8,Medium
+DUK,Duke Energy,Utilities,Electric Utilities,27.0,Medium
+DVA,DaVita,Health Care,Health Care Services,22.6,Medium
+DVN,Devon Energy,Energy,Oil & Gas Exploration & Production,33.8,High
+DXCM,Dexcom,Health Care,Health Care Equipment,24.0,Medium
+EBAY,eBay Inc.,Consumer Discretionary,Broadline Retail,17.6,Low
 ECHO,EchoStar,Communication Services,Wireless Telecommunication Services,,
-ECL,Ecolab,Materials,Specialty Chemicals,Low,19.9
-ED,Consolidated Edison,Utilities,Multi-Utilities,Medium,23.8
-EFX,Equifax,Industrials,Research & Consulting Services,Medium,23.2
-EG,Everest Group,Financials,Reinsurance,Low,18.0
-EIX,Edison International,Utilities,Electric Utilities,Medium,27.5
-EL,Estée Lauder Companies (The),Consumer Staples,Personal Care Products,Medium,25.5
-ELV,Elevance Health,Health Care,Managed Health Care,Low,11.4
+ECL,Ecolab,Materials,Specialty Chemicals,19.9,Low
+ED,Consolidated Edison,Utilities,Multi-Utilities,23.8,Medium
+EFX,Equifax,Industrials,Research & Consulting Services,23.2,Medium
+EG,Everest Group,Financials,Reinsurance,18.0,Low
+EIX,Edison International,Utilities,Electric Utilities,27.5,Medium
+EL,Estée Lauder Companies (The),Consumer Staples,Personal Care Products,25.5,Medium
+ELV,Elevance Health,Health Care,Managed Health Care,11.4,Low
 EME,Emcor,Industrials,Construction & Engineering,,
-EMR,Emerson Electric,Industrials,Electrical Components & Equipment,Medium,28.4
-EOG,EOG Resources,Energy,Oil & Gas Exploration & Production,High,34.2
-EQIX,Equinix,Real Estate,Data Center REITs,Low,13.9
-EQT,EQT Corporation,Energy,Oil & Gas Exploration & Production,High,35.7
+EMR,Emerson Electric,Industrials,Electrical Components & Equipment,28.4,Medium
+EOG,EOG Resources,Energy,Oil & Gas Exploration & Production,34.2,High
+EQIX,Equinix,Real Estate,Data Center REITs,13.9,Low
+EQT,EQT Corporation,Energy,Oil & Gas Exploration & Production,35.7,High
 ERIE,Erie Indemnity,Financials,Insurance Brokers,,
-ES,Eversource Energy,Utilities,Electric Utilities,Low,18.6
-ESS,Essex Property Trust,Real Estate,Multi-Family Residential REITs,Low,12.4
-ETN,Eaton Corporation,Industrials,Electrical Components & Equipment,Low,17.9
-ETR,Entergy,Utilities,Electric Utilities,Medium,26.7
+ES,Eversource Energy,Utilities,Electric Utilities,18.6,Low
+ESS,Essex Property Trust,Real Estate,Multi-Family Residential REITs,12.4,Low
+ETN,Eaton Corporation,Industrials,Electrical Components & Equipment,17.9,Low
+ETR,Entergy,Utilities,Electric Utilities,26.7,Medium
 EVRG,Evergy,Utilities,Electric Utilities,,
-EW,Edwards Lifesciences,Health Care,Health Care Equipment,Low,18.6
-EXC,Exelon,Utilities,Electric Utilities,Medium,22.9
+EW,Edwards Lifesciences,Health Care,Health Care Equipment,18.6,Low
+EXC,Exelon,Utilities,Electric Utilities,22.9,Medium
 EXE,Expand Energy,Energy,Oil & Gas Exploration & Production,,
-EXPD,Expeditors International,Industrials,Air Freight & Logistics,Low,16.6
-EXPE,Expedia Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Medium,27.6
-EXR,Extra Space Storage,Real Estate,Self-Storage REITs,Low,15.2
-F,Ford Motor Company,Consumer Discretionary,Automobile Manufacturers,Medium,22.4
+EXPD,Expeditors International,Industrials,Air Freight & Logistics,16.6,Low
+EXPE,Expedia Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",27.6,Medium
+EXR,Extra Space Storage,Real Estate,Self-Storage REITs,15.2,Low
+F,Ford Motor Company,Consumer Discretionary,Automobile Manufacturers,22.4,Medium
 FANG,Diamondback Energy,Energy,Oil & Gas Exploration & Production,,
-FAST,Fastenal,Industrials,Trading Companies & Distributors,Medium,24.7
-FCX,Freeport-McMoRan,Materials,Copper,High,31.6
-FDS,FactSet,Financials,Financial Exchanges & Data,Low,18.4
-FDX,FedEx,Industrials,Air Freight & Logistics,Low,19.7
+FAST,Fastenal,Industrials,Trading Companies & Distributors,24.7,Medium
+FCX,Freeport-McMoRan,Materials,Copper,31.6,High
+FDS,FactSet,Financials,Financial Exchanges & Data,18.4,Low
+FDX,FedEx,Industrials,Air Freight & Logistics,19.7,Low
 FDXF,FedEx Freight,Industrials,Cargo Ground Transportation,,
-FE,FirstEnergy,Utilities,Electric Utilities,Medium,25.6
+FE,FirstEnergy,Utilities,Electric Utilities,25.6,Medium
 FERG,Ferguson Enterprises,Industrials,Trading Companies & Distributors,,
-FFIV,"F5, Inc.",Information Technology,Communications Equipment,Low,17.1
+FFIV,"F5, Inc.",Information Technology,Communications Equipment,17.1,Low
 FICO,Fair Isaac,Information Technology,Application Software,,
-FIS,Fidelity National Information Services,Financials,Transaction & Payment Processing Services,Low,17.5
-FISV,Fiserv,Financials,Transaction & Payment Processing Services,Low,19.6
-FITB,Fifth Third Bancorp,Financials,Regional Banks,Low,16.8
+FIS,Fidelity National Information Services,Financials,Transaction & Payment Processing Services,17.5,Low
+FISV,Fiserv,Financials,Transaction & Payment Processing Services,19.6,Low
+FITB,Fifth Third Bancorp,Financials,Regional Banks,16.8,Low
 FIX,Comfort Systems USA,Industrials,Construction & Engineering,,
 FLEX,Flex Ltd.,Information Technology,Electronic Manufacturing Services,,
 FOX,Fox Corporation (Class B),Communication Services,Broadcasting,,
-FRT,Federal Realty Investment Trust,Real Estate,Retail REITs,Low,12.4
+FRT,Federal Realty Investment Trust,Real Estate,Retail REITs,12.4,Low
 FSLR,First Solar,Information Technology,Semiconductors,,
-FTNT,Fortinet,Information Technology,Systems Software,Low,18.9
-FTV,Fortive,Industrials,Industrial Machinery & Supplies & Components,High,34.8
-GD,General Dynamics,Industrials,Aerospace & Defense,High,35.2
+FTNT,Fortinet,Information Technology,Systems Software,18.9,Low
+FTV,Fortive,Industrials,Industrial Machinery & Supplies & Components,34.8,High
+GD,General Dynamics,Industrials,Aerospace & Defense,35.2,High
 GDDY,GoDaddy,Information Technology,Internet Services & Infrastructure,,
-GE,GE Aerospace,Industrials,Aerospace & Defense,Severe,40.5
+GE,GE Aerospace,Industrials,Aerospace & Defense,40.5,Severe
 GEHC,GE HealthCare,Health Care,Health Care Equipment,,
-GEN,Gen Digital,Information Technology,Systems Software,Low,16.9
+GEN,Gen Digital,Information Technology,Systems Software,16.9,Low
 GEV,GE Vernova,Industrials,Heavy Electrical Equipment,,
-GILD,Gilead Sciences,Health Care,Biotechnology,Medium,23.0
-GIS,General Mills,Consumer Staples,Packaged Foods & Meats,Medium,21.1
-GL,Globe Life,Financials,Life & Health Insurance,Medium,20.4
-GLW,Corning Inc.,Information Technology,Electronic Components,Low,16.5
-GM,General Motors,Consumer Discretionary,Automobile Manufacturers,Medium,28.5
+GILD,Gilead Sciences,Health Care,Biotechnology,23.0,Medium
+GIS,General Mills,Consumer Staples,Packaged Foods & Meats,21.1,Medium
+GL,Globe Life,Financials,Life & Health Insurance,20.4,Medium
+GLW,Corning Inc.,Information Technology,Electronic Components,16.5,Low
+GM,General Motors,Consumer Discretionary,Automobile Manufacturers,28.5,Medium
 GNRC,Generac,Industrials,Heavy Electrical Equipment,,
-GOOGL,Alphabet Inc. (Class A),Communication Services,Interactive Media & Services,Medium,24.2
-GPC,Genuine Parts Company,Consumer Discretionary,Distributors,Low,13.7
-GPN,Global Payments,Financials,Transaction & Payment Processing Services,Medium,20.9
-GRMN,Garmin,Consumer Discretionary,Consumer Electronics,Medium,20.7
-GS,Goldman Sachs,Financials,Investment Banking & Brokerage,Medium,25.5
-GWW,W. W. Grainger,Industrials,Industrial Machinery & Supplies & Components,Low,16.0
-HAL,Halliburton,Energy,Oil & Gas Equipment & Services,Medium,25.6
-HAS,Hasbro,Consumer Discretionary,Leisure Products,Negligible,7.1
-HBAN,Huntington Bancshares,Financials,Regional Banks,Medium,21.8
-HCA,HCA Healthcare,Health Care,Health Care Facilities,Medium,28.8
-HD,Home Depot (The),Consumer Discretionary,Home Improvement Retail,Low,12.6
-HIG,Hartford (The),Financials,Property & Casualty Insurance,Low,16.6
+GOOGL,Alphabet Inc. (Class A),Communication Services,Interactive Media & Services,24.2,Medium
+GPC,Genuine Parts Company,Consumer Discretionary,Distributors,13.7,Low
+GPN,Global Payments,Financials,Transaction & Payment Processing Services,20.9,Medium
+GRMN,Garmin,Consumer Discretionary,Consumer Electronics,20.7,Medium
+GS,Goldman Sachs,Financials,Investment Banking & Brokerage,25.5,Medium
+GWW,W. W. Grainger,Industrials,Industrial Machinery & Supplies & Components,16.0,Low
+HAL,Halliburton,Energy,Oil & Gas Equipment & Services,25.6,Medium
+HAS,Hasbro,Consumer Discretionary,Leisure Products,7.1,Negligible
+HBAN,Huntington Bancshares,Financials,Regional Banks,21.8,Medium
+HCA,HCA Healthcare,Health Care,Health Care Facilities,28.8,Medium
+HD,Home Depot (The),Consumer Discretionary,Home Improvement Retail,12.6,Low
+HIG,Hartford (The),Financials,Property & Casualty Insurance,16.6,Low
 HII,Huntington Ingalls Industries,Industrials,Aerospace & Defense,,
-HLT,Hilton Worldwide,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Low,17.6
-HON,Honeywell Technologies,Industrials,Industrial Conglomerates,Medium,28.6
+HLT,Hilton Worldwide,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",17.6,Low
+HON,Honeywell Technologies,Industrials,Industrial Conglomerates,28.6,Medium
 HONA,Honeywell Aerospace,Industrials,Aerospace & Defense,,
 HOOD,Robinhood Markets,Financials,Investment Banking & Brokerage,,
-HPE,Hewlett Packard Enterprise,Information Technology,"Technology Hardware, Storage & Peripherals",Low,10.7
-HPQ,HP Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",Low,11.3
-HRL,Hormel Foods,Consumer Staples,Packaged Foods & Meats,Medium,30.0
-HSIC,Henry Schein,Health Care,Health Care Distributors,Low,13.9
-HST,Host Hotels & Resorts,Real Estate,Hotel & Resort REITs,Low,13.4
-HSY,Hershey Company (The),Consumer Staples,Packaged Foods & Meats,Medium,26.0
-HUBB,Hubbell Incorporated,Industrials,Industrial Machinery & Supplies & Components,Low,19.6
-HUM,Humana,Health Care,Managed Health Care,Medium,22.5
+HPE,Hewlett Packard Enterprise,Information Technology,"Technology Hardware, Storage & Peripherals",10.7,Low
+HPQ,HP Inc.,Information Technology,"Technology Hardware, Storage & Peripherals",11.3,Low
+HRL,Hormel Foods,Consumer Staples,Packaged Foods & Meats,30.0,Medium
+HSIC,Henry Schein,Health Care,Health Care Distributors,13.9,Low
+HST,Host Hotels & Resorts,Real Estate,Hotel & Resort REITs,13.4,Low
+HSY,Hershey Company (The),Consumer Staples,Packaged Foods & Meats,26.0,Medium
+HUBB,Hubbell Incorporated,Industrials,Industrial Machinery & Supplies & Components,19.6,Low
+HUM,Humana,Health Care,Managed Health Care,22.5,Medium
 HWM,Howmet Aerospace,Industrials,Aerospace & Defense,,
 IBKR,Interactive Brokers,Financials,Investment Banking & Brokerage,,
-IBM,IBM,Information Technology,IT Consulting & Other Services,Low,14.1
-ICE,Intercontinental Exchange,Financials,Financial Exchanges & Data,Low,19.8
-IDXX,Idexx Laboratories,Health Care,Health Care Equipment,Low,18.7
-IEX,IDEX Corporation,Industrials,Industrial Machinery & Supplies & Components,Medium,29.3
-IFF,International Flavors & Fragrances,Materials,Specialty Chemicals,Medium,22.7
-INCY,Incyte,Health Care,Biotechnology,Medium,24.8
-INTC,Intel,Information Technology,Semiconductors,Low,18.9
-INTU,Intuit,Information Technology,Application Software,Low,16.4
+IBM,IBM,Information Technology,IT Consulting & Other Services,14.1,Low
+ICE,Intercontinental Exchange,Financials,Financial Exchanges & Data,19.8,Low
+IDXX,Idexx Laboratories,Health Care,Health Care Equipment,18.7,Low
+IEX,IDEX Corporation,Industrials,Industrial Machinery & Supplies & Components,29.3,Medium
+IFF,International Flavors & Fragrances,Materials,Specialty Chemicals,22.7,Medium
+INCY,Incyte,Health Care,Biotechnology,24.8,Medium
+INTC,Intel,Information Technology,Semiconductors,18.9,Low
+INTU,Intuit,Information Technology,Application Software,16.4,Low
 INVH,Invitation Homes,Real Estate,Single-Family Residential REITs,,
-IP,International Paper,Materials,Paper & Plastic Packaging Products & Materials,Medium,24.5
-IQV,IQVIA,Health Care,Life Sciences Tools & Services,Low,19.1
+IP,International Paper,Materials,Paper & Plastic Packaging Products & Materials,24.5,Medium
+IQV,IQVIA,Health Care,Life Sciences Tools & Services,19.1,Low
 IR,Ingersoll Rand,Industrials,Industrial Machinery & Supplies & Components,,
-IRM,Iron Mountain,Real Estate,Other Specialized REITs,Low,14.5
-ISRG,Intuitive Surgical,Health Care,Health Care Equipment,Medium,21.1
-IT,Gartner,Information Technology,IT Consulting & Other Services,Low,18.9
-ITW,Illinois Tool Works,Industrials,Industrial Machinery & Supplies & Components,Medium,25.3
-IVZ,Invesco,Financials,Asset Management & Custody Banks,Medium,22.8
-J,Jacobs Solutions,Industrials,Construction & Engineering,Medium,22.4
-JBHT,J.B. Hunt,Industrials,Cargo Ground Transportation,Low,14.8
+IRM,Iron Mountain,Real Estate,Other Specialized REITs,14.5,Low
+ISRG,Intuitive Surgical,Health Care,Health Care Equipment,21.1,Medium
+IT,Gartner,Information Technology,IT Consulting & Other Services,18.9,Low
+ITW,Illinois Tool Works,Industrials,Industrial Machinery & Supplies & Components,25.3,Medium
+IVZ,Invesco,Financials,Asset Management & Custody Banks,22.8,Medium
+J,Jacobs Solutions,Industrials,Construction & Engineering,22.4,Medium
+JBHT,J.B. Hunt,Industrials,Cargo Ground Transportation,14.8,Low
 JBL,Jabil,Information Technology,Electronic Manufacturing Services,,
-JCI,Johnson Controls,Industrials,Building Products,Low,14.4
-JKHY,Jack Henry & Associates,Financials,Transaction & Payment Processing Services,Low,18.7
-JNJ,Johnson & Johnson,Health Care,Pharmaceuticals,Medium,24.0
-JPM,JPMorgan Chase,Financials,Diversified Banks,Medium,29.3
+JCI,Johnson Controls,Industrials,Building Products,14.4,Low
+JKHY,Jack Henry & Associates,Financials,Transaction & Payment Processing Services,18.7,Low
+JNJ,Johnson & Johnson,Health Care,Pharmaceuticals,24.0,Medium
+JPM,JPMorgan Chase,Financials,Diversified Banks,29.3,Medium
 KDP,Keurig Dr Pepper,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,,
-KEY,KeyCorp,Financials,Regional Banks,Medium,21.4
-KEYS,Keysight Technologies,Information Technology,Electronic Equipment & Instruments,Negligible,7.6
-KHC,Kraft Heinz,Consumer Staples,Packaged Foods & Meats,High,33.7
-KIM,Kimco Realty,Real Estate,Retail REITs,Low,10.9
+KEY,KeyCorp,Financials,Regional Banks,21.4,Medium
+KEYS,Keysight Technologies,Information Technology,Electronic Equipment & Instruments,7.6,Negligible
+KHC,Kraft Heinz,Consumer Staples,Packaged Foods & Meats,33.7,High
+KIM,Kimco Realty,Real Estate,Retail REITs,10.9,Low
 KKR,KKR & Co.,Financials,Asset Management & Custody Banks,,
-KLAC,KLA Corporation,Information Technology,Semiconductor Materials & Equipment,Low,17.2
-KMB,Kimberly-Clark,Consumer Staples,Household Products,Medium,28.5
-KMI,Kinder Morgan,Energy,Oil & Gas Storage & Transportation,Low,19.0
-KO,Coca-Cola Company (The),Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Medium,21.6
-KR,Kroger,Consumer Staples,Food Retail,Medium,21.3
+KLAC,KLA Corporation,Information Technology,Semiconductor Materials & Equipment,17.2,Low
+KMB,Kimberly-Clark,Consumer Staples,Household Products,28.5,Medium
+KMI,Kinder Morgan,Energy,Oil & Gas Storage & Transportation,19.0,Low
+KO,Coca-Cola Company (The),Consumer Staples,Soft Drinks & Non-alcoholic Beverages,21.6,Medium
+KR,Kroger,Consumer Staples,Food Retail,21.3,Medium
 KVUE,Kenvue,Consumer Staples,Personal Care Products,,
-L,Loews Corporation,Financials,Multi-line Insurance,Low,16.4
-LDOS,Leidos,Industrials,Diversified Support Services,Low,17.6
-LEN,Lennar,Consumer Discretionary,Homebuilding,Medium,25.4
-LH,Labcorp,Health Care,Health Care Services,Low,19.7
+L,Loews Corporation,Financials,Multi-line Insurance,16.4,Low
+LDOS,Leidos,Industrials,Diversified Support Services,17.6,Low
+LEN,Lennar,Consumer Discretionary,Homebuilding,25.4,Medium
+LH,Labcorp,Health Care,Health Care Services,19.7,Low
 LHX,L3Harris,Industrials,Aerospace & Defense,,
 LII,Lennox International,Industrials,Building Products,,
 LIN,Linde plc,Materials,Industrial Gases,,
 LITE,Lumentum,Information Technology,Communications Equipment,,
-LLY,Lilly (Eli),Health Care,Pharmaceuticals,Medium,24.3
-LMT,Lockheed Martin,Industrials,Aerospace & Defense,High,30.2
-LNT,Alliant Energy,Utilities,Electric Utilities,Medium,21.4
-LOW,Lowe's,Consumer Discretionary,Home Improvement Retail,Low,11.8
-LRCX,Lam Research,Information Technology,Semiconductor Materials & Equipment,Low,13.6
-LULU,Lululemon Athletica,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Low,16.9
-LUV,Southwest Airlines,Industrials,Passenger Airlines,High,30.7
-LVS,Las Vegas Sands,Consumer Discretionary,Casinos & Gaming,Low,18.7
-LYB,LyondellBasell,Materials,Specialty Chemicals,Medium,20.7
+LLY,Lilly (Eli),Health Care,Pharmaceuticals,24.3,Medium
+LMT,Lockheed Martin,Industrials,Aerospace & Defense,30.2,High
+LNT,Alliant Energy,Utilities,Electric Utilities,21.4,Medium
+LOW,Lowe's,Consumer Discretionary,Home Improvement Retail,11.8,Low
+LRCX,Lam Research,Information Technology,Semiconductor Materials & Equipment,13.6,Low
+LULU,Lululemon Athletica,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",16.9,Low
+LUV,Southwest Airlines,Industrials,Passenger Airlines,30.7,High
+LVS,Las Vegas Sands,Consumer Discretionary,Casinos & Gaming,18.7,Low
+LYB,LyondellBasell,Materials,Specialty Chemicals,20.7,Medium
 LYV,Live Nation Entertainment,Communication Services,Movies & Entertainment,,
-MA,Mastercard,Financials,Transaction & Payment Processing Services,Low,17.1
-MAA,Mid-America Apartment Communities,Real Estate,Multi-Family Residential REITs,Low,13.1
-MAR,Marriott International,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Medium,21.4
-MAS,Masco,Industrials,Building Products,Medium,22.2
-MCD,McDonald's,Consumer Discretionary,Restaurants,Medium,26.0
-MCHP,Microchip Technology,Information Technology,Semiconductors,High,31.8
-MCK,McKesson Corporation,Health Care,Health Care Distributors,Low,15.2
-MCO,Moody's Corporation,Financials,Financial Exchanges & Data,Low,15.8
-MDLZ,Mondelez International,Consumer Staples,Packaged Foods & Meats,Medium,22.0
-MDT,Medtronic,Health Care,Health Care Equipment,Medium,22.8
-MET,MetLife,Financials,Life & Health Insurance,Low,16.4
-META,Meta Platforms,Communication Services,Interactive Media & Services,High,34.1
-MGM,MGM Resorts,Consumer Discretionary,Casinos & Gaming,Medium,24.8
-MKC,McCormick & Company,Consumer Staples,Packaged Foods & Meats,Medium,26.1
-MLM,Martin Marietta Materials,Materials,Construction Materials,High,30.1
-MMM,3M,Industrials,Industrial Conglomerates,High,37.3
-MNST,Monster Beverage,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Medium,29.2
-MO,Altria,Consumer Staples,Tobacco,High,31.3
-MOS,Mosaic Company (The),Materials,Fertilizers & Agricultural Chemicals,High,33.5
-MPC,Marathon Petroleum,Energy,Oil & Gas Refining & Marketing,High,30.5
+MA,Mastercard,Financials,Transaction & Payment Processing Services,17.1,Low
+MAA,Mid-America Apartment Communities,Real Estate,Multi-Family Residential REITs,13.1,Low
+MAR,Marriott International,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",21.4,Medium
+MAS,Masco,Industrials,Building Products,22.2,Medium
+MCD,McDonald's,Consumer Discretionary,Restaurants,26.0,Medium
+MCHP,Microchip Technology,Information Technology,Semiconductors,31.8,High
+MCK,McKesson Corporation,Health Care,Health Care Distributors,15.2,Low
+MCO,Moody's Corporation,Financials,Financial Exchanges & Data,15.8,Low
+MDLZ,Mondelez International,Consumer Staples,Packaged Foods & Meats,22.0,Medium
+MDT,Medtronic,Health Care,Health Care Equipment,22.8,Medium
+MET,MetLife,Financials,Life & Health Insurance,16.4,Low
+META,Meta Platforms,Communication Services,Interactive Media & Services,34.1,High
+MGM,MGM Resorts,Consumer Discretionary,Casinos & Gaming,24.8,Medium
+MKC,McCormick & Company,Consumer Staples,Packaged Foods & Meats,26.1,Medium
+MLM,Martin Marietta Materials,Materials,Construction Materials,30.1,High
+MMM,3M,Industrials,Industrial Conglomerates,37.3,High
+MNST,Monster Beverage,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,29.2,Medium
+MO,Altria,Consumer Staples,Tobacco,31.3,High
+MOS,Mosaic Company (The),Materials,Fertilizers & Agricultural Chemicals,33.5,High
+MPC,Marathon Petroleum,Energy,Oil & Gas Refining & Marketing,30.5,High
 MPWR,Monolithic Power Systems,Information Technology,Semiconductors,,
-MRK,Merck & Co.,Health Care,Pharmaceuticals,Medium,21.4
+MRK,Merck & Co.,Health Care,Pharmaceuticals,21.4,Medium
 MRNA,Moderna,Health Care,Biotechnology,,
 MRSH,Marsh McLennan,Financials,Insurance Brokers,,
 MRVL,Marvell Technology,Information Technology,Semiconductors,,
-MS,Morgan Stanley,Financials,Investment Banking & Brokerage,Medium,24.6
-MSCI,MSCI,Financials,Financial Exchanges & Data,Low,16.3
-MSFT,Microsoft,Information Technology,Systems Software,Low,15.1
-MSI,Motorola Solutions,Information Technology,Communications Equipment,Low,13.1
-MTB,M&T Bank,Financials,Regional Banks,Medium,26.5
-MTD,Mettler Toledo,Health Care,Life Sciences Tools & Services,Low,13.1
-MU,Micron Technology,Information Technology,Semiconductors,Low,18.2
-NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Medium,25.9
-NDAQ,"Nasdaq, Inc.",Financials,Financial Exchanges & Data,Low,13.1
-NDSN,Nordson Corporation,Industrials,Industrial Machinery & Supplies & Components,Medium,24.9
-NEE,NextEra Energy,Utilities,Multi-Utilities,Medium,23.3
-NEM,Newmont,Materials,Gold,Medium,20.5
-NFLX,Netflix,Communication Services,Movies & Entertainment,Low,16.4
-NI,NiSource,Utilities,Multi-Utilities,Medium,26.0
-NKE,"Nike, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Low,19.6
-NOC,Northrop Grumman,Industrials,Aerospace & Defense,Medium,27.5
-NOW,ServiceNow,Information Technology,Systems Software,Low,16.6
-NRG,NRG Energy,Utilities,Independent Power Producers & Energy Traders,High,32.0
-NSC,Norfolk Southern,Industrials,Rail Transportation,Medium,23.9
-NTAP,NetApp,Information Technology,"Technology Hardware, Storage & Peripherals",Low,15.4
-NTRS,Northern Trust,Financials,Asset Management & Custody Banks,Medium,23.9
-NUE,Nucor,Materials,Steel,High,32.8
-NVDA,Nvidia,Information Technology,Semiconductors,Low,13.6
-NVR,"NVR, Inc.",Consumer Discretionary,Homebuilding,Medium,20.3
+MS,Morgan Stanley,Financials,Investment Banking & Brokerage,24.6,Medium
+MSCI,MSCI,Financials,Financial Exchanges & Data,16.3,Low
+MSFT,Microsoft,Information Technology,Systems Software,15.1,Low
+MSI,Motorola Solutions,Information Technology,Communications Equipment,13.1,Low
+MTB,M&T Bank,Financials,Regional Banks,26.5,Medium
+MTD,Mettler Toledo,Health Care,Life Sciences Tools & Services,13.1,Low
+MU,Micron Technology,Information Technology,Semiconductors,18.2,Low
+NCLH,Norwegian Cruise Line Holdings,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",25.9,Medium
+NDAQ,"Nasdaq, Inc.",Financials,Financial Exchanges & Data,13.1,Low
+NDSN,Nordson Corporation,Industrials,Industrial Machinery & Supplies & Components,24.9,Medium
+NEE,NextEra Energy,Utilities,Multi-Utilities,23.3,Medium
+NEM,Newmont,Materials,Gold,20.5,Medium
+NFLX,Netflix,Communication Services,Movies & Entertainment,16.4,Low
+NI,NiSource,Utilities,Multi-Utilities,26.0,Medium
+NKE,"Nike, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",19.6,Low
+NOC,Northrop Grumman,Industrials,Aerospace & Defense,27.5,Medium
+NOW,ServiceNow,Information Technology,Systems Software,16.6,Low
+NRG,NRG Energy,Utilities,Independent Power Producers & Energy Traders,32.0,High
+NSC,Norfolk Southern,Industrials,Rail Transportation,23.9,Medium
+NTAP,NetApp,Information Technology,"Technology Hardware, Storage & Peripherals",15.4,Low
+NTRS,Northern Trust,Financials,Asset Management & Custody Banks,23.9,Medium
+NUE,Nucor,Materials,Steel,32.8,High
+NVDA,Nvidia,Information Technology,Semiconductors,13.6,Low
+NVR,"NVR, Inc.",Consumer Discretionary,Homebuilding,20.3,Medium
 NWS,News Corp (Class B),Communication Services,Publishing,,
-NXPI,NXP Semiconductors,Information Technology,Semiconductors,Low,19.8
-O,Realty Income,Real Estate,Retail REITs,Low,15.5
+NXPI,NXP Semiconductors,Information Technology,Semiconductors,19.8,Low
+O,Realty Income,Real Estate,Retail REITs,15.5,Low
 ODFL,Old Dominion,Industrials,Cargo Ground Transportation,,
-OKE,Oneok,Energy,Oil & Gas Storage & Transportation,Medium,25.1
-OMC,Omnicom Group,Communication Services,Advertising,Low,16.3
-ON,ON Semiconductor,Information Technology,Semiconductors,Medium,22.4
-ORCL,Oracle Corporation,Information Technology,Application Software,Low,13.9
-ORLY,O'Reilly Automotive,Consumer Discretionary,Automotive Retail,Low,12.1
+OKE,Oneok,Energy,Oil & Gas Storage & Transportation,25.1,Medium
+OMC,Omnicom Group,Communication Services,Advertising,16.3,Low
+ON,ON Semiconductor,Information Technology,Semiconductors,22.4,Medium
+ORCL,Oracle Corporation,Information Technology,Application Software,13.9,Low
+ORLY,O'Reilly Automotive,Consumer Discretionary,Automotive Retail,12.1,Low
 OTIS,Otis Worldwide,Industrials,Industrial Machinery & Supplies & Components,,
-OXY,Occidental Petroleum,Energy,Oil & Gas Exploration & Production,Severe,41.7
-PANW,Palo Alto Networks,Information Technology,Systems Software,Low,13.9
-PAYX,Paychex,Industrials,Human Resource & Employment Services,Low,16.7
-PCAR,Paccar,Industrials,Construction Machinery & Heavy Transportation Equipment,Medium,27.6
-PCG,PG&E Corporation,Utilities,Multi-Utilities,High,30.4
-PEG,Public Service Enterprise Group,Utilities,Electric Utilities,Medium,27.2
-PEP,PepsiCo,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,Medium,22.1
-PFE,Pfizer,Health Care,Pharmaceuticals,Medium,24.6
-PFG,Principal Financial Group,Financials,Life & Health Insurance,Low,14.2
-PG,Procter & Gamble,Consumer Staples,Personal Care Products,Medium,28.6
-PGR,Progressive Corporation,Financials,Property & Casualty Insurance,Medium,20.0
-PH,Parker Hannifin,Industrials,Industrial Machinery & Supplies & Components,Medium,29.5
-PHM,PulteGroup,Consumer Discretionary,Homebuilding,Medium,21.4
-PKG,Packaging Corporation of America,Materials,Paper & Plastic Packaging Products & Materials,Low,18.6
-PLD,Prologis,Real Estate,Industrial REITs,Low,10.3
+OXY,Occidental Petroleum,Energy,Oil & Gas Exploration & Production,41.7,Severe
+PANW,Palo Alto Networks,Information Technology,Systems Software,13.9,Low
+PAYX,Paychex,Industrials,Human Resource & Employment Services,16.7,Low
+PCAR,Paccar,Industrials,Construction Machinery & Heavy Transportation Equipment,27.6,Medium
+PCG,PG&E Corporation,Utilities,Multi-Utilities,30.4,High
+PEG,Public Service Enterprise Group,Utilities,Electric Utilities,27.2,Medium
+PEP,PepsiCo,Consumer Staples,Soft Drinks & Non-alcoholic Beverages,22.1,Medium
+PFE,Pfizer,Health Care,Pharmaceuticals,24.6,Medium
+PFG,Principal Financial Group,Financials,Life & Health Insurance,14.2,Low
+PG,Procter & Gamble,Consumer Staples,Personal Care Products,28.6,Medium
+PGR,Progressive Corporation,Financials,Property & Casualty Insurance,20.0,Medium
+PH,Parker Hannifin,Industrials,Industrial Machinery & Supplies & Components,29.5,Medium
+PHM,PulteGroup,Consumer Discretionary,Homebuilding,21.4,Medium
+PKG,Packaging Corporation of America,Materials,Paper & Plastic Packaging Products & Materials,18.6,Low
+PLD,Prologis,Real Estate,Industrial REITs,10.3,Low
 PLTR,Palantir Technologies,Information Technology,Application Software,,
-PM,Philip Morris International,Consumer Staples,Tobacco,Medium,28.5
-PNC,PNC Financial Services,Financials,Diversified Banks,Medium,26.1
-PNR,Pentair,Industrials,Industrial Machinery & Supplies & Components,Medium,22.1
-PNW,Pinnacle West Capital,Utilities,Multi-Utilities,High,30.8
+PM,Philip Morris International,Consumer Staples,Tobacco,28.5,Medium
+PNC,PNC Financial Services,Financials,Diversified Banks,26.1,Medium
+PNR,Pentair,Industrials,Industrial Machinery & Supplies & Components,22.1,Medium
+PNW,Pinnacle West Capital,Utilities,Multi-Utilities,30.8,High
 PODD,Insulet Corporation,Health Care,Health Care Equipment,,
-PPG,PPG Industries,Materials,Specialty Chemicals,Medium,25.2
-PPL,PPL Corporation,Utilities,Electric Utilities,High,31.3
-PRU,Prudential Financial,Financials,Life & Health Insurance,Low,19.9
-PSA,Public Storage,Real Estate,Self-Storage REITs,Low,13.1
+PPG,PPG Industries,Materials,Specialty Chemicals,25.2,Medium
+PPL,PPL Corporation,Utilities,Electric Utilities,31.3,High
+PRU,Prudential Financial,Financials,Life & Health Insurance,19.9,Low
+PSA,Public Storage,Real Estate,Self-Storage REITs,13.1,Low
 PSKY,Paramount Skydance Corporation,Communication Services,Movies & Entertainment,,
-PSX,Phillips 66,Energy,Oil & Gas Refining & Marketing,High,35.4
-PTC,PTC Inc.,Information Technology,Application Software,Low,18.9
-PWR,Quanta Services,Industrials,Construction & Engineering,High,36.9
-PYPL,PayPal,Financials,Transaction & Payment Processing Services,Low,17.8
+PSX,Phillips 66,Energy,Oil & Gas Refining & Marketing,35.4,High
+PTC,PTC Inc.,Information Technology,Application Software,18.9,Low
+PWR,Quanta Services,Industrials,Construction & Engineering,36.9,High
+PYPL,PayPal,Financials,Transaction & Payment Processing Services,17.8,Low
 Q,Qnity Electronics,Information Technology,Semiconductor Materials & Equipment,,
-QCOM,Qualcomm,Information Technology,Semiconductors,Low,15.4
-RCL,Royal Caribbean Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",Medium,20.7
+QCOM,Qualcomm,Information Technology,Semiconductors,15.4,Low
+RCL,Royal Caribbean Group,Consumer Discretionary,"Hotels, Resorts & Cruise Lines",20.7,Medium
 RDDT,Reddit,Communication Services,Interactive Media & Services,,
-REG,Regency Centers,Real Estate,Retail REITs,Low,11.7
-REGN,Regeneron Pharmaceuticals,Health Care,Biotechnology,Low,18.0
-RF,Regions Financial Corporation,Financials,Regional Banks,Low,16.9
-RJF,Raymond James Financial,Financials,Investment Banking & Brokerage,Medium,27.0
-RL,Ralph Lauren Corporation,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Low,14.6
-RMD,ResMed|,Health Care,Health Care Equipment,Medium,26.4
-ROK,Rockwell Automation,Industrials,Electrical Components & Equipment,Low,17.7
-ROL,"Rollins, Inc.",Industrials,Environmental & Facilities Services,Low,19.3
-ROP,Roper Technologies,Information Technology,Electronic Equipment & Instruments,Medium,20.4
-ROST,Ross Stores,Consumer Discretionary,Apparel Retail,Low,18.2
-RSG,Republic Services,Industrials,Environmental & Facilities Services,Medium,20.9
+REG,Regency Centers,Real Estate,Retail REITs,11.7,Low
+REGN,Regeneron Pharmaceuticals,Health Care,Biotechnology,18.0,Low
+RF,Regions Financial Corporation,Financials,Regional Banks,16.9,Low
+RJF,Raymond James Financial,Financials,Investment Banking & Brokerage,27.0,Medium
+RL,Ralph Lauren Corporation,Consumer Discretionary,"Apparel, Accessories & Luxury Goods",14.6,Low
+RMD,ResMed|,Health Care,Health Care Equipment,26.4,Medium
+ROK,Rockwell Automation,Industrials,Electrical Components & Equipment,17.7,Low
+ROL,"Rollins, Inc.",Industrials,Environmental & Facilities Services,19.3,Low
+ROP,Roper Technologies,Information Technology,Electronic Equipment & Instruments,20.4,Medium
+ROST,Ross Stores,Consumer Discretionary,Apparel Retail,18.2,Low
+RSG,Republic Services,Industrials,Environmental & Facilities Services,20.9,Medium
 RTX,RTX Corporation,Industrials,Aerospace & Defense,,
-RVTY,Revvity,Health Care,Health Care Equipment,Low,16.7
-SBAC,SBA Communications,Real Estate,Telecom Tower REITs,Low,11.6
-SBUX,Starbucks,Consumer Discretionary,Restaurants,Medium,24.7
-SCHW,Charles Schwab Corporation,Financials,Investment Banking & Brokerage,Medium,23.3
-SHW,Sherwin-Williams,Materials,Specialty Chemicals,Medium,29.4
-SJM,J.M. Smucker Company (The),Consumer Staples,Packaged Foods & Meats,High,30.5
-SLB,Schlumberger,Energy,Oil & Gas Equipment & Services,Medium,20.3
+RVTY,Revvity,Health Care,Health Care Equipment,16.7,Low
+SBAC,SBA Communications,Real Estate,Telecom Tower REITs,11.6,Low
+SBUX,Starbucks,Consumer Discretionary,Restaurants,24.7,Medium
+SCHW,Charles Schwab Corporation,Financials,Investment Banking & Brokerage,23.3,Medium
+SHW,Sherwin-Williams,Materials,Specialty Chemicals,29.4,Medium
+SJM,J.M. Smucker Company (The),Consumer Staples,Packaged Foods & Meats,30.5,High
+SLB,Schlumberger,Energy,Oil & Gas Equipment & Services,20.3,Medium
 SMCI,Supermicro,Information Technology,"Technology Hardware, Storage & Peripherals",,
-SNA,Snap-on,Industrials,Industrial Machinery & Supplies & Components,High,30.5
+SNA,Snap-on,Industrials,Industrial Machinery & Supplies & Components,30.5,High
 SNDK,Sandisk,Information Technology,"Technology Hardware, Storage & Peripherals",,
-SNPS,Synopsys,Information Technology,Application Software,Low,14.4
-SO,Southern Company,Utilities,Electric Utilities,High,33.0
+SNPS,Synopsys,Information Technology,Application Software,14.4,Low
+SO,Southern Company,Utilities,Electric Utilities,33.0,High
 SOLV,Solventum,Health Care,Health Care Technology,,
-SPG,Simon Property Group,Real Estate,Retail REITs,Low,14.0
-SPGI,S&P Global,Financials,Financial Exchanges & Data,Low,13.0
-SRE,Sempra,Utilities,Multi-Utilities,Medium,23.6
+SPG,Simon Property Group,Real Estate,Retail REITs,14.0,Low
+SPGI,S&P Global,Financials,Financial Exchanges & Data,13.0,Low
+SRE,Sempra,Utilities,Multi-Utilities,23.6,Medium
 STE,Steris,Health Care,Health Care Equipment,,
-STLD,Steel Dynamics,Materials,Steel,High,33.0
-STT,State Street Corporation,Financials,Asset Management & Custody Banks,Medium,24.1
-STX,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals",Low,10.7
-STZ,Constellation Brands,Consumer Staples,Distillers & Vintners,Medium,24.7
+STLD,Steel Dynamics,Materials,Steel,33.0,High
+STT,State Street Corporation,Financials,Asset Management & Custody Banks,24.1,Medium
+STX,Seagate Technology,Information Technology,"Technology Hardware, Storage & Peripherals",10.7,Low
+STZ,Constellation Brands,Consumer Staples,Distillers & Vintners,24.7,Medium
 SW,Smurfit Westrock,Materials,Paper & Plastic Packaging Products & Materials,,
-SWK,Stanley Black & Decker,Industrials,Industrial Machinery & Supplies & Components,Medium,25.3
-SWKS,Skyworks Solutions,Information Technology,Semiconductors,Medium,28.0
-SYF,Synchrony Financial,Financials,Consumer Finance,Low,17.3
-SYK,Stryker Corporation,Health Care,Health Care Equipment,Medium,28.3
-SYY,Sysco,Consumer Staples,Food Distributors,Low,15.9
-T,AT&T,Communication Services,Integrated Telecommunication Services,Medium,23.9
-TAP,Molson Coors Beverage Company,Consumer Staples,Brewers,Medium,21.4
-TDG,TransDigm Group,Industrials,Aerospace & Defense,High,38.7
+SWK,Stanley Black & Decker,Industrials,Industrial Machinery & Supplies & Components,25.3,Medium
+SWKS,Skyworks Solutions,Information Technology,Semiconductors,28.0,Medium
+SYF,Synchrony Financial,Financials,Consumer Finance,17.3,Low
+SYK,Stryker Corporation,Health Care,Health Care Equipment,28.3,Medium
+SYY,Sysco,Consumer Staples,Food Distributors,15.9,Low
+T,AT&T,Communication Services,Integrated Telecommunication Services,23.9,Medium
+TAP,Molson Coors Beverage Company,Consumer Staples,Brewers,21.4,Medium
+TDG,TransDigm Group,Industrials,Aerospace & Defense,38.7,High
 TDY,Teledyne Technologies,Information Technology,Electronic Equipment & Instruments,,
 TECH,Bio-Techne,Health Care,Life Sciences Tools & Services,,
-TEL,TE Connectivity,Information Technology,Electronic Manufacturing Services,Low,14.8
-TER,Teradyne,Information Technology,Semiconductor Materials & Equipment,Low,17.0
+TEL,TE Connectivity,Information Technology,Electronic Manufacturing Services,14.8,Low
+TER,Teradyne,Information Technology,Semiconductor Materials & Equipment,17.0,Low
 TFC,Truist Financial,Financials,Diversified Banks,,
-TGT,Target Corporation,Consumer Staples,Consumer Staples Merchandise Retail,Low,14.4
-TJX,TJX Companies,Consumer Discretionary,Apparel Retail,Low,14.4
+TGT,Target Corporation,Consumer Staples,Consumer Staples Merchandise Retail,14.4,Low
+TJX,TJX Companies,Consumer Discretionary,Apparel Retail,14.4,Low
 TKO,TKO Group Holdings,Communication Services,Movies & Entertainment,,
-TMO,Thermo Fisher Scientific,Health Care,Life Sciences Tools & Services,Low,12.8
-TMUS,T-Mobile US,Communication Services,Wireless Telecommunication Services,Medium,24.6
+TMO,Thermo Fisher Scientific,Health Care,Life Sciences Tools & Services,12.8,Low
+TMUS,T-Mobile US,Communication Services,Wireless Telecommunication Services,24.6,Medium
 TPL,Texas Pacific Land Corporation,Energy,Oil & Gas Exploration & Production,,
-TPR,"Tapestry, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",Low,14.8
-TRGP,Targa Resources,Energy,Oil & Gas Storage & Transportation,High,33.2
-TRMB,Trimble Inc.,Information Technology,Application Software,Low,12.4
-TROW,T. Rowe Price,Financials,Asset Management & Custody Banks,Low,16.9
-TRV,Travelers Companies (The),Financials,Property & Casualty Insurance,Medium,20.3
-TSCO,Tractor Supply,Consumer Discretionary,Other Specialty Retail,Low,16.1
-TSLA,"Tesla, Inc.",Consumer Discretionary,Automobile Manufacturers,Medium,25.2
-TSN,Tyson Foods,Consumer Staples,Packaged Foods & Meats,High,35.9
-TT,Trane Technologies,Industrials,Building Products,Low,15.2
+TPR,"Tapestry, Inc.",Consumer Discretionary,"Apparel, Accessories & Luxury Goods",14.8,Low
+TRGP,Targa Resources,Energy,Oil & Gas Storage & Transportation,33.2,High
+TRMB,Trimble Inc.,Information Technology,Application Software,12.4,Low
+TROW,T. Rowe Price,Financials,Asset Management & Custody Banks,16.9,Low
+TRV,Travelers Companies (The),Financials,Property & Casualty Insurance,20.3,Medium
+TSCO,Tractor Supply,Consumer Discretionary,Other Specialty Retail,16.1,Low
+TSLA,"Tesla, Inc.",Consumer Discretionary,Automobile Manufacturers,25.2,Medium
+TSN,Tyson Foods,Consumer Staples,Packaged Foods & Meats,35.9,High
+TT,Trane Technologies,Industrials,Building Products,15.2,Low
 TTD,Trade Desk (The),Communication Services,Advertising,,
 TTWO,Take-Two Interactive,Communication Services,Interactive Home Entertainment,,
-TXN,Texas Instruments,Information Technology,Semiconductors,Medium,20.6
-TXT,Textron,Industrials,Aerospace & Defense,High,33.6
+TXN,Texas Instruments,Information Technology,Semiconductors,20.6,Medium
+TXT,Textron,Industrials,Aerospace & Defense,33.6,High
 TYL,Tyler Technologies,Information Technology,Application Software,,
-UAL,United Airlines Holdings,Industrials,Passenger Airlines,Medium,28.6
+UAL,United Airlines Holdings,Industrials,Passenger Airlines,28.6,Medium
 UBER,Uber,Industrials,Passenger Ground Transportation,,
-UDR,"UDR, Inc.",Real Estate,Multi-Family Residential REITs,Low,13.9
-UHS,Universal Health Services,Health Care,Health Care Facilities,High,33.0
-ULTA,Ulta Beauty,Consumer Discretionary,Other Specialty Retail,Low,15.6
-UNH,UnitedHealth Group,Health Care,Managed Health Care,Low,15.3
-UNP,Union Pacific Corporation,Industrials,Rail Transportation,Medium,23.5
-UPS,United Parcel Service,Industrials,Air Freight & Logistics,Low,18.6
-URI,United Rentals,Industrials,Trading Companies & Distributors,Low,16.9
-USB,U.S. Bancorp,Financials,Diversified Banks,High,30.3
-V,Visa Inc.,Financials,Transaction & Payment Processing Services,Low,16.7
+UDR,"UDR, Inc.",Real Estate,Multi-Family Residential REITs,13.9,Low
+UHS,Universal Health Services,Health Care,Health Care Facilities,33.0,High
+ULTA,Ulta Beauty,Consumer Discretionary,Other Specialty Retail,15.6,Low
+UNH,UnitedHealth Group,Health Care,Managed Health Care,15.3,Low
+UNP,Union Pacific Corporation,Industrials,Rail Transportation,23.5,Medium
+UPS,United Parcel Service,Industrials,Air Freight & Logistics,18.6,Low
+URI,United Rentals,Industrials,Trading Companies & Distributors,16.9,Low
+USB,U.S. Bancorp,Financials,Diversified Banks,30.3,High
+V,Visa Inc.,Financials,Transaction & Payment Processing Services,16.7,Low
 VEEV,Veeva Systems,Health Care,Health Care Technology,,
 VICI,Vici Properties,Real Estate,Hotel & Resort REITs,,
-VLO,Valero Energy,Energy,Oil & Gas Refining & Marketing,High,32.6
+VLO,Valero Energy,Energy,Oil & Gas Refining & Marketing,32.6,High
 VLTO,Veralto,Industrials,Environmental & Facilities Services,,
-VMC,Vulcan Materials Company,Materials,Construction Materials,Medium,29.3
+VMC,Vulcan Materials Company,Materials,Construction Materials,29.3,Medium
 VMRK,Vivmark Residential,Real Estate,Multi-Family Residential REITs,,
-VRSK,Verisk Analytics,Industrials,Research & Consulting Services,Low,17.5
-VRSN,Verisign,Information Technology,Internet Services & Infrastructure,Medium,21.3
+VRSK,Verisk Analytics,Industrials,Research & Consulting Services,17.5,Low
+VRSN,Verisign,Information Technology,Internet Services & Infrastructure,21.3,Medium
 VRT,Vertiv,Industrials,Electrical Components & Equipment,,
-VRTX,Vertex Pharmaceuticals,Health Care,Biotechnology,Medium,22.7
+VRTX,Vertex Pharmaceuticals,Health Care,Biotechnology,22.7,Medium
 VST,Vistra Corp.,Utilities,Electric Utilities,,
-VTR,Ventas,Real Estate,Health Care REITs,Low,12.9
+VTR,Ventas,Real Estate,Health Care REITs,12.9,Low
 VTRS,Viatris,Health Care,Pharmaceuticals,,
-VZ,Verizon,Communication Services,Integrated Telecommunication Services,Low,18.7
-WAB,Wabtec,Industrials,Construction Machinery & Heavy Transportation Equipment,Medium,23.3
-WAT,Waters Corporation,Health Care,Life Sciences Tools & Services,Low,14.6
+VZ,Verizon,Communication Services,Integrated Telecommunication Services,18.7,Low
+WAB,Wabtec,Industrials,Construction Machinery & Heavy Transportation Equipment,23.3,Medium
+WAT,Waters Corporation,Health Care,Life Sciences Tools & Services,14.6,Low
 WBD,Warner Bros. Discovery,Communication Services,Broadcasting,,
 WDAY,"Workday, Inc.",Information Technology,Application Software,,
-WDC,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals",Low,11.4
-WEC,WEC Energy Group,Utilities,Electric Utilities,Medium,27.5
-WELL,Welltower,Real Estate,Health Care REITs,Low,13.2
-WFC,Wells Fargo,Financials,Diversified Banks,High,36.2
-WM,Waste Management,Industrials,Environmental & Facilities Services,Low,16.6
-WMB,Williams Companies,Energy,Oil & Gas Storage & Transportation,Medium,21.8
-WMT,Walmart,Consumer Staples,Consumer Staples Merchandise Retail,Medium,25.3
-WRB,W. R. Berkley Corporation,Financials,Property & Casualty Insurance,Medium,21.8
+WDC,Western Digital,Information Technology,"Technology Hardware, Storage & Peripherals",11.4,Low
+WEC,WEC Energy Group,Utilities,Electric Utilities,27.5,Medium
+WELL,Welltower,Real Estate,Health Care REITs,13.2,Low
+WFC,Wells Fargo,Financials,Diversified Banks,36.2,High
+WM,Waste Management,Industrials,Environmental & Facilities Services,16.6,Low
+WMB,Williams Companies,Energy,Oil & Gas Storage & Transportation,21.8,Medium
+WMT,Walmart,Consumer Staples,Consumer Staples Merchandise Retail,25.3,Medium
+WRB,W. R. Berkley Corporation,Financials,Property & Casualty Insurance,21.8,Medium
 WSM,"Williams-Sonoma, Inc.",Consumer Discretionary,Homefurnishing Retail,,
 WST,West Pharmaceutical Services,Health Care,Health Care Supplies,,
-WTW,Willis Towers Watson,Financials,Insurance Brokers,Low,18.7
-WY,Weyerhaeuser,Real Estate,Timber REITs,Low,16.7
-WYNN,Wynn Resorts,Consumer Discretionary,Casinos & Gaming,Medium,25.7
-XEL,Xcel Energy,Utilities,Multi-Utilities,Medium,26.5
-XOM,ExxonMobil,Energy,Integrated Oil & Gas,Severe,41.6
-XYL,Xylem Inc.,Industrials,Industrial Machinery & Supplies & Components,Low,18.1
+WTW,Willis Towers Watson,Financials,Insurance Brokers,18.7,Low
+WY,Weyerhaeuser,Real Estate,Timber REITs,16.7,Low
+WYNN,Wynn Resorts,Consumer Discretionary,Casinos & Gaming,25.7,Medium
+XEL,Xcel Energy,Utilities,Multi-Utilities,26.5,Medium
+XOM,ExxonMobil,Energy,Integrated Oil & Gas,41.6,Severe
+XYL,Xylem Inc.,Industrials,Industrial Machinery & Supplies & Components,18.1,Low
 XYZ,"Block, Inc.",Financials,Transaction & Payment Processing Services,,
-YUM,Yum! Brands,Consumer Discretionary,Restaurants,Medium,20.1
-ZBH,Zimmer Biomet,Health Care,Health Care Equipment,Medium,26.0
+YUM,Yum! Brands,Consumer Discretionary,Restaurants,20.1,Medium
+ZBH,Zimmer Biomet,Health Care,Health Care Equipment,26.0,Medium
 ZBRA,Zebra Technologies,Information Technology,Electronic Equipment & Instruments,,
-ZTS,Zoetis,Health Care,Pharmaceuticals,Low,18.8
+ZTS,Zoetis,Health Care,Pharmaceuticals,18.8,Low

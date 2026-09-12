@@ -6,7 +6,7 @@
 // never-rotates) HTML axis pickers around the canvas, not by in-scene 3D
 // text, which would otherwise pull a font from a network font loader and
 // break the wifi-off rehearsal.
-import { useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -14,10 +14,16 @@ import type { CompanyScoreResult } from "../scoring/pipeline";
 import type { WeightsState } from "../scoring/pipeline";
 import type { Company } from "../scoring/types";
 import type { ReferenceValues } from "../scoring/reference";
-import { axisIsImputed, axisValue, type AxisSlot } from "./views";
+import { axisIsImputed, axisLabel, axisValue, type AxisSlot } from "./views";
 import { divergingColor, referenceScoreForAxis } from "./referenceColor";
 
+// Palette-only axis identity: X = ink, Y = accent, Z = a faded shade of ink
+// (rather than a third hue), matching AxisPickers' AXIS_COLORS.
+const AXIS_COLORS = ["#000000", "#AAB644", "#000000"];
+const AXIS_OPACITIES = [0.85, 0.9, 0.4];
+
 const HALF_EXTENT = 5;
+const DIMMED_OPACITY_FACTOR = 0.06; // how much a point fades when hovering a different sector's point
 
 function toPosition(value: number | null): number {
   if (value === null) return 0;
@@ -26,6 +32,7 @@ function toPosition(value: number | null): number {
 
 export interface ScatterPoint {
   ticker: string;
+  sector: string;
   position: [number, number, number];
   color: string;
   opacity: number;
@@ -58,38 +65,94 @@ function CameraRig({ preset }: { preset: CameraPresetId | null }) {
   return null;
 }
 
-function Axes() {
-  // Palette-only axis identity, matched to AxisPickers' AXIS_COLORS: X = ink,
-  // Y = accent, Z = a faded shade of ink (rather than a third hue) -- the
-  // axis pickers around the canvas carry the actual field identity in
-  // legible, never-rotating HTML, so these only need to show orientation.
-  const lines: [THREE.Vector3, THREE.Vector3, string, number][] = [
-    [new THREE.Vector3(-HALF_EXTENT, 0, 0), new THREE.Vector3(HALF_EXTENT, 0, 0), "#000000", 0.7],
-    [new THREE.Vector3(0, -HALF_EXTENT, 0), new THREE.Vector3(0, HALF_EXTENT, 0), "#AAB644", 0.9],
-    [new THREE.Vector3(0, 0, -HALF_EXTENT), new THREE.Vector3(0, 0, HALF_EXTENT), "#000000", 0.3],
-  ];
+/** Renders a small canvas-drawn text label as a texture -- not @react-three/
+ * drei's <Text> (troika-three-text), which needs its own font asset. This
+ * uses the same system-font stack as the rest of the site (Arial Nova with
+ * an Arial fallback) via the browser's native Canvas 2D text API: no network
+ * fetch, no CDN, consistent with the "no in-scene text pulled from a font
+ * loader" constraint this file has always had -- it just no longer means
+ * "no in-scene text at all". */
+function useLabelTexture(text: string, color: string): THREE.CanvasTexture {
+  return useMemo(() => {
+    const canvas = document.createElement("canvas");
+    canvas.width = 512;
+    canvas.height = 128;
+    const ctx = canvas.getContext("2d")!;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = "700 64px 'Arial Nova', Arial, Helvetica, sans-serif";
+    ctx.fillStyle = color;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+    ctx.fillText(text, 6, canvas.height / 2);
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }, [text, color]);
+}
+
+const AXIS_DIRS = ["x", "y", "z"] as const;
+type AxisDir = (typeof AXIS_DIRS)[number];
+
+/** One axis: a thick cylinder shaft, a cone arrowhead at the positive end,
+ * and a floating text label just past the tip. */
+function Axis({ dir, color, opacity, label }: { dir: AxisDir; color: string; opacity: number; label: string }) {
+  const rotation: [number, number, number] =
+    dir === "x" ? [0, 0, -Math.PI / 2] : dir === "z" ? [Math.PI / 2, 0, 0] : [0, 0, 0];
+  const tip: [number, number, number] =
+    dir === "x" ? [HALF_EXTENT, 0, 0] : dir === "z" ? [0, 0, HALF_EXTENT] : [0, HALF_EXTENT, 0];
+  const labelPos: [number, number, number] =
+    dir === "x" ? [HALF_EXTENT + 0.7, 0, 0] : dir === "z" ? [0, 0, HALF_EXTENT + 0.7] : [0, HALF_EXTENT + 0.7, 0];
+  const texture = useLabelTexture(label, color);
+
   return (
     <>
-      {lines.map(([a, b, color, opacity], i) => {
-        const geom = new THREE.BufferGeometry().setFromPoints([a, b]);
-        const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
-        return <primitive key={i} object={new THREE.Line(geom, material)} />;
-      })}
+      <mesh rotation={rotation}>
+        <cylinderGeometry args={[0.035, 0.035, HALF_EXTENT * 2, 10]} />
+        <meshBasicMaterial color={color} transparent opacity={opacity} />
+      </mesh>
+      <mesh position={tip} rotation={rotation}>
+        <coneGeometry args={[0.11, 0.26, 10]} />
+        <meshBasicMaterial color={color} transparent opacity={Math.min(1, opacity + 0.1)} />
+      </mesh>
+      <sprite position={labelPos} scale={[1.4, 0.35, 1]}>
+        <spriteMaterial map={texture} transparent depthTest={false} />
+      </sprite>
     </>
   );
 }
 
-function Point({ point, onSelect }: { point: ScatterPoint; onSelect: (ticker: string) => void }) {
+function Axes({ axes }: { axes: [AxisSlot, AxisSlot, AxisSlot] }) {
+  return (
+    <>
+      {AXIS_DIRS.map((dir, i) => (
+        <Axis key={dir} dir={dir} color={AXIS_COLORS[i]} opacity={AXIS_OPACITIES[i]} label={axisLabel(axes[i])} />
+      ))}
+    </>
+  );
+}
+
+function Point({
+  point, dimmed, onSelect, onHoverSector, onUnhover,
+}: {
+  point: ScatterPoint;
+  dimmed: boolean;
+  onSelect: (ticker: string) => void;
+  onHoverSector: (sector: string) => void;
+  onUnhover: () => void;
+}) {
+  const effectiveOpacity = dimmed ? point.opacity * DIMMED_OPACITY_FACTOR : point.opacity;
   return (
     <mesh
       position={point.position}
       onClick={(e) => { e.stopPropagation(); onSelect(point.ticker); }}
+      onPointerOver={(e) => { e.stopPropagation(); onHoverSector(point.sector); }}
+      onPointerOut={(e) => { e.stopPropagation(); onUnhover(); }}
     >
       <sphereGeometry args={[point.radius, 16, 16]} />
       <meshStandardMaterial
         color={point.color}
         transparent
-        opacity={point.opacity}
+        opacity={effectiveOpacity}
         wireframe={point.wireframe}
       />
     </mesh>
@@ -147,6 +210,7 @@ export function ScatterView({
 
       out.push({
         ticker: company.ticker,
+        sector: company.sector,
         position: [toPosition(values[0]), toPosition(values[1]), toPosition(values[2])],
         color: divergingColor(avgDelta),
         opacity: 0.15 + Math.max(0, Math.min(1, company.confidence)) * 0.85,
@@ -157,14 +221,26 @@ export function ScatterView({
     return out;
   }, [companies, scores, axes, visibleSectors, referenceBySector, weights]);
 
+  // Hovering any point highlights its whole sector: every point from a
+  // DIFFERENT sector fades to near-invisible, so the shape of "where does
+  // this sector sit" pops out without a separate filter action.
+  const [hoveredSector, setHoveredSector] = useState<string | null>(null);
+
   return (
     <Canvas camera={{ position: CAMERA_PRESETS.isometric.position, fov: 45 }}>
       <color attach="background" args={["#EDECEB"]} />
       <ambientLight intensity={0.9} />
       <pointLight position={[10, 10, 10]} intensity={0.5} />
-      <Axes />
+      <Axes axes={axes} />
       {points.map((p) => (
-        <Point key={p.ticker} point={p} onSelect={onSelectCompany} />
+        <Point
+          key={p.ticker}
+          point={p}
+          dimmed={hoveredSector !== null && p.sector !== hoveredSector}
+          onSelect={onSelectCompany}
+          onHoverSector={setHoveredSector}
+          onUnhover={() => setHoveredSector(null)}
+        />
       ))}
       <OrbitControls makeDefault target={[0, 0, 0]} />
       <CameraRig preset={cameraPreset} />

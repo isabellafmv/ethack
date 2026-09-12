@@ -1,19 +1,13 @@
-// Permanent legend covering all three encodings (Task 7). Colour is
-// reference-relative, not sector -- sector lives in the filter panel, never
-// on this scale, so the two are never confused.
-import type { ReferenceSpec } from "../scoring/reference";
-import { referenceLabel } from "../scoring/reference";
-
-export function Legend({ reference, deltaMode }: { reference: ReferenceSpec; deltaMode: "raw" | "sector_adjusted" }) {
+// Permanent legend covering all three encodings (Task 7). Titles only --
+// the swatches themselves plus the axis pickers/coverage strip carry the
+// detail; this is just "what does each channel mean", not a paragraph.
+export function Legend() {
   return (
     <div className="panel legend">
       <h3>Legend</h3>
       <div className="legend-row">
         <div className="legend-swatch legend-swatch--gradient" />
-        <div>
-          <strong>Colour</strong> &mdash; {referenceLabel(reference, deltaMode)}.
-          Accent = better, grey = at reference, black = worse.
-        </div>
+        <strong>Colour</strong>
       </div>
       <div className="legend-row">
         <div className="legend-sizes">
@@ -21,20 +15,20 @@ export function Legend({ reference, deltaMode }: { reference: ReferenceSpec; del
           <span className="legend-dot legend-dot--md" />
           <span className="legend-dot legend-dot--lg" />
         </div>
-        <div><strong>Size</strong> &mdash; market cap, sqrt-scaled and clamped.</div>
+        <strong>Size</strong>
       </div>
       <div className="legend-row">
         <div className="legend-sizes">
           <span className="legend-dot legend-dot--dim" />
           <span className="legend-dot legend-dot--bright" />
         </div>
-        <div><strong>Opacity</strong> &mdash; confidence (dim = low evidence, bright = high).</div>
+        <strong>Opacity</strong>
       </div>
       <div className="legend-row">
         <div className="legend-sizes">
           <span className="legend-dot legend-dot--wire" />
         </div>
-        <div><strong>Wireframe</strong> &mdash; an imputed value on one of the visible axes, not a measurement.</div>
+        <strong>Wireframe</strong>
       </div>
     </div>
   );

@@ -14,11 +14,9 @@ export function SectorFilter({
   const sectors = [...sectorCounts.keys()].sort();
   const handleToggle = (sector: string) => onToggle(sector, sectors);
   return (
-    <div className="panel sector-filter">
-      <div className="panel-header">
-        <h3>Sectors</h3>
-        {selected.size > 0 && <button className="link-button" onClick={onClear}>show all</button>}
-      </div>
+    <details className="panel sector-filter" open>
+      <summary>Sectors</summary>
+      {selected.size > 0 && <button className="link-button" onClick={onClear}>show all</button>}
       <ul>
         {sectors.map((sector) => (
           <li key={sector}>
@@ -33,6 +31,6 @@ export function SectorFilter({
           </li>
         ))}
       </ul>
-    </div>
+    </details>
   );
 }

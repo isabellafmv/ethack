@@ -132,18 +132,19 @@ body { background: var(--bg); color: var(--ink); }
   border: none;
   padding: 0;
 }
-.panel h3 {
+.panel h3, .sector-filter > summary {
   margin: 0 0 0.9rem;
   font-size: 0.85rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.02em;
   color: var(--ink);
+  cursor: pointer;
 }
 /* Group labels get a hairline + air above them to separate one group from
    the next -- the first panel in a sidebar sits flush under the header, so
    it's excluded. */
-.app-sidebar > .panel:not(:first-child) h3 {
+.app-sidebar > .panel:not(:first-child) h3, .app-sidebar > .sector-filter:not(:first-child) > summary {
   padding-top: 1.25rem;
   border-top: 2px solid var(--ink);
 }
@@ -180,12 +181,24 @@ input[type="range"] {
   background: var(--ink-12);
   outline: none;
 }
+/* Safari renders its own opaque track chrome unless the runnable-track
+   pseudo-element is ALSO explicitly reset to transparent -- without this,
+   the base element's own background (the inline progress-fill gradient set
+   per-slider in WeightPanel.tsx) gets painted over, and the native thumb
+   shows through oversized. Chrome doesn't need this rule but tolerates it. */
+input[type="range"]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  width: 100%; height: 6px;
+  background: transparent;
+  border-radius: 999px;
+}
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; appearance: none;
   width: 14px; height: 14px; border-radius: 50%;
   background: var(--ink);
   border: 2px solid var(--bg);
   cursor: pointer;
+  margin-top: -4px; /* (track 6px - thumb 14px) / 2 -- centers the thumb on the track in WebKit, which doesn't always do this automatically */
 }
 input[type="range"]::-moz-range-track { height: 6px; background: transparent; border-radius: 999px; }
 input[type="range"]::-moz-range-progress { height: 6px; background: var(--ink); border-radius: 999px; }
@@ -209,7 +222,7 @@ input[type="range"]:disabled::-moz-range-progress { background: var(--ink-35); }
 .camera-preset--active { color: var(--accent); }
 
 .legend-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; font-size: 0.8rem; }
-.legend-swatch--gradient { width: 60px; height: 6px; border-radius: 999px; background: linear-gradient(90deg, var(--ink), var(--ink-20), var(--accent)); flex-shrink: 0; }
+.legend-swatch--gradient { width: 60px; height: 6px; border-radius: 999px; background: linear-gradient(90deg, #E46C0A, var(--accent)); flex-shrink: 0; }
 .legend-sizes { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .legend-dot { display: inline-block; border-radius: 50%; background: var(--accent); }
 .legend-dot--sm { width: 6px; height: 6px; }
@@ -256,7 +269,7 @@ input[type="range"]:disabled::-moz-range-progress { background: var(--ink-35); }
 .preset-materiality--active { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700; }
 .materiality-explainer { font-size: 0.72rem; color: var(--ink-55); margin: -0.5rem 0 1rem; line-height: 1.5; }
 .weight-group { margin-bottom: 1.4rem; }
-.weight-row { display: grid; grid-template-columns: 100px 1fr 40px; align-items: center; gap: 0.6rem; font-size: 0.78rem; margin: 0.35rem 0; }
+.weight-row { display: grid; grid-template-columns: 132px 1fr 40px; align-items: center; gap: 0.6rem; font-size: 0.78rem; margin: 0.35rem 0; }
 .weight-row--sub { grid-template-columns: 130px 1fr 40px; }
 .weight-row label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .weight-row input:disabled { opacity: 0.35; }

@@ -157,7 +157,7 @@ export default function App() {
         </main>
 
         <aside className="app-sidebar app-sidebar--right">
-          <Legend reference={state.reference} deltaMode={state.deltaMode} />
+          <Legend />
           <CoverageStrip coverages={coverages} />
           <ReferencePicker
             reference={state.reference}
@@ -181,7 +181,7 @@ export default function App() {
       </div>
 
       <ProvenanceFooter
-        generatedAt={matrix.payload.generated_at}
+        // generatedAt={matrix.payload.generated_at}
         schemaVersion={matrix.payload.schema_version}
         analysisYear={matrix.payload.analysis_year}
         isFixture={matrix.isFixture}

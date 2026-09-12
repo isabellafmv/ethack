@@ -44,21 +44,23 @@ export function referenceScoreForAxis(
   return weightedMeanSkippingNulls(PILLARS.map((p) => ({ value: pillarScore(p), weight: pillarW[p] })));
 }
 
-/** Diverging black -> grey -> accent, built only from the three-colour
- * palette (no separate red/green hues): worse fades toward black, better
- * fades toward the accent, both anchored on a neutral grey shade of black.
- * `t` is a delta on the 0-100 score scale, clamped to +/-40 (deltas rarely
- * exceed that in practice; clamping keeps a handful of extreme companies
- * from washing out the rest of the scale). */
-const NEUTRAL_RGB = [150, 150, 148]; // a mid shade of black -- "at reference"
-const WORSE_RGB = [0, 0, 0]; // pure ink -- "worse"
+/** Diverging orange -> accent, a single continuous gradient (no grey
+ * midpoint): worse is orange, better is accent, and "at reference" is
+ * whatever blend sits between them. `delta === null` (no reference to
+ * compare against at all -- a different situation from "tied with the
+ * reference") is the one case that still needs a distinct neutral grey,
+ * since it isn't a point on this scale at all. `t` is a delta on the 0-100
+ * score scale, clamped to +/-40 (deltas rarely exceed that in practice;
+ * clamping keeps a handful of extreme companies from washing out the rest
+ * of the scale). */
+const NO_REFERENCE_RGB = [150, 150, 148];
+const WORSE_RGB = [228, 108, 10]; // #E46C0A -- "worse"
 const BETTER_RGB = [170, 182, 68]; // #AAB644 -- "better"
 
 export function divergingColor(delta: number | null): string {
-  if (delta === null) return `rgb(${NEUTRAL_RGB.join(",")})`; // no reference to compare against
+  if (delta === null) return `rgb(${NO_REFERENCE_RGB.join(",")})`;
   const t = Math.max(-40, Math.min(40, delta)) / 40; // -1..1
-  if (t >= 0) return lerpColor(NEUTRAL_RGB, BETTER_RGB, t);
-  return lerpColor(NEUTRAL_RGB, WORSE_RGB, -t);
+  return lerpColor(WORSE_RGB, BETTER_RGB, (t + 1) / 2);
 }
 
 function lerpColor(a: number[], b: number[], t: number): string {
