@@ -1,0 +1,13 @@
+# Raw fetches: large, reproducible, and never edited. Not in git.
+cache/
+# Derived artifacts — rebuilt by `python -m pipeline.load`
+data/scores.db
+data/matrix.json
+data/manifest.csv
+__pycache__/
+*.pyc
+.DS_Store
+# iCloud/Office turds
+~$*
+data/_to_delete/
+data/scores.db-journal
