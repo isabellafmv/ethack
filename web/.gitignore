@@ -8,5 +8,5 @@ dist/
 # data`) -- committing it would go stale the moment anyone else's DB differs.
 # The fixture (`npm run fixture`) IS committed: it's what makes a fresh clone
 # runnable with no Python pipeline at all, so it belongs in the repo.
-/public/data/matrix.json
-/public/data/quotes.json
+# /public/data/matrix.json
+# /public/data/quotes.json
