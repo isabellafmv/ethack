@@ -5,17 +5,22 @@
 // those, rather than re-deriving "how sub-scores combine" here, is what
 // keeps the coloured map and the scored table from ever disagreeing.
 import { weightedMeanSkippingNulls } from "../scoring/percentile";
-import { normalizedWeights, PILLARS, type WeightsState } from "../scoring/pipeline";
+import { normalizedWeights, weightsForSector, PILLARS, type WeightsState } from "../scoring/pipeline";
 import { registryForPillar, type Pillar } from "../scoring/registry";
 import type { ReferenceValues } from "../scoring/reference";
 import { type AxisSlot } from "./views";
 
+/** `sector` is the COMPANY's sector, not the reference's -- in materiality
+ * mode, a company's own weights (not the reference point's) are what
+ * determine how its axes combine, so its point colour and its point
+ * position always agree on which weights were used. */
 export function referenceScoreForAxis(
   axis: AxisSlot,
   refValues: ReferenceValues,
-  weights: WeightsState
+  weights: WeightsState | Map<string, WeightsState>,
+  sector: string
 ): number | null {
-  const { pillars: pillarW, subscores: subW } = normalizedWeights(weights);
+  const { pillars: pillarW, subscores: subW } = normalizedWeights(weightsForSector(weights, sector));
 
   const pillarScore = (pillar: Pillar): number | null =>
     weightedMeanSkippingNulls(

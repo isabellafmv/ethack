@@ -12,10 +12,13 @@
 // without knowing which direction is good. `nullPolicy` is declared per
 // sub-score for the same reason: defaulting a missing input to the sector
 // median and plotting it as a solid point is "rewarding silence" -- the
-// score_calculation/category_score_utils.py bug this project exists to not
-// repeat. Every default sub-score below uses nullPolicy 'not_disclosed'
-// deliberately; 'sector_median' and 'zero' exist for a sub-score that has an
-// honest reason to need them, not as a default.
+// non-reporter bug live in score_calculation/transition/transition_score.py's
+// _build_sector_intensity (a since-deleted file, category_score_utils.py,
+// was the historical location; the pattern moved, the risk didn't). Most
+// sub-scores below use nullPolicy 'not_disclosed'; 'sector_median' is used
+// where the project has deliberately decided that silence itself is the
+// finding (see p2_regulatory_momentum); 'zero' exists for a sub-score with
+// an honest reason to need it, not as a default.
 
 export type Pillar = "P1" | "P2" | "P3";
 export type Polarity = "higher_is_better" | "lower_is_better";
@@ -32,6 +35,13 @@ export interface SubScoreDef {
   label: string;
   polarity: Polarity;
   inputs: string[];
+  /** Fields that participate in compute() but never gate availability: an
+   * absent/untrusted optional input is silently zero-filled (mirrors the
+   * `nullPolicy: 'zero'` per-field convention, just scoped to specific
+   * fields instead of the whole sub-score). Every sub-score without a
+   * genuine reason to need this has none -- see p3_capital_stewardship for
+   * the one that does and why. */
+  optionalInputs?: string[];
   compute: (f: RawInputs) => number;
   nullPolicy: NullPolicy;
   basis: string;
@@ -82,21 +92,50 @@ export const REGISTRY: SubScoreDef[] = [
     nullPolicy: "not_disclosed",
     basis: "FY2023",
   },
+  {
+    id: "p1_input_efficiency",
+    pillar: "P1",
+    label: "Input efficiency",
+    polarity: "lower_is_better",
+    inputs: ["cogs_usd", "revenue_usd"],
+    // Modelled on score_calculation/environmental/environmental_score.py's
+    // _input_efficiency_score, which blends this ratio with an energy-cost
+    // one and ranks each independently before averaging. That second ratio
+    // (energy_cost_usd) is 16/500 covered -- a near-no-op in practice -- so
+    // it's dropped here rather than threading sector-distribution context
+    // into compute(), which only ever sees one company at a time. COGS/
+    // revenue alone still reads as "how input-intensive is this business",
+    // not an emissions measure -- it's a proxy, and the label says so.
+    compute: (f) => (f.revenue_usd === 0 ? NaN : (f.cogs_usd / f.revenue_usd) * 100),
+    nullPolicy: "not_disclosed",
+    basis: "FY2023",
+  },
 
   // === P2 Transition =========================================================
   {
     id: "p2_carbon_price_exposure",
     pillar: "P2",
     label: "Carbon-price exposure",
-    polarity: "lower_is_better",
+    polarity: "higher_is_better",
     inputs: ["scope1_tco2e", "scope2_location_tco2e", "ebitda_usd"],
-    // Tonnes of (Scope 1 + Scope 2) per $M EBITDA: how much a given carbon
-    // price would eat into earnings. A risk measure, not a virtue measure --
-    // that's exactly why polarity has to be declared, not assumed.
-    compute: (f) =>
-      f.ebitda_usd === 0
-        ? NaN
-        : ((f.scope1_tco2e + f.scope2_location_tco2e) / f.ebitda_usd) * 1e6,
+    // Ceiling-mapped, modelled on transition_score.py's _ceiling_score: an
+    // assumed $100/ton carbon price against (Scope 1 + Scope 2), as a share
+    // of EBITDA, clipped to 0-50% erosion and mapped so 0% erosion -> 100
+    // (best) and >=50% erosion -> 0 (worst). compute() already returns an
+    // oriented 0-100 value here, which is why polarity is higher_is_better
+    // even though the underlying risk (erosion) is a "lower is better"
+    // quantity -- percentile-ranking a pre-oriented score a second time
+    // would double-flip it if polarity stayed lower_is_better.
+    // Deliberately NOT using transition_score.py's sector-benchmark fallback
+    // for non-reporters (estimated_emissions_tco2e) -- that's the exact
+    // "reward silence" pattern this project exists to avoid. A company
+    // missing scope1/scope2 stays honestly excluded via nullPolicy below.
+    compute: (f) => {
+      if (f.ebitda_usd <= 0) return NaN; // <=0, not ===0: negative EBITDA
+      const pctErosion = ((f.scope1_tco2e + f.scope2_location_tco2e) * 100) / f.ebitda_usd;
+      const clipped = Math.max(0, Math.min(50, pctErosion));
+      return 100 * (1 - clipped / 50);
+    },
     nullPolicy: "not_disclosed",
     basis: "FY2023",
   },
@@ -119,7 +158,15 @@ export const REGISTRY: SubScoreDef[] = [
     // A stated reduction target, discounted when it hasn't been externally
     // validated -- an unvalidated target is a press release, not a plan.
     compute: (f) => f.target_reduction_pct * (f.sbti_target_validated ? 1 : 0.7),
-    nullPolicy: "not_disclosed",
+    // Deliberate exception to this file's default stance: a company with NO
+    // stated target is scored against its sector's MEDIAN target strength,
+    // not excluded. Modelled on transition_score.py's sector-counterfactual
+    // target ("no target still carries the liability, it just isn't
+    // acknowledged") -- silence here is treated as a real, scoreable
+    // liability rather than a data gap, unlike every other sub-score in
+    // this registry. This is an editorial stance, not a bug; label copy
+    // downstream should say so.
+    nullPolicy: "sector_median",
     basis: "FY2023",
   },
   {
@@ -165,6 +212,28 @@ export const REGISTRY: SubScoreDef[] = [
     nullPolicy: "not_disclosed",
     basis: "FY2023",
   },
+  {
+    id: "p3_capital_stewardship",
+    pillar: "P3",
+    label: "Capital stewardship",
+    polarity: "higher_is_better",
+    // capex_usd is the one REQUIRED input -- its absence is a real data gap.
+    // Modelled on governance_score.py's _capital_stewardship_score, which
+    // treats rnd/buybacks/dividends absence differently: those XBRL tags
+    // are optional, so a company that simply doesn't emit them gets a true
+    // zero there, not an excluded sub-score. optionalInputs is what lets
+    // this registry express that asymmetry without collapsing coverage to
+    // the intersection of four independently-thin fields.
+    inputs: ["capex_usd"],
+    optionalInputs: ["rnd_expense_usd", "buybacks_usd", "dividends_paid_usd"],
+    compute: (f) => {
+      const reinvestment = f.capex_usd + f.rnd_expense_usd;
+      const total = reinvestment + f.buybacks_usd + f.dividends_paid_usd;
+      return total <= 0 ? NaN : (reinvestment / total) * 100;
+    },
+    nullPolicy: "not_disclosed",
+    basis: "FY2023",
+  },
 ];
 
 export function registryForPillar(pillar: Pillar): SubScoreDef[] {
@@ -190,7 +259,7 @@ export function assertRegistryMatchesSchema(schema: Record<string, unknown>): vo
   const missing: string[] = [];
   const forbidden: string[] = [];
   for (const sub of REGISTRY) {
-    for (const field of sub.inputs) {
+    for (const field of [...sub.inputs, ...(sub.optionalInputs ?? [])]) {
       if (!(field in schema)) missing.push(`${sub.id} -> ${field}`);
       if (VALIDATION_ONLY_FIELDS.has(field)) forbidden.push(`${sub.id} -> ${field}`);
     }

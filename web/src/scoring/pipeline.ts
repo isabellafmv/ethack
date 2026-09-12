@@ -55,6 +55,18 @@ export function normalizedWeights(
   return { pillars, subscores };
 }
 
+/** Resolves the weights to use for one company's sector. A bare WeightsState
+ * applies to every sector alike (today's only real caller); a Map is one
+ * per-sector WeightsState (materiality-weighted mode) -- a sector absent
+ * from the map falls back to equal weighting rather than silently scoring
+ * with nothing. */
+export function weightsForSector(
+  weights: WeightsState | Map<string, WeightsState>,
+  sector: string
+): WeightsState {
+  return weights instanceof Map ? weights.get(sector) ?? defaultWeights() : weights;
+}
+
 export type StatusClass = "measured" | "imputed" | "unavailable";
 
 function coerce(v: number | string | boolean | undefined): number {
@@ -83,6 +95,15 @@ export function resolveInputs(
     }
     if (!MEASURED_STATUSES.has(rec.st) && worst !== "unavailable") worst = "imputed";
     inputs[field] = coerce(rec.v);
+  }
+  // Optional inputs never gate availability, unlike required ones above: an
+  // absent/untrusted optional field is always zero-filled, independent of
+  // whatever the required inputs decided. This runs regardless of `worst` so
+  // a sub-score with optionalInputs still gets them zero-filled even in the
+  // nullPolicy: 'zero' branch below (which only ever touches `sub.inputs`).
+  for (const field of sub.optionalInputs ?? []) {
+    const rec = company.fields[field];
+    inputs[field] = rec && TRUSTED_STATUSES.has(rec.st) ? coerce(rec.v) : 0;
   }
   if (worst === "unavailable") {
     if (sub.nullPolicy !== "zero") return { statusClass: "unavailable", inputs: null };
@@ -181,13 +202,33 @@ export function resolveAndBuildDistributions(
  * sector, and should not shift just because a viewer hid an unrelated
  * sector from the 3D view. Sector filtering is a display concern (see
  * state/useMatrix.ts); this function is not the place to fold it in.
+ *
+ * `weights` is either one WeightsState applied to every company (today's
+ * manual/preset sliders), or a per-sector Map (materiality-weighted mode --
+ * each sector scores its own companies by its own importance weights, while
+ * every company is still percentile-ranked against the exact same
+ * sector-scoped distribution either way; only the AGGREGATION step differs).
+ * The bare-WeightsState path normalises weights exactly once, identically to
+ * before this Map support existed; the Map path normalises once per distinct
+ * sector actually present (at most 11), cached, never per company.
  */
 export function computeScores(
   companies: readonly Company[],
-  weights: WeightsState,
+  weights: WeightsState | Map<string, WeightsState>,
   registry: SubScoreDef[] = REGISTRY
 ): Map<string, CompanyScoreResult> {
-  const { pillars: pillarW, subscores: subW } = normalizedWeights(weights, registry);
+  const bareNormalized = weights instanceof Map ? null : normalizedWeights(weights, registry);
+  const normalizedCache = new Map<string, ReturnType<typeof normalizedWeights>>();
+  function normalizedFor(sector: string) {
+    if (bareNormalized) return bareNormalized;
+    let n = normalizedCache.get(sector);
+    if (!n) {
+      n = normalizedWeights(weightsForSector(weights, sector), registry);
+      normalizedCache.set(sector, n);
+    }
+    return n;
+  }
+
   const { resolved, distributions } = resolveAndBuildDistributions(companies, registry);
 
   // Pass 2: percentile + aggregate.
@@ -195,6 +236,7 @@ export function computeScores(
   for (const company of companies) {
     const perCompany = resolved.get(company.ticker)!;
     const subDist = distributions.get(company.sector) ?? new Map();
+    const { pillars: pillarW, subscores: subW } = normalizedFor(company.sector);
     const pillarResults = {} as Record<Pillar, PillarResult>;
 
     for (const pillar of PILLARS) {

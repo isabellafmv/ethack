@@ -67,3 +67,22 @@ export function decodeWeightsFromHash(hash: string): WeightsState | null {
 function round(n: number): number {
   return Math.round(n * 1000) / 1000;
 }
+
+// --- weight mode (manual vs materiality) persistence ------------------------
+// A separate hash segment from `w=`, so an old shared link (manual mode,
+// no `mode=` segment at all) keeps decoding exactly as it always has.
+// Materiality weights themselves are static (not user-adjustable), so only
+// the boolean "which mode" needs to round-trip -- not any per-sector value.
+
+export type WeightMode = "manual" | "materiality";
+const MODE_PREFIX = "mode=";
+
+export function encodeWeightModeToHash(mode: WeightMode): string {
+  return mode === "materiality" ? `${MODE_PREFIX}materiality` : "";
+}
+
+export function decodeWeightModeFromHash(hash: string): WeightMode {
+  const clean = hash.replace(/^#/, "");
+  const seg = clean.split("&").find((s) => s.startsWith(MODE_PREFIX));
+  return seg?.slice(MODE_PREFIX.length) === "materiality" ? "materiality" : "manual";
+}

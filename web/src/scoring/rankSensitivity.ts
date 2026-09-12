@@ -10,7 +10,8 @@
 // shared URL -- "reproducible" is a stated requirement, and silent
 // randomness would quietly violate it.
 
-import { computeScores, PILLARS, type WeightsState } from "./pipeline";
+import { computeScores, weightsForSector, PILLARS, type WeightsState } from "./pipeline";
+import type { Pillar } from "./registry";
 import type { Company } from "./types";
 
 export interface RankSpread {
@@ -44,7 +45,9 @@ function ranksFromScores(scores: Map<string, { composite: number | null }>): Map
 
 /**
  * @param companies the (typically unfiltered) universe to rank within
- * @param weights the current slider position -- the centre of the sampled neighbourhood
+ * @param weights the current slider position -- the centre of the sampled
+ *   neighbourhood. Either one WeightsState for the whole index, or a
+ *   per-sector Map (materiality-weighted mode).
  * @param perturbFraction how far pillar weights are allowed to jitter, as a
  *   fraction of their normalised value (0.1 = "the plausible +/-10% a viewer
  *   might drag to")
@@ -54,7 +57,7 @@ function ranksFromScores(scores: Map<string, { composite: number | null }>): Map
  */
 export function rankSensitivity(
   companies: readonly Company[],
-  weights: WeightsState,
+  weights: WeightsState | Map<string, WeightsState>,
   { perturbFraction = 0.1, samples = 30, seed = 1 }: { perturbFraction?: number; samples?: number; seed?: number } = {}
 ): Map<string, RankSpread> {
   const rand = mulberry32(seed);
@@ -68,17 +71,28 @@ export function rankSensitivity(
     maxRank.set(ticker, baseRanks.get(ticker)!);
   }
 
+  const sectors = weights instanceof Map ? [...new Set(companies.map((c) => c.sector))] : null;
+
   for (let i = 0; i < samples; i++) {
-    const jittered: WeightsState = {
-      pillars: Object.fromEntries(
-        PILLARS.map((p) => {
-          const base = weights.pillars[p] ?? 1;
-          const jitter = 1 + (rand() * 2 - 1) * perturbFraction;
-          return [p, Math.max(0, base * jitter)];
-        })
-      ),
-      subscores: weights.subscores,
-    };
+    // One jitter factor per pillar per sample, shared across every sector --
+    // not one independent draw per sector -- or "how sensitive is the
+    // ranking to plausible weight drift" stops being a coherent question
+    // once sectors start from very different materiality-derived weights.
+    const factor = Object.fromEntries(
+      PILLARS.map((p) => [p, 1 + (rand() * 2 - 1) * perturbFraction])
+    ) as Record<Pillar, number>;
+    const jitterPillars = (w: WeightsState) =>
+      Object.fromEntries(PILLARS.map((p) => [p, Math.max(0, (w.pillars[p] ?? 1) * factor[p])])) as Record<Pillar, number>;
+
+    const jittered: WeightsState | Map<string, WeightsState> = sectors
+      ? new Map(
+          sectors.map((sector) => {
+            const w = weightsForSector(weights, sector);
+            return [sector, { pillars: jitterPillars(w), subscores: w.subscores }];
+          })
+        )
+      : { pillars: jitterPillars(weights as WeightsState), subscores: (weights as WeightsState).subscores };
+
     const sampleScores = computeScores(companies, jittered);
     const sampleRanks = ranksFromScores(sampleScores);
     for (const [ticker, rank] of sampleRanks) {

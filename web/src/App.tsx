@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { useMatrix } from "./data/useMatrix";
+import { useMaterialityWeights } from "./data/useMaterialityWeights";
 import { useAppState } from "./state/useAppState";
-import { computeScores } from "./scoring/pipeline";
+import { computeScores, weightsForSector, type WeightsState } from "./scoring/pipeline";
 import { resolveReference } from "./scoring/reference";
 import { VIEWS, viewById } from "./viz/views";
 import { axisCoverage } from "./viz/coverage";
@@ -20,15 +21,26 @@ import "./App.css";
 
 export default function App() {
   const matrix = useMatrix();
+  const materiality = useMaterialityWeights();
   const state = useAppState();
   const [cameraPreset, setCameraPreset] = useState<CameraPresetId | null>("isometric");
 
   const companies = matrix.payload?.companies ?? [];
 
+  // In materiality mode, each company scores against its OWN sector's
+  // importance weights instead of one global set -- see computeScores'
+  // per-sector Map support. Falls back to the manual weights whenever
+  // materiality.json hasn't loaded (or failed to), so materiality mode is
+  // never something the rest of the app has to guard against being absent.
+  const effectiveWeights = useMemo<WeightsState | Map<string, WeightsState>>(
+    () => (state.weightMode === "materiality" && materiality.status === "ready" ? materiality.weights! : state.weights),
+    [state.weightMode, materiality.status, materiality.weights, state.weights]
+  );
+
   // Percentiles are sector-relative and computed over the FULL universe --
   // sector filtering below is a display concern only (see pipeline.ts's own
   // note on this), so `scores` never depends on the filter.
-  const scores = useMemo(() => computeScores(companies, state.weights), [companies, state.weights]);
+  const scores = useMemo(() => computeScores(companies, effectiveWeights), [companies, effectiveWeights]);
 
   const sectorCounts = useMemo(() => {
     const m = new Map<string, number>();
@@ -103,7 +115,15 @@ export default function App() {
             onToggle={state.toggleSector}
             onClear={state.clearSectorFilter}
           />
-          <WeightPanel weights={state.weights} onChange={state.setWeights} companies={companies} />
+          <WeightPanel
+            weights={state.weights}
+            onChange={state.setWeights}
+            companies={companies}
+            weightMode={state.weightMode}
+            onChangeWeightMode={state.setWeightMode}
+            materialityStatus={materiality.status}
+            sensitivityWeights={effectiveWeights}
+          />
         </aside>
 
         <main className="app-main">
@@ -120,7 +140,7 @@ export default function App() {
               axes={state.axes}
               visibleSectors={state.selectedSectors}
               referenceBySector={referenceBySector}
-              weights={state.weights}
+              weights={effectiveWeights}
               onSelectCompany={state.setSelectedTicker}
               cameraPreset={cameraPreset}
             />
@@ -144,7 +164,7 @@ export default function App() {
             company={selectedCompany}
             result={selectedResult}
             urls={matrix.payload.urls}
-            weights={state.weights}
+            weights={weightsForSector(effectiveWeights, selectedCompany.sector)}
             isFixture={matrix.isFixture}
             onClose={() => state.setSelectedTicker(null)}
           />

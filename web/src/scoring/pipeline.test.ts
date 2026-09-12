@@ -157,6 +157,182 @@ describe("resolveInputs: nullPolicy 'zero'", () => {
   });
 });
 
+describe("computeScores: p1_input_efficiency (real registry sub-score)", () => {
+  it("scores a lower COGS/revenue ratio higher (lower_is_better)", () => {
+    const companies = [
+      makeCompany("A", "Energy", { cogs_usd: field(200_000), revenue_usd: field(1_000_000) }),
+      makeCompany("B", "Energy", { cogs_usd: field(800_000), revenue_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P1.subScores.find((s) => s.id === "p1_input_efficiency")!;
+    const b = scores.get("B")!.pillars.P1.subScores.find((s) => s.id === "p1_input_efficiency")!;
+    expect(a.score!).toBeGreaterThan(b.score!);
+  });
+
+  it("stays null when cogs_usd is absent", () => {
+    const companies = [
+      makeCompany("A", "Energy", { revenue_usd: field(1_000_000) }),
+      makeCompany("B", "Energy", { cogs_usd: field(500_000), revenue_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P1.subScores.find((s) => s.id === "p1_input_efficiency")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+});
+
+describe("computeScores: p3_capital_stewardship (real registry sub-score, optionalInputs)", () => {
+  it("computes the reinvestment share when all four fields are present", () => {
+    const companies = [
+      makeCompany("A", "Industrials", {
+        capex_usd: field(400), rnd_expense_usd: field(100),
+        buybacks_usd: field(300), dividends_paid_usd: field(200),
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_capital_stewardship")!;
+    // reinvestment = 400+100 = 500; total = 500+300+200 = 1000 -> 50%
+    expect(a.rawValue).toBeCloseTo(50);
+  });
+
+  it("treats absent optional fields as a real zero, not a gap -- score still computes", () => {
+    const companies = [
+      makeCompany("A", "Industrials", { capex_usd: field(400) }), // rnd/buybacks/dividends all absent
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_capital_stewardship")!;
+    // reinvestment = 400+0 = 400; total = 400+0+0 = 400 -> 100%
+    expect(a.statusClass).toBe("measured");
+    expect(a.rawValue).toBeCloseTo(100);
+  });
+
+  it("is null when the required capex_usd is absent, even with every optional field present", () => {
+    const companies = [
+      makeCompany("A", "Industrials", {
+        rnd_expense_usd: field(100), buybacks_usd: field(300), dividends_paid_usd: field(200),
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_capital_stewardship")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+
+  it("is null when total <= 0 despite capex_usd being genuinely present", () => {
+    const companies = [
+      makeCompany("A", "Industrials", { capex_usd: field(0) }), // present, but zero, and nothing else
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_capital_stewardship")!;
+    expect(a.statusClass).toBe("measured"); // capex_usd IS disclosed -- it's just zero
+    expect(a.rawValue).toBeNull(); // but the ratio is undefined, so no score is invented
+  });
+});
+
+describe("computeScores: p2_regulatory_momentum (real registry sub-score, sector_median nullPolicy)", () => {
+  it("scores a company with no stated target against the sector's median target strength, not as a neutral gap", () => {
+    const companies = [
+      makeCompany("A", "Energy", { target_reduction_pct: field(30), sbti_target_validated: field(true) }), // 30
+      makeCompany("B", "Energy", { target_reduction_pct: field(50), sbti_target_validated: field(false) }), // 35
+      makeCompany("C", "Energy", {}), // no target at all
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const c = scores.get("C")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    expect(c.statusClass).toBe("unavailable"); // genuinely undisclosed...
+    expect(c.rawValue).toBeCloseTo(32.5); // ...but median(30, 35), not null
+    expect(c.score).toBe(50); // falls exactly between its two sector peers
+  });
+});
+
+describe("computeScores: p2_carbon_price_exposure (real registry sub-score, ceiling mapping)", () => {
+  it("maps 0% EBITDA erosion to best and >=50% erosion to worst, pre-percentile", () => {
+    const companies = [
+      makeCompany("A", "Energy", { scope1_tco2e: field(0), scope2_location_tco2e: field(0), ebitda_usd: field(1_000_000) }),
+      makeCompany("B", "Energy", { scope1_tco2e: field(500_000), scope2_location_tco2e: field(0), ebitda_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
+    expect(a.rawValue).toBeCloseTo(100); // 0% erosion
+    expect(b.rawValue).toBeCloseTo(0); // 50% erosion, at the ceiling
+    expect(a.score!).toBeGreaterThan(b.score!); // higher_is_better on the already-oriented value
+  });
+
+  it("is null (not a false best score) when EBITDA is negative", () => {
+    const companies = [
+      makeCompany("A", "Energy", { scope1_tco2e: field(100), scope2_location_tco2e: field(0), ebitda_usd: field(-1) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
+    expect(a.statusClass).toBe("measured"); // every input IS disclosed
+    expect(a.rawValue).toBeNull(); // the ratio just isn't meaningful
+    expect(a.score).toBeNull();
+  });
+});
+
+describe("computeScores: per-sector weights (Map<string, WeightsState>)", () => {
+  const energy = [
+    makeCompany("A", "Energy", {
+      scope1_tco2e: field(100), revenue_usd: field(1_000_000),
+      independent_director_count: field(2), board_size: field(8),
+    }),
+    makeCompany("B", "Energy", {
+      scope1_tco2e: field(900), revenue_usd: field(1_000_000),
+      independent_director_count: field(2), board_size: field(8),
+    }),
+  ];
+  const financials = [
+    makeCompany("C", "Financials", {
+      scope1_tco2e: field(900), revenue_usd: field(1_000_000),
+      independent_director_count: field(8), board_size: field(8),
+    }),
+    makeCompany("D", "Financials", {
+      scope1_tco2e: field(100), revenue_usd: field(1_000_000),
+      independent_director_count: field(2), board_size: field(8),
+    }),
+  ];
+  const utilities = [
+    makeCompany("U1", "Utilities", {
+      scope1_tco2e: field(100), revenue_usd: field(1_000_000), // strong P1
+      independent_director_count: field(2), board_size: field(8), // weak P3
+    }),
+    makeCompany("U2", "Utilities", {
+      scope1_tco2e: field(900), revenue_usd: field(1_000_000), // weak P1
+      independent_director_count: field(8), board_size: field(8), // strong P3
+    }),
+  ];
+  const companies = [...energy, ...financials, ...utilities];
+
+  const p1Heavy: WeightsState = { pillars: { P1: 10, P2: 0.001, P3: 0.001 }, subscores: {} };
+  const p3Heavy: WeightsState = { pillars: { P1: 0.001, P2: 0.001, P3: 10 }, subscores: {} };
+
+  it("applies each sector's own weights to that sector's companies", () => {
+    const weights = new Map([["Energy", p1Heavy], ["Financials", p3Heavy]]);
+    const scores = computeScores(companies, weights);
+    const a = scores.get("A")!;
+    const c = scores.get("C")!;
+    // A is Energy's better P1 performer, weighted P1-heavy there.
+    expect(Math.abs(a.composite! - a.pillars.P1.score!)).toBeLessThan(1);
+    // C is Financials' better P3 performer, weighted P3-heavy there.
+    expect(Math.abs(c.composite! - c.pillars.P3.score!)).toBeLessThan(1);
+  });
+
+  it("falls back to defaultWeights() for a sector absent from the map", () => {
+    const weights = new Map([["Energy", p1Heavy], ["Financials", p3Heavy]]); // Utilities absent
+    const viaMap = computeScores(companies, weights);
+    const viaDefault = computeScores(companies, defaultWeights());
+    expect(viaMap.get("U1")).toEqual(viaDefault.get("U1"));
+    expect(viaMap.get("U2")).toEqual(viaDefault.get("U2"));
+  });
+
+  it("a Map with the same WeightsState for every sector is equivalent to passing that WeightsState bare", () => {
+    const sameEverywhere = new Map([["Energy", p1Heavy], ["Financials", p1Heavy], ["Utilities", p1Heavy]]);
+    const viaMap = computeScores(companies, sameEverywhere);
+    const viaBare = computeScores(companies, p1Heavy);
+    expect(viaMap).toEqual(viaBare);
+  });
+});
+
 describe("resolveInputs: nullPolicy 'sector_median' (via computeScores)", () => {
   const medianPolicySub: SubScoreDef = {
     id: "test_median",

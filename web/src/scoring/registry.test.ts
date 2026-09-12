@@ -3,7 +3,9 @@ import { assertRegistryMatchesSchema, REGISTRY } from "./registry";
 
 function fullSchema(): Record<string, unknown> {
   const schema: Record<string, unknown> = {};
-  for (const sub of REGISTRY) for (const field of sub.inputs) schema[field] = {};
+  for (const sub of REGISTRY) {
+    for (const field of [...sub.inputs, ...(sub.optionalInputs ?? [])]) schema[field] = {};
+  }
   return schema;
 }
 
@@ -16,6 +18,12 @@ describe("assertRegistryMatchesSchema", () => {
     const schema = fullSchema();
     delete schema["scope1_tco2e"];
     expect(() => assertRegistryMatchesSchema(schema)).toThrow(/scope1_tco2e/);
+  });
+
+  it("throws by name when an optionalInputs field is missing from the payload schema", () => {
+    const schema = fullSchema();
+    delete schema["rnd_expense_usd"];
+    expect(() => assertRegistryMatchesSchema(schema)).toThrow(/rnd_expense_usd/);
   });
 
   it("throws when a registry input is a VALIDATION_ONLY field", () => {
@@ -50,6 +58,6 @@ describe("assertRegistryMatchesSchema", () => {
   it("covers exactly the pillar spec's default sub-score counts", () => {
     const counts = { P1: 0, P2: 0, P3: 0 } as Record<string, number>;
     for (const s of REGISTRY) counts[s.pillar]++;
-    expect(counts).toEqual({ P1: 3, P2: 4, P3: 3 });
+    expect(counts).toEqual({ P1: 4, P2: 4, P3: 4 });
   });
 });

@@ -4,13 +4,18 @@
 // reference point, and the selected company for the detail panel.
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { defaultWeights, type WeightsState } from "../scoring/pipeline";
-import { decodeWeightsFromHash, encodeWeightsToHash } from "../scoring/weights";
+import {
+  decodeWeightModeFromHash, decodeWeightsFromHash,
+  encodeWeightModeToHash, encodeWeightsToHash, type WeightMode,
+} from "../scoring/weights";
 import type { ReferenceSpec } from "../scoring/reference";
 import { VIEWS, viewById, type AxisSlot, type ViewConfig } from "../viz/views";
 
 export interface AppState {
   weights: WeightsState;
   setWeights: (w: WeightsState) => void;
+  weightMode: WeightMode;
+  setWeightMode: (m: WeightMode) => void;
   selectedSectors: Set<string>;
   toggleSector: (sector: string, allSectors: string[]) => void;
   clearSectorFilter: () => void;
@@ -30,6 +35,9 @@ export function useAppState(): AppState {
   const [weights, setWeightsState] = useState<WeightsState>(
     () => decodeWeightsFromHash(window.location.hash) ?? defaultWeights()
   );
+  const [weightMode, setWeightModeState] = useState<WeightMode>(
+    () => decodeWeightModeFromHash(window.location.hash)
+  );
   const [selectedSectors, setSelectedSectors] = useState<Set<string>>(new Set());
   const [activeViewId, setActiveViewId] = useState<ViewConfig["id"]>("global");
   const [axesByView, setAxesByView] = useState<Record<string, [AxisSlot, AxisSlot, AxisSlot]>>(
@@ -39,17 +47,33 @@ export function useAppState(): AppState {
   const [deltaMode, setDeltaMode] = useState<"raw" | "sector_adjusted">("sector_adjusted");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
 
-  const setWeights = useCallback((w: WeightsState) => {
-    setWeightsState(w);
-    window.history.replaceState(null, "", `#${encodeWeightsToHash(w)}`);
+  // `mode=` is only ever appended when non-manual, so a manual-mode URL is
+  // byte-identical to what it was before weight modes existed at all.
+  const writeHash = useCallback((w: WeightsState, mode: WeightMode) => {
+    const modeSeg = encodeWeightModeToHash(mode);
+    window.history.replaceState(null, "", `#${modeSeg ? `${encodeWeightsToHash(w)}&${modeSeg}` : encodeWeightsToHash(w)}`);
   }, []);
 
-  // A shared link should reproduce the weights it was copied at, including
-  // back/forward through browser history.
+  const setWeights = useCallback((w: WeightsState) => {
+    setWeightsState(w);
+    writeHash(w, weightMode);
+  }, [weightMode, writeHash]);
+
+  // Sliders always write through to `weights` regardless of mode (see
+  // WeightPanel), so switching back to manual needs no separate stash --
+  // whatever was last set is still sitting there, untouched.
+  const setWeightMode = useCallback((m: WeightMode) => {
+    setWeightModeState(m);
+    writeHash(weights, m);
+  }, [weights, writeHash]);
+
+  // A shared link should reproduce the weights (and mode) it was copied at,
+  // including back/forward through browser history.
   useEffect(() => {
     const onHashChange = () => {
       const fromHash = decodeWeightsFromHash(window.location.hash);
       if (fromHash) setWeightsState(fromHash);
+      setWeightModeState(decodeWeightModeFromHash(window.location.hash));
     };
     window.addEventListener("hashchange", onHashChange);
     return () => window.removeEventListener("hashchange", onHashChange);
@@ -85,6 +109,7 @@ export function useAppState(): AppState {
 
   return {
     weights, setWeights,
+    weightMode, setWeightMode,
     selectedSectors, toggleSector, clearSectorFilter,
     activeViewId, setActiveViewId,
     axes, setAxis,

@@ -10,6 +10,7 @@
     "test": "vitest run",
     "fixture": "tsx scripts/make-fixture.ts",
     "fixture:degenerate": "tsx scripts/make-fixture.ts --degenerate",
+    "materiality": "tsx scripts/make-materiality.ts",
     "data": "cd .. && python3 -m pipeline.export_matrix --out web/public/data/matrix.json --quotes-out web/public/data/quotes.json",
     "oracle": "cd .. && python3 -m score_calculation.score --matrix web/public/data/matrix.json --out data/scores_oracle.csv",
     "verify:oracle": "tsx scripts/verify-oracle.ts"

@@ -56,3 +56,52 @@ describe("rankSensitivity", () => {
     }
   });
 });
+
+describe("rankSensitivity: per-sector weights (Map<string, WeightsState>)", () => {
+  function richCompany(ticker: string, sector: string, p1Value: number, p3Value: number): Company {
+    return {
+      ticker, name: ticker, sector, sub_industry: "",
+      fields: {
+        scope1_tco2e: field(p1Value), revenue_usd: field(1_000_000),
+        independent_director_count: field(p3Value), board_size: field(10),
+      },
+      alternatives: {}, confidence: 1,
+    };
+  }
+
+  it("applies the same per-sample per-pillar jitter factor across every sector, not one independent draw per sector", () => {
+    // Energy's raw weights are exactly 2x Materials' -- proportional, so
+    // normalizedWeights() is IDENTICAL for both sectors regardless of scale.
+    // A shared jitter factor keeps that identity true on every sample; an
+    // independent-per-sector jitter would (almost certainly, over 20
+    // samples) break it.
+    const proportional = new Map([
+      ["Energy", { pillars: { P1: 2, P2: 2, P3: 2 }, subscores: {} }],
+      ["Materials", { pillars: { P1: 1, P2: 1, P3: 1 }, subscores: {} }],
+    ]);
+    const companies = [
+      richCompany("A", "Energy", 100, 2), // good P1, weak P3
+      richCompany("B", "Energy", 900, 8), // weak P1, good P3
+      richCompany("C", "Materials", 100, 2), // same pattern as A
+      richCompany("D", "Materials", 900, 8), // same pattern as B
+    ];
+    const spreads = rankSensitivity(companies, proportional, { seed: 5, samples: 20 });
+    expect(spreads.get("A")!.spread).toBe(spreads.get("C")!.spread);
+    expect(spreads.get("B")!.spread).toBe(spreads.get("D")!.spread);
+  });
+
+  it("is deterministic for a fixed seed", () => {
+    const weights = new Map([
+      ["Energy", defaultWeights()],
+      ["Health Care", { pillars: { P1: 3, P2: 1, P3: 1 }, subscores: {} }],
+    ]);
+    const companies = [
+      makeCompany("A", "Energy", 100, 1_000_000),
+      makeCompany("B", "Energy", 200, 1_000_000),
+      makeCompany("C", "Health Care", 300, 2_000_000),
+    ];
+    const r1 = rankSensitivity(companies, weights, { seed: 42, samples: 10 });
+    const r2 = rankSensitivity(companies, weights, { seed: 42, samples: 10 });
+    expect(r1).toEqual(r2);
+  });
+});

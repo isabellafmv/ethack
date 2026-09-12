@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { defaultWeights } from "./pipeline";
-import { applyPreset, decodeWeightsFromHash, encodeWeightsToHash, PRESETS } from "./weights";
+import {
+  applyPreset, decodeWeightModeFromHash, decodeWeightsFromHash,
+  encodeWeightModeToHash, encodeWeightsToHash, PRESETS,
+} from "./weights";
 
 describe("presets", () => {
   it("environmental-led weighs P1 above the other two", () => {
@@ -53,5 +56,21 @@ describe("URL hash persistence", () => {
 
   it("ignores unrecognised keys instead of throwing -- a stale shared link must not crash the app", () => {
     expect(() => decodeWeightsFromHash("#w=NOT_A_REAL_ID%3A5")).not.toThrow();
+  });
+});
+
+describe("weight mode persistence", () => {
+  it("round-trips manual and materiality mode through the hash", () => {
+    expect(decodeWeightModeFromHash(encodeWeightModeToHash("materiality"))).toBe("materiality");
+    expect(decodeWeightModeFromHash(encodeWeightModeToHash("manual"))).toBe("manual");
+  });
+
+  it("a hash with no mode segment decodes to manual -- old shared links keep working", () => {
+    expect(decodeWeightModeFromHash("#w=P1:1,P2:1,P3:1")).toBe("manual");
+    expect(decodeWeightModeFromHash("")).toBe("manual");
+  });
+
+  it("manual mode encodes to an empty segment, keeping manual-mode URLs unchanged", () => {
+    expect(encodeWeightModeToHash("manual")).toBe("");
   });
 });

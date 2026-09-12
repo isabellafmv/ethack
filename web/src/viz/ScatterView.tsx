@@ -101,7 +101,7 @@ export interface ScatterViewProps {
   axes: [AxisSlot, AxisSlot, AxisSlot];
   visibleSectors: Set<string>;
   referenceBySector: Map<string, ReferenceValues>;
-  weights: WeightsState;
+  weights: WeightsState | Map<string, WeightsState>;
   onSelectCompany: (ticker: string) => void;
   cameraPreset: CameraPresetId | null;
 }
@@ -130,7 +130,7 @@ export function ScatterView({
       const refValues = referenceBySector.get(company.sector);
       const deltas = refValues
         ? axes.map((a, i) => {
-            const ref = referenceScoreForAxis(a, refValues, weights);
+            const ref = referenceScoreForAxis(a, refValues, weights, company.sector);
             return ref === null ? null : (values[i] as number) - ref;
           })
         : [];

@@ -7,22 +7,27 @@
 import { useState } from "react";
 import { PILLARS, normalizedWeights, type WeightsState } from "../scoring/pipeline";
 import { registryForPillar, type Pillar } from "../scoring/registry";
-import { PRESETS, type PresetId, applyPreset } from "../scoring/weights";
+import { PRESETS, type PresetId, type WeightMode, applyPreset } from "../scoring/weights";
 import { rankSensitivity, type RankSpread } from "../scoring/rankSensitivity";
 import type { Company } from "../scoring/types";
 
 const PILLAR_LABELS: Record<Pillar, string> = { P1: "Environmental", P2: "Transition", P3: "Governance" };
 
 export function WeightPanel({
-  weights, onChange, companies,
+  weights, onChange, companies, weightMode, onChangeWeightMode, materialityStatus, sensitivityWeights,
 }: {
   weights: WeightsState;
   onChange: (w: WeightsState) => void;
   companies: readonly Company[];
+  weightMode: WeightMode;
+  onChangeWeightMode: (m: WeightMode) => void;
+  materialityStatus: "loading" | "ready" | "unavailable";
+  sensitivityWeights: WeightsState | Map<string, WeightsState>;
 }) {
   const normalized = normalizedWeights(weights);
   const [sensitivity, setSensitivity] = useState<Map<string, RankSpread> | null>(null);
   const [computing, setComputing] = useState(false);
+  const isMateriality = weightMode === "materiality";
 
   const setPillarWeight = (pillar: Pillar, value: number) => {
     onChange({ ...weights, pillars: { ...weights.pillars, [pillar]: value } });
@@ -30,14 +35,17 @@ export function WeightPanel({
   const setSubWeight = (id: string, value: number) => {
     onChange({ ...weights, subscores: { ...weights.subscores, [id]: value } });
   };
-  const runPreset = (preset: PresetId) => onChange(applyPreset(preset, weights));
+  const runPreset = (preset: PresetId) => {
+    onChangeWeightMode("manual");
+    onChange(applyPreset(preset, weights));
+  };
 
   const runSensitivity = () => {
     setComputing(true);
     // Yield a frame so the "computing..." state actually paints before the
     // ~30-sample resampling work runs on the main thread.
     requestAnimationFrame(() => {
-      setSensitivity(rankSensitivity(companies, weights));
+      setSensitivity(rankSensitivity(companies, sensitivityWeights));
       setComputing(false);
     });
   };
@@ -56,7 +64,23 @@ export function WeightPanel({
         {(Object.keys(PRESETS) as PresetId[]).map((id) => (
           <button key={id} onClick={() => runPreset(id)}>{PRESETS[id].label}</button>
         ))}
+        <button
+          className={isMateriality ? "preset-materiality preset-materiality--active" : "preset-materiality"}
+          disabled={materialityStatus !== "ready"}
+          onClick={() => onChangeWeightMode(isMateriality ? "manual" : "materiality")}
+          title={materialityStatus !== "ready" ? "materiality.json not loaded" : undefined}
+        >
+          Materiality-weighted (per sector)
+        </button>
       </div>
+      {isMateriality && (
+        <p className="materiality-explainer">
+          Each sector scores against its own SASB-style importance weights
+          (e.g. Utilities weighs carbon intensity heavily; Financials weighs
+          governance instead) -- see data/materiality.csv. The sliders below
+          reflect your last manual setting, not what's actually being used.
+        </p>
+      )}
 
       {PILLARS.map((pillar) => (
         <div key={pillar} className="weight-group">
@@ -65,6 +89,7 @@ export function WeightPanel({
             <input
               type="range" min={0} max={3} step={0.05}
               value={weights.pillars[pillar] ?? 1}
+              disabled={isMateriality}
               onChange={(e) => setPillarWeight(pillar, Number(e.target.value))}
             />
             <span className="weight-value">{Math.round(normalized.pillars[pillar] * 100)}%</span>
@@ -77,6 +102,7 @@ export function WeightPanel({
                 <input
                   type="range" min={0} max={3} step={0.05}
                   value={weights.subscores[sub.id] ?? 1}
+                  disabled={isMateriality}
                   onChange={(e) => setSubWeight(sub.id, Number(e.target.value))}
                 />
                 <span className="weight-value">{Math.round((normalized.subscores[sub.id] ?? 0) * 100)}%</span>

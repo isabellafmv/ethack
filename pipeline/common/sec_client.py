@@ -96,13 +96,50 @@ class SECClient:
         """Everything in a filing, so EX-21 can be located for S05."""
         acc = filing["accession"].replace("-", "")
         cik_int = int(filing["cik"])
-        url = (f"https://www.sec.gov/Archives/edgar/data/{cik_int}/{acc}/"
-               f"{filing['accession']}-index.json")
+        # NOT "{accession}-index.json" -- that path 404s. EDGAR's per-filing
+        # directory listing is plain "index.json", confirmed live.
+        url = f"https://www.sec.gov/Archives/edgar/data/{cik_int}/{acc}/index.json"
         try:
             data = self.session.get_json(url, key=f"index-{filing['accession']}")
         except RuntimeError:
             return []
         return data.get("directory", {}).get("item", [])
+
+    def filing_documents(self, filing: dict) -> list[dict]:
+        """The filing's own Seq/Description/Document/Type/Size table, from
+        its human "-index.html" page -- NOT filing_files()'s index.json,
+        whose "type" is a generic viewer icon (e.g. "text.gif") and cannot
+        tell an EX-21.1 apart from an EX-31.1. This is what actually types
+        each exhibit, needed by S05 to find Exhibit 21 without guessing at
+        filename conventions (which vary per filer)."""
+        from bs4 import BeautifulSoup
+
+        acc = filing["accession"].replace("-", "")
+        cik_int = int(filing["cik"])
+        url = (f"https://www.sec.gov/Archives/edgar/data/{cik_int}/{acc}/"
+               f"{filing['accession']}-index.html")
+        try:
+            html = self.session.get_text(url, key=f"docindex-{filing['accession']}",
+                                          suffix=".html")
+        except RuntimeError:
+            return []
+
+        soup = BeautifulSoup(html, "html.parser")
+        out = []
+        for table in soup.find_all("table"):
+            headers = [th.get_text(strip=True).lower() for th in table.find_all("th")]
+            if "document" not in headers or "type" not in headers:
+                continue
+            for tr in table.find_all("tr"):
+                cells = tr.find_all("td")
+                if len(cells) != len(headers):
+                    continue
+                row = dict(zip(headers, (c.get_text(strip=True) for c in cells)))
+                link = tr.find("a")
+                if link and link.get("href"):
+                    row["document"] = link["href"].rsplit("/", 1)[-1]
+                out.append(row)
+        return out
 
 
 def get_client() -> SECClient:

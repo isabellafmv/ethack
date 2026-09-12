@@ -55,6 +55,12 @@ const P1_SUBS = registryForPillar("P1").map((s): AxisSlot => ({ kind: "subscore"
 const P2_SUBS = registryForPillar("P2").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
 const P3_SUBS = registryForPillar("P3").map((s): AxisSlot => ({ kind: "subscore", id: s.id }));
 
+function bySubId(subs: AxisSlot[], id: string): AxisSlot {
+  const found = subs.find((s) => s.kind === "subscore" && s.id === id);
+  if (!found) throw new Error(`view default references unknown sub-score id ${JSON.stringify(id)}`);
+  return found;
+}
+
 export const VIEWS: ViewConfig[] = [
   {
     id: "global",
@@ -68,8 +74,13 @@ export const VIEWS: ViewConfig[] = [
   {
     id: "P1",
     label: "Environmental",
+    // Four sub-scores, three axes. p1_energy_mix is reachable via the
+    // dropdown but not a default -- it's 0/500 covered in real data today,
+    // while p1_carbon_intensity and the newer p1_input_efficiency actually
+    // have companies on them. Defaulting to two empty axes out of three
+    // would undercut the entire reason input_efficiency was added.
     options: P1_SUBS,
-    defaultAxes: [P1_SUBS[0], P1_SUBS[1], P1_SUBS[2]],
+    defaultAxes: [bySubId(P1_SUBS, "p1_carbon_intensity"), bySubId(P1_SUBS, "p1_input_efficiency"), bySubId(P1_SUBS, "p1_resource_waste")],
   },
   {
     id: "P2",
@@ -82,8 +93,12 @@ export const VIEWS: ViewConfig[] = [
   {
     id: "P3",
     label: "Governance",
+    // Four sub-scores, three axes -- the inverse of P2's situation: the
+    // NEW sub-score (p3_capital_stewardship) is the well-covered one and
+    // belongs in the default three; p3_controversy_flags (0/500 covered
+    // today) moves to dropdown-only.
     options: P3_SUBS,
-    defaultAxes: [P3_SUBS[0], P3_SUBS[1], P3_SUBS[2]],
+    defaultAxes: [bySubId(P3_SUBS, "p3_board_independence"), bySubId(P3_SUBS, "p3_exec_compensation"), bySubId(P3_SUBS, "p3_capital_stewardship")],
   },
 ];
 
