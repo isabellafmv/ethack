@@ -1,6 +1,6 @@
 """Transition pillar score: carbon-price exposure, sector structural
-exposure, innovation & regulatory momentum, and transition affordability,
-combined into one weighted score.
+exposure, regulatory commitment, and transition affordability, combined
+into one weighted score.
 
 Reads Isabella's pipeline output directly (data/wide_FY2025_fallback.csv --
 see pipeline/export_wide.py), not a separately-fetched copy of the same
@@ -14,11 +14,18 @@ data:
   which applies per company.
 - sector_exposure_score: how structurally carbon-intensive the company's
   GICS sector is, ranked from the same GHGRP-derived intensity benchmark.
-- regulatory_momentum_score: SBTi target tier (real, disclosed) blended with
-  R&D intensity from EDGAR (real). Patent-based innovation signal (USPTO
-  PatentsView Y02 share) from the spec is NOT included yet -- PatentsView
-  requires a free API key and wasn't reachable from this environment; this
-  is a known, explicit gap rather than a silently-dropped indicator.
+  Measured correlation with carbon_price_exposure_score for modelled-tier
+  companies is 0.50 -- real but partial overlap (EBITDA varies independently
+  of revenue, so the two aren't identical), which is why its weight is kept
+  low rather than dropped outright.
+- regulatory_commitment_score: SBTi target tier (real, disclosed) blended
+  with R&D intensity from EDGAR (real). Named "commitment," not "momentum" --
+  it's a snapshot of what's been committed to, not a rate of change; nothing
+  here is a trend measure, and calling it momentum overclaimed what a single
+  point in time can show. Patent-based innovation signal (USPTO PatentsView
+  Y02 share) from the spec is NOT included yet -- PatentsView requires a free
+  API key and wasn't reachable from this environment; this is a known,
+  explicit gap rather than a silently-dropped indicator.
 - transition_affordability_score: whether the company can plausibly fund
   the transition implied by its own SBTi target (or, absent one, a
   sector-median counterfactual target -- see _sector_counterfactual_target).
@@ -38,6 +45,13 @@ missing one -- missing EBITDA, FCF, or R&D used to be treated as "erosion/
 cost so bad it hit the ceiling" or "spends nothing," which was the single
 largest source of 0-scores in the pillar and had nothing to do with the
 company's actual transition risk. See info.md for the before/after numbers.
+
+data_confidence_pct carries how much of that composite rests on real,
+company-specific evidence (measured emissions, a disclosed target) versus a
+sector-level or counterfactual estimate -- two companies can show the same
+transition_score for very different reasons, and n_subscores_available alone
+doesn't say whether the sub-scores it does have are strongly or weakly
+evidenced.
 """
 from pathlib import Path
 
@@ -56,11 +70,11 @@ DATA_DIR = PROJECT_ROOT / "data"
 WIDE_PATH = DATA_DIR / "wide_FY2025_fallback.csv"
 OUTPUT_PATH = DATA_DIR / "transition_scores.csv"
 
-# SBTi target ambition -> momentum score. Isabella's field contract only
+# SBTi target ambition -> commitment score. Isabella's field contract only
 # distinguishes three tiers (commitment / near-term / net-zero), coarser than
 # the old 1.5C-vs-2C split this used to have -- there's no data to support
 # that finer split anymore.
-MOMENTUM_SCORES = {
+COMMITMENT_SCORES = {
     "no_target": 0,
     "committed": 25,
     "near_term_set": 75,
@@ -77,16 +91,30 @@ AFFORDABILITY_COST_CEILING_PCT = 100.0
 RND_INTENSITY_CAP_PCT = 15.0  # R&D/revenue at/above which the R&D component maxes out (roughly top-decile tech/pharma)
 
 # Provisional -- revisit once the raw sub-scores have been reviewed.
+# sector_exposure_score's weight was cut from 0.15 to 0.08 (redistributed to
+# carbon_price_exposure and affordability): the two carbon metrics measure
+# r=0.50 correlated for modelled-tier companies (same underlying GHGRP
+# sector-intensity table), so giving them near-equal weight double-counts
+# one signal more than the nominal split suggests. Not dropped entirely --
+# the correlation is partial, not total, so it still adds information.
 WEIGHTS = {
-    "carbon_price_exposure_score": 0.30,
-    "sector_exposure_score": 0.15,
-    "regulatory_momentum_score": 0.25,
-    "transition_affordability_score": 0.30,
+    "carbon_price_exposure_score": 0.32,
+    "sector_exposure_score": 0.08,
+    "regulatory_commitment_score": 0.25,
+    "transition_affordability_score": 0.35,
 }
 
-# Blend within regulatory_momentum_score: disclosed SBTi commitment vs. R&D
+# Blend within regulatory_commitment_score: disclosed SBTi commitment vs. R&D
 # spend as a proxy for innovation capacity (patents would sit here too, once available).
-MOMENTUM_SUBWEIGHTS = {"sbti": 0.7, "rnd_intensity": 0.3}
+COMMITMENT_SUBWEIGHTS = {"sbti": 0.7, "rnd_intensity": 0.3}
+
+# Per-sub-score confidence when it rests on the strongest evidence tier
+# available (measured emissions, a disclosed target, R&D actually reported) --
+# scaled down, not zeroed, for the weaker tier, since a modelled/counterfactual
+# value is still a real estimate, not a guess. Purely a transparency signal;
+# it does not change transition_score itself.
+FULL_CONFIDENCE = 1.0
+PARTIAL_CONFIDENCE = 0.5
 
 
 def _ceiling_score(pct_of_base: pd.Series, ceiling_pct: float) -> pd.Series:
@@ -134,7 +162,7 @@ def _estimate_emissions(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def _momentum_tier(row: pd.Series) -> str:
+def _commitment_tier(row: pd.Series) -> str:
     if row["sbti_target_validated"] != 1:
         return "no_target"
     return {"net-zero": "net_zero_validated", "near-term": "near_term_set", "commitment": "committed"}.get(
@@ -169,6 +197,47 @@ def _target_inputs(row: pd.Series, counterfactual_by_sector: dict, global_fallba
     return fallback["reduction_pct"] / 100.0, fallback["target_year"], "counterfactual_sector_median"
 
 
+def _confidence(df: pd.DataFrame) -> pd.DataFrame:
+    """Per-sub-score confidence (1.0 = strongest evidence tier, 0.5 = the
+    weaker one), then a weighted average over whichever sub-scores a company
+    has -- same weights and same renormalization as transition_score itself,
+    so the two numbers are directly comparable.
+    """
+    df["carbon_price_exposure_score_confidence"] = df["carbon_price_exposure_score"].notna() & (
+        df["emissions_source_tier"] == "measured"
+    )
+    df["carbon_price_exposure_score_confidence"] = df["carbon_price_exposure_score_confidence"].map(
+        {True: FULL_CONFIDENCE, False: PARTIAL_CONFIDENCE}
+    ).where(df["carbon_price_exposure_score"].notna())
+
+    # sector_exposure_score is always a real (if coarse) sector-level fact
+    # when it exists -- no weaker tier to distinguish.
+    df["sector_exposure_score_confidence"] = df["sector_exposure_score"].notna().map(
+        {True: FULL_CONFIDENCE, False: None}
+    )
+
+    has_rnd = df["rnd_intensity_pct"].notna()
+    df["regulatory_commitment_score_confidence"] = df["regulatory_commitment_score"].notna() & has_rnd
+    df["regulatory_commitment_score_confidence"] = df["regulatory_commitment_score_confidence"].map(
+        {True: FULL_CONFIDENCE, False: PARTIAL_CONFIDENCE}
+    ).where(df["regulatory_commitment_score"].notna())
+
+    df["transition_affordability_score_confidence"] = df["transition_affordability_score"].notna() & (
+        df["target_basis"] == "disclosed"
+    )
+    df["transition_affordability_score_confidence"] = df["transition_affordability_score_confidence"].map(
+        {True: FULL_CONFIDENCE, False: PARTIAL_CONFIDENCE}
+    ).where(df["transition_affordability_score"].notna())
+
+    confidence_cols = [f"{c}_confidence" for c in WEIGHTS]
+    weights = pd.Series(WEIGHTS, index=WEIGHTS.keys()).rename(lambda c: f"{c}_confidence")
+    available = df[confidence_cols].notna()
+    weight_matrix = available * weights
+    weight_sum = weight_matrix.sum(axis=1)
+    df["data_confidence_pct"] = 100 * (df[confidence_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
+    return df
+
+
 def compute_transition_scores() -> pd.DataFrame:
     df = pd.read_csv(WIDE_PATH)
 
@@ -187,21 +256,21 @@ def compute_transition_scores() -> pd.DataFrame:
         df["pct_ebitda_erosion"].clip(lower=0), CARBON_PRICE_EROSION_CEILING_PCT
     )
 
-    # --- Regulatory momentum: SBTi tier blended with R&D intensity ---
+    # --- Regulatory commitment: SBTi tier blended with R&D intensity ---
     # rnd_expense_usd absent means "not broken out as its own XBRL line item",
     # not "spends nothing on R&D" (most non-tech sectors never tag it
     # separately even when they do spend) -- so a missing R&D figure drops
     # that half of the blend entirely rather than defaulting it to 0, which
-    # used to force this sub-score toward "no momentum" for 54% of the index
-    # regardless of their actual SBTi status. See info.md.
-    df["momentum_tier"] = df.apply(_momentum_tier, axis=1)
-    sbti_score = df["momentum_tier"].map(MOMENTUM_SCORES).astype(float)
+    # used to force this sub-score toward "no commitment" for 54% of the
+    # index regardless of their actual SBTi status. See info.md.
+    df["commitment_tier"] = df.apply(_commitment_tier, axis=1)
+    sbti_score = df["commitment_tier"].map(COMMITMENT_SCORES).astype(float)
     df["rnd_intensity_pct"] = 100 * df["rnd_expense_usd"] / df["revenue_usd"]
     rnd_score = (100 * df["rnd_intensity_pct"].clip(lower=0, upper=RND_INTENSITY_CAP_PCT) / RND_INTENSITY_CAP_PCT)
     has_rnd = rnd_score.notna()
-    df["regulatory_momentum_score"] = sbti_score.where(
+    df["regulatory_commitment_score"] = sbti_score.where(
         ~has_rnd,
-        MOMENTUM_SUBWEIGHTS["sbti"] * sbti_score + MOMENTUM_SUBWEIGHTS["rnd_intensity"] * rnd_score,
+        COMMITMENT_SUBWEIGHTS["sbti"] * sbti_score + COMMITMENT_SUBWEIGHTS["rnd_intensity"] * rnd_score,
     )
 
     # --- Transition affordability ---
@@ -242,16 +311,18 @@ def compute_transition_scores() -> pd.DataFrame:
     df["n_subscores_available"] = available.sum(axis=1)
     df.loc[weight_sum == 0, "transition_score"] = pd.NA
 
+    df = _confidence(df)
+
     columns = [
         "ticker", "company", "sector",
         "revenue_usd", "ebitda_usd", "free_cash_flow_usd", "rnd_expense_usd",
         "estimated_emissions_tco2e", "emissions_source_tier",
         "pct_ebitda_erosion", "carbon_price_exposure_score",
         "sector_exposure_score",
-        "rnd_intensity_pct", "momentum_tier", "regulatory_momentum_score",
+        "rnd_intensity_pct", "commitment_tier", "regulatory_commitment_score",
         "target_basis", "target_reduction_pct", "target_year", "years_to_target",
         "abatement_cost_usd_per_tco2e", "pct_fcf_committed", "transition_affordability_score",
-        "n_subscores_available", "transition_score",
+        "n_subscores_available", "data_confidence_pct", "transition_score",
     ]
     return df[columns]
 
@@ -268,6 +339,7 @@ if __name__ == "__main__":
     print(result["target_basis"].value_counts())
     print(result[[
         "carbon_price_exposure_score", "sector_exposure_score",
-        "regulatory_momentum_score", "transition_affordability_score", "transition_score",
+        "regulatory_commitment_score", "transition_affordability_score",
+        "data_confidence_pct", "transition_score",
     ]].describe())
     print(f"\nSaved to {OUTPUT_PATH}")
