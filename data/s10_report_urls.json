@@ -1,0 +1,47 @@
+{
+ "A": {
+  "page": "https://www.responsibilityreports.com/Company/agilent-technologies-inc",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_A_2023.pdf",
+  "year": 2023
+ },
+ "AAPL": {
+  "page": "https://www.responsibilityreports.com/Company/apple-inc",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_AAPL_2024.pdf",
+  "year": 2024
+ },
+ "ABBV": {
+  "page": "https://www.responsibilityreports.com/Company/abbvie-inc",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABBV_2024.pdf",
+  "year": 2024
+ },
+ "ABNB": {
+  "page": "https://www.responsibilityreports.com/Company/airbnb-inc",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ABNB_2024.pdf",
+  "year": 2024
+ },
+ "ABT": {
+  "page": "https://www.responsibilityreports.com/Company/abbott-laboratories",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ABT_2023.pdf",
+  "year": 2023
+ },
+ "ACGL": {
+  "page": "https://www.responsibilityreports.com/Company/arch-capital-group-limited",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ACGL_2024.pdf",
+  "year": 2024
+ },
+ "ACN": {
+  "page": "https://www.responsibilityreports.com/Company/accenture-plc",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ACN_2019.pdf",
+  "year": 2019
+ },
+ "ADM": {
+  "page": "https://www.responsibilityreports.com/Company/archer-daniels-midland-company",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NYSE_ADM_2023.pdf",
+  "year": 2023
+ },
+ "ADSK": {
+  "page": "https://www.responsibilityreports.com/Company/autodesk-inc",
+  "url": "https://www.responsibilityreports.com/HostedData/ResponsibilityReportArchive/a/NASDAQ_ADSK_2025.pdf",
+  "year": 2025
+ }
+}
