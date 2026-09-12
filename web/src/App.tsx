@@ -92,19 +92,21 @@ export default function App() {
     <div className="app-shell">
       {matrix.isFixture && <FixtureBadge />}
       <header className="app-header">
-        <h1>S&amp;P 500 Sustainability Map</h1>
-        <nav className="view-tabs">
-          {VIEWS.map((v) => (
-            <button
-              key={v.id}
-              className={v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
-              onClick={() => state.setActiveViewId(v.id)}
-            >
-              {v.label}
-            </button>
-          ))}
-        </nav>
-        <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
+        <h1 className="app-title"><span className="app-title-block">S&amp;P 500 Sustainability Map</span></h1>
+        <div className="app-header-controls">
+          <nav className="view-tabs">
+            {VIEWS.map((v) => (
+              <button
+                key={v.id}
+                className={v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
+                onClick={() => state.setActiveViewId(v.id)}
+              >
+                {v.label}
+              </button>
+            ))}
+          </nav>
+          <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
+        </div>
       </header>
 
       <div className="app-body">

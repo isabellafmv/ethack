@@ -37,12 +37,21 @@ class RateLimiter:
 
 class PoliteSession:
     def __init__(self, source: str, user_agent: str, per_second: float = 2.0,
-                 max_retries: int = 3):
+                 max_retries: int = 3, browser_headers: bool = False):
         self.source = source
         self.limiter = RateLimiter(per_second)
         self.max_retries = max_retries
         self.session = requests.Session()
         self.session.headers.update({"User-Agent": user_agent})
+        if browser_headers:
+            # Some sites serve the landing page to anything but refuse deeper
+            # pages to a client that does not look like a browser.
+            self.session.headers.update({
+                "Accept": "text/html,application/xhtml+xml,application/xml;"
+                          "q=0.9,image/avif,image/webp,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Connection": "keep-alive",
+            })
 
     def get(self, url: str, *, key: str | None = None, suffix: str = ".bin",
             use_cache: bool = True, **kw: Any) -> bytes:
@@ -52,23 +61,30 @@ class PoliteSession:
             if hit is not None:
                 return hit
 
-        last: Exception | None = None
+        last = "no attempt made"
+        timeout = kw.pop("timeout", DEFAULT_TIMEOUT)
         for attempt in range(self.max_retries):
             self.limiter.wait()
             try:
-                r = self.session.get(url, timeout=kw.pop("timeout", DEFAULT_TIMEOUT), **kw)
-                if r.status_code == 429 or 500 <= r.status_code < 600:
-                    time.sleep(2 ** attempt)
-                    last = RuntimeError(f"HTTP {r.status_code} for {url}")
+                r = self.session.get(url, timeout=timeout, **kw)
+                if r.status_code in (403, 429) or 500 <= r.status_code < 600:
+                    # Respect Retry-After when given; otherwise back off hard.
+                    # A 403/429 means we are being throttled, and hammering it
+                    # makes the block worse rather than better.
+                    wait = float(r.headers.get("Retry-After") or 0) or 5 * (2 ** attempt)
+                    last = f"HTTP {r.status_code}"
+                    time.sleep(min(wait, 60))
                     continue
                 r.raise_for_status()
                 cache.put_raw(self.source, key, r.content, suffix)
                 return r.content
             except requests.RequestException as e:
-                last = e
+                last = f"{type(e).__name__}: {str(e)[:80]}"
                 time.sleep(2 ** attempt)
-        raise RuntimeError(f"{self.source}: giving up on {url} after "
-                           f"{self.max_retries} attempts") from last
+        # Say WHAT went wrong. "giving up" with no status code told us nothing
+        # and cost a whole discovery run to diagnose.
+        raise RuntimeError(f"{self.source}: {last} after {self.max_retries} "
+                           f"attempts on {url}")
 
     def get_text(self, url: str, **kw: Any) -> str:
         return self.get(url, **kw).decode("utf-8", errors="replace")

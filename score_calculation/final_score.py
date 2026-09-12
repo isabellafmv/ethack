@@ -33,6 +33,7 @@ to distinguish, so it's treated as full confidence whenever present. This
 number answers a different question than n_pillars_available: two companies
 scored on the same 3 pillars can still rest on very different depths of
 real evidence within them.
+
 """
 from pathlib import Path
 

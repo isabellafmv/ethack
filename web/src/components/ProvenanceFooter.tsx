@@ -1,6 +1,7 @@
 // "The map is showing yesterday's numbers" is a classic 2 a.m. hour lost --
 // generated_at, schema_version and a basis-year note stay on screen always,
-// and the footer goes amber past a 2-hour staleness threshold.
+// and the footer flips to its high-contrast alert style past a 2-hour
+// staleness threshold.
 const STALE_MS = 2 * 60 * 60 * 1000;
 
 export function ProvenanceFooter({

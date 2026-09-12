@@ -38,8 +38,15 @@ _SLUG = re.compile(r'href="(/Company/[^"]+)"[^>]*>([^<]{2,90})<', re.I)
 _PDF = re.compile(r'href="(/HostedData/[^"]+?_(?P<tk>[A-Z.]{1,6})_(?P<yr>\d{4})\.pdf)"', re.I)
 
 
+#: The aggregator tolerates a short burst then throttles: a 2 req/s run got
+#: 9 pages and 388 refusals. One request every two seconds is slow (~13 min for
+#: 400 pages) and finishes, which beats fast and blocked.
+RATE = 0.5
+
+
 def _session():
-    return PoliteSession(SOURCE, UA, per_second=2.0)
+    return PoliteSession(SOURCE, UA, per_second=RATE, max_retries=4,
+                         browser_headers=True)
 
 
 def discover(ticker_list: list[str] | None = None, *, limit: int | None = None,
@@ -64,11 +71,24 @@ def discover(ticker_list: list[str] | None = None, *, limit: int | None = None,
 
     found: dict[str, dict] = {}
     rejected = []
+    consecutive = 0
     for i, (t, href) in enumerate(sorted(candidates.items()), 1):
         try:
             page = sess.get_text(BASE + href, key=f"page-{t}", suffix=".html")
+            consecutive = 0
         except Exception as e:                      # noqa: BLE001
-            rejected.append((t, f"page fetch failed: {str(e)[:60]}"))
+            rejected.append((t, str(e)[:110]))
+            consecutive += 1
+            # Ten refusals in a row means we are blocked, not unlucky. Stopping
+            # keeps the run resumable (cached pages are kept) and surfaces the
+            # cause instead of burying it under 380 identical failures.
+            if consecutive >= 10:
+                print(f"\n[S10] STOPPING: {consecutive} consecutive failures — "
+                      f"we are being throttled, not unlucky.\n"
+                      f"      last error: {str(e)[:140]}\n"
+                      f"      {len(found)} confirmed so far; pages already "
+                      f"fetched are cached, so re-running resumes from here.")
+                break
             continue
         hits = [m.groupdict() | {"url": m.group(1)} for m in _PDF.finditer(page)]
         ours = [h for h in hits if h["tk"].upper().replace(".", "-") ==
@@ -80,7 +100,7 @@ def discover(ticker_list: list[str] | None = None, *, limit: int | None = None,
         latest = max(ours, key=lambda h: int(h["yr"]))
         found[t] = {"url": BASE + latest["url"], "year": int(latest["yr"]),
                     "page": BASE + href}
-        if verbose and i % 50 == 0:
+        if verbose and i % 25 == 0:
             print(f"  {i}/{len(candidates)}  confirmed={len(found)} "
                   f"rejected={len(rejected)}")
 

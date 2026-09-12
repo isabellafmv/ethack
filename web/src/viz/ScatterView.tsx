@@ -59,19 +59,20 @@ function CameraRig({ preset }: { preset: CameraPresetId | null }) {
 }
 
 function Axes() {
-  // Simple colour-coded axis lines (X red, Y green, Z blue) -- the axis
-  // pickers around the canvas carry the actual field identity in legible,
-  // never-rotating HTML, so these only need to show orientation.
-  const lines: [THREE.Vector3, THREE.Vector3, string][] = [
-    [new THREE.Vector3(-HALF_EXTENT, 0, 0), new THREE.Vector3(HALF_EXTENT, 0, 0), "#ef4444"],
-    [new THREE.Vector3(0, -HALF_EXTENT, 0), new THREE.Vector3(0, HALF_EXTENT, 0), "#22c55e"],
-    [new THREE.Vector3(0, 0, -HALF_EXTENT), new THREE.Vector3(0, 0, HALF_EXTENT), "#3b82f6"],
+  // Palette-only axis identity, matched to AxisPickers' AXIS_COLORS: X = ink,
+  // Y = accent, Z = a faded shade of ink (rather than a third hue) -- the
+  // axis pickers around the canvas carry the actual field identity in
+  // legible, never-rotating HTML, so these only need to show orientation.
+  const lines: [THREE.Vector3, THREE.Vector3, string, number][] = [
+    [new THREE.Vector3(-HALF_EXTENT, 0, 0), new THREE.Vector3(HALF_EXTENT, 0, 0), "#000000", 0.7],
+    [new THREE.Vector3(0, -HALF_EXTENT, 0), new THREE.Vector3(0, HALF_EXTENT, 0), "#AAB644", 0.9],
+    [new THREE.Vector3(0, 0, -HALF_EXTENT), new THREE.Vector3(0, 0, HALF_EXTENT), "#000000", 0.3],
   ];
   return (
     <>
-      {lines.map(([a, b, color], i) => {
+      {lines.map(([a, b, color, opacity], i) => {
         const geom = new THREE.BufferGeometry().setFromPoints([a, b]);
-        const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.5 });
+        const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity });
         return <primitive key={i} object={new THREE.Line(geom, material)} />;
       })}
     </>
@@ -158,8 +159,9 @@ export function ScatterView({
 
   return (
     <Canvas camera={{ position: CAMERA_PRESETS.isometric.position, fov: 45 }}>
-      <ambientLight intensity={0.7} />
-      <pointLight position={[10, 10, 10]} intensity={0.6} />
+      <color attach="background" args={["#EDECEB"]} />
+      <ambientLight intensity={0.9} />
+      <pointLight position={[10, 10, 10]} intensity={0.5} />
       <Axes />
       {points.map((p) => (
         <Point key={p.ticker} point={p} onSelect={onSelectCompany} />

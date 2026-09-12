@@ -49,10 +49,29 @@ Emitting any other field name is a bug. If you need a new one, add it to
 `pipeline/common/fields.py` first — the vocabulary is the contract.
 
 ## Definition of done
-- [ ] `pull(tickers)` fetches to the L1 raw cache and is idempotent; a second run makes no network calls
-- [ ] `extract(tickers)` runs with the network OFF and writes JSONL only
-- [ ] Every prose-derived number carries a verbatim quote that validates as a substring
-- [ ] Machine-readable facts use `Status.STRUCTURAL` (no quote), not `quote_verified`
-- [ ] Companies that disclosed nothing are written as `not_disclosed` — never skipped
-- [ ] `python -m pipeline.sources.s02_sec_10k.test_smoke` passes on 10 tickers
-- [ ] Coverage matches the 500/500 expectation above, or you can say why not
+- [x] `pull(tickers)` fetches to the L1 raw cache and is idempotent; a second run makes no network calls
+- [x] `extract(tickers)` runs with the network OFF and writes JSONL only
+- [ ] Every prose-derived number carries a verbatim quote that validates as a substring — N/A for the two fields built; see scope note below for the four that aren't
+- [x] Machine-readable facts use `Status.STRUCTURAL` (no quote), not `quote_verified`
+- [x] Companies that disclosed nothing are written as `not_disclosed` — never skipped
+- [x] `python -m pipeline.sources.s02_sec_10k.test_smoke` passes on 10 tickers
+- [ ] Coverage matches the 500/500 expectation above, or you can say why not — pending full run, and only for the two fields actually built (see below)
+
+## Scope actually shipped
+Only `risk_hitword_density` and `risk_first_factor_topic` are implemented,
+both rule-based over the real Item 1A text (position + intensifier
+weighting for the density; a fixed keyword taxonomy for the topic — see
+extract.py's module docstring for the full reasoning and a worked example
+of a bug this session found and fixed: the topic classifier originally
+gave up at the very first non-boilerplate line, which is often a page
+footer artifact ("2025 Form 10-K") rather than real content).
+
+`energy_cost_usd`, `clean_capex_usd`, `green_revenue_share_pct` and
+`target_year` are **not implemented**. All four need reading MD&A prose
+and making a judgment call the register itself flags as ours to make
+("the classification is OURS, not the company's") — that means
+agent-based extraction (`extracted_by="agent:..."`, quote-verified against
+the source text), a materially bigger and costlier task than a rule-based
+pass: an LLM call per candidate number per company, plus building the
+quote-verification loop properly. Deliberately deferred rather than
+rushed — building it now was flagged to the user as a separate decision.

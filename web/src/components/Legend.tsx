@@ -12,7 +12,7 @@ export function Legend({ reference, deltaMode }: { reference: ReferenceSpec; del
         <div className="legend-swatch legend-swatch--gradient" />
         <div>
           <strong>Colour</strong> &mdash; {referenceLabel(reference, deltaMode)}.
-          Green = better, grey = at reference, red = worse.
+          Accent = better, grey = at reference, black = worse.
         </div>
       </div>
       <div className="legend-row">

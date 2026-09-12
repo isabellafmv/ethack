@@ -32,18 +32,21 @@ export function referenceScoreForAxis(
   return weightedMeanSkippingNulls(PILLARS.map((p) => ({ value: pillarScore(p), weight: pillarW[p] })));
 }
 
-/** Diverging red -> grey -> green. `t` is a delta on the 0-100 score scale,
- * clamped to +/-40 (deltas rarely exceed that in practice; clamping keeps a
- * handful of extreme companies from washing out the rest of the scale). */
+/** Diverging black -> grey -> accent, built only from the three-colour
+ * palette (no separate red/green hues): worse fades toward black, better
+ * fades toward the accent, both anchored on a neutral grey shade of black.
+ * `t` is a delta on the 0-100 score scale, clamped to +/-40 (deltas rarely
+ * exceed that in practice; clamping keeps a handful of extreme companies
+ * from washing out the rest of the scale). */
+const NEUTRAL_RGB = [150, 150, 148]; // a mid shade of black -- "at reference"
+const WORSE_RGB = [0, 0, 0]; // pure ink -- "worse"
+const BETTER_RGB = [170, 182, 68]; // #AAB644 -- "better"
+
 export function divergingColor(delta: number | null): string {
-  if (delta === null) return "#6b7280"; // neutral grey -- no reference to compare against
+  if (delta === null) return `rgb(${NEUTRAL_RGB.join(",")})`; // no reference to compare against
   const t = Math.max(-40, Math.min(40, delta)) / 40; // -1..1
-  if (t >= 0) {
-    // grey (#9ca3af) -> green (#22c55e)
-    return lerpColor([156, 163, 175], [34, 197, 94], t);
-  }
-  // grey -> red (#ef4444)
-  return lerpColor([156, 163, 175], [239, 68, 68], -t);
+  if (t >= 0) return lerpColor(NEUTRAL_RGB, BETTER_RGB, t);
+  return lerpColor(NEUTRAL_RGB, WORSE_RGB, -t);
 }
 
 function lerpColor(a: number[], b: number[], t: number): string {

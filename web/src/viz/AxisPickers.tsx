@@ -1,10 +1,12 @@
 // Three axis dropdowns bound to the active view's registry entries (Task 4).
 // Colour-matched to the 3D axis lines in ScatterView so the mapping between
-// "red line" and "X: <field>" is obvious without in-scene text. Being plain
-// HTML, these stay legible at every camera angle -- they never rotate.
+// a line's shade and "X: <field>" is obvious without in-scene text. Being
+// plain HTML, these stay legible at every camera angle -- they never rotate.
 import { axisKey, axisLabel, type AxisSlot, type ViewConfig } from "./views";
 
-const AXIS_COLORS = ["#ef4444", "#22c55e", "#3b82f6"];
+// Palette-only axis identity: X = ink, Y = accent, Z = a faded shade of ink
+// (rather than a third hue) so the three stay visually distinct.
+const AXIS_COLORS = ["rgba(0,0,0,0.7)", "#AAB644", "rgba(0,0,0,0.3)"];
 const AXIS_NAMES = ["X", "Y", "Z"];
 
 export function AxisPickers({
