@@ -39,19 +39,56 @@ data:
 WEIGHTS below are provisional -- intended to be reviewed against the raw
 sub-scores (all kept in the output CSV) before being finalized.
 
-A company's transition_score is a weighted average over whichever sub-scores
-it actually has (renormalized), never a silent worst-case default for a
-missing one -- missing EBITDA, FCF, or R&D used to be treated as "erosion/
+A company's transition_score_raw is a weighted average over whichever
+sub-scores it actually has (renormalized), never a silent worst-case default
+for a missing one -- missing EBITDA, FCF, or R&D used to be treated as "erosion/
 cost so bad it hit the ceiling" or "spends nothing," which was the single
 largest source of 0-scores in the pillar and had nothing to do with the
 company's actual transition risk. See info.md for the before/after numbers.
+This EBITDA/FCF/R&D null-handling is untouched by the taxonomy below --
+it was already right.
+
+Missing data on a sub-score doesn't mean one thing, though, and this pillar
+now distinguishes two kinds of it:
+
+- PIPELINE_GAP_INDICATORS: null for a reason that isn't the company's own
+  disclosure choice -- carbon_price_exposure_score and
+  transition_affordability_score go null purely from missing/non-positive
+  EBITDA or FCF (a financial-statement pull gap, see above, not touched
+  here), and sector_exposure_score is a sector-level fact built from GHGRP
+  data, never something an individual company discloses or withholds. All
+  three renormalize for free, as before.
+- regulatory_commitment_score is the one disclosure-gap (category-3)
+  indicator: a missing SBTi target is itself a disclosure signal, not a
+  data-pull artifact, the way a missing climate oversight committee is in
+  governance_score.py. transition_score applies a coverage penalty on top
+  of transition_score_raw for it:
+
+      transition_score = transition_score_raw * (0.6 + 0.4 * transition_disclosure_coverage)
+
+  transition_disclosure_coverage is weight_sum restricted to
+  regulatory_commitment_score, divided by its own weight -- 1.0 when
+  present, dropping toward the 0.6 floor when it isn't.
+
+  IMPORTANT CAVEAT, flagged rather than silently papered over:
+  regulatory_commitment_score is not actually null-capable today.
+  _commitment_tier() maps an unknown/undisclosed SBTi status to the same
+  "no_target" tier as an explicitly-disclosed absence of one, and
+  COMMITMENT_SCORES scores "no_target" as 0 -- not NaN. So every company
+  gets a regulatory_commitment_score, and transition_disclosure_coverage is
+  1.0 for the whole universe right now, making this penalty a no-op for P2.
+  Fixing that would mean changing how an undisclosed SBTi status is
+  recorded (null instead of defaulting to the same score as a disclosed
+  "no target"), which is a change to existing scoring logic beyond this
+  taxonomy's scope -- left alone deliberately, not missed.
 
 data_confidence_pct carries how much of that composite rests on real,
 company-specific evidence (measured emissions, a disclosed target) versus a
 sector-level or counterfactual estimate -- two companies can show the same
 transition_score for very different reasons, and n_subscores_available alone
 doesn't say whether the sub-scores it does have are strongly or weakly
-evidenced.
+evidenced. It is untouched by, and independent from, the coverage penalty
+above.
 """
 from pathlib import Path
 
@@ -103,6 +140,23 @@ WEIGHTS = {
     "regulatory_commitment_score": 0.25,
     "transition_affordability_score": 0.35,
 }
+
+# Sub-indicators in WEIGHTS that are null for a reason that isn't the
+# company's own disclosure choice (missing EBITDA/FCF, a sector-level fact)
+# rather than a disclosure gap. See the module docstring -- including the
+# caveat that regulatory_commitment_score (the one indicator NOT listed
+# here) is not currently null-capable, making the coverage penalty below a
+# no-op for this pillar today.
+PIPELINE_GAP_INDICATORS = {
+    "carbon_price_exposure_score",
+    "transition_affordability_score",
+    "sector_exposure_score",
+}
+
+# Floor applied to a company disclosing none of the category-3 (disclosure
+# gap) indicators -- see the module docstring's transition_score formula.
+DISCLOSURE_COVERAGE_FLOOR = 0.6
+DISCLOSURE_COVERAGE_SLOPE = 0.4
 
 # Blend within regulatory_commitment_score: disclosed SBTi commitment vs. R&D
 # spend as a proxy for innovation capacity (patents would sit here too, once available).
@@ -307,9 +361,22 @@ def compute_transition_scores() -> pd.DataFrame:
     available = df[sub_cols].notna()
     weight_matrix = available * weights
     weight_sum = weight_matrix.sum(axis=1)
-    df["transition_score"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
+    df["transition_score_raw"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
     df["n_subscores_available"] = available.sum(axis=1)
-    df.loc[weight_sum == 0, "transition_score"] = pd.NA
+    df.loc[weight_sum == 0, "transition_score_raw"] = pd.NA
+
+    # Coverage penalty: renormalize category-2 (pipeline-gap) indicators out
+    # for free, but category-3 (disclosure-gap) ones dock the score. See the
+    # module docstring, including the caveat that this is currently a no-op
+    # (regulatory_commitment_score is never actually null).
+    disclosure_cols = [c for c in sub_cols if c not in PIPELINE_GAP_INDICATORS]
+    disclosure_weight_total = sum(WEIGHTS[c] for c in disclosure_cols)
+    df["transition_disclosure_coverage"] = (
+        weight_matrix[disclosure_cols].sum(axis=1) / disclosure_weight_total
+    )
+    df["transition_score"] = df["transition_score_raw"] * (
+        DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * df["transition_disclosure_coverage"]
+    )
 
     df = _confidence(df)
 
@@ -322,7 +389,8 @@ def compute_transition_scores() -> pd.DataFrame:
         "rnd_intensity_pct", "commitment_tier", "regulatory_commitment_score",
         "target_basis", "target_reduction_pct", "target_year", "years_to_target",
         "abatement_cost_usd_per_tco2e", "pct_fcf_committed", "transition_affordability_score",
-        "n_subscores_available", "data_confidence_pct", "transition_score",
+        "n_subscores_available", "data_confidence_pct",
+        "transition_score_raw", "transition_disclosure_coverage", "transition_score",
     ]
     return df[columns]
 
@@ -340,6 +408,15 @@ if __name__ == "__main__":
     print(result[[
         "carbon_price_exposure_score", "sector_exposure_score",
         "regulatory_commitment_score", "transition_affordability_score",
-        "data_confidence_pct", "transition_score",
+        "data_confidence_pct", "transition_score_raw", "transition_score",
     ]].describe())
+
+    penalized = result[result["transition_disclosure_coverage"] < 1.0]
+    print(f"\nDisclosure coverage < 1.0: {len(penalized)}/{len(result)} companies.")
+    if len(penalized):
+        diff = penalized["transition_score_raw"] - penalized["transition_score"]
+        print(f"Average raw-vs-adjusted point difference for those companies: {diff.mean():.2f}")
+    else:
+        print("(Expected -- see the module docstring's caveat: regulatory_commitment_score "
+              "is never actually null today, so this penalty is currently a no-op for P2.)")
     print(f"\nSaved to {OUTPUT_PATH}")

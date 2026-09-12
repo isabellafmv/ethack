@@ -91,6 +91,7 @@ export function WeightPanel({
               value={weights.pillars[pillar] ?? 1}
               disabled={isMateriality}
               onChange={(e) => setPillarWeight(pillar, Number(e.target.value))}
+              style={{ background: `linear-gradient(to right, var(--ink) ${Math.round(normalized.pillars[pillar] * 100)}%, var(--ink-12) 0)` }}
             />
             <span className="weight-value">{Math.round(normalized.pillars[pillar] * 100)}%</span>
           </div>
@@ -104,6 +105,7 @@ export function WeightPanel({
                   value={weights.subscores[sub.id] ?? 1}
                   disabled={isMateriality}
                   onChange={(e) => setSubWeight(sub.id, Number(e.target.value))}
+                  style={{ background: `linear-gradient(to right, var(--ink) ${Math.round((normalized.subscores[sub.id] ?? 0) * 100)}%, var(--ink-12) 0)` }}
                 />
                 <span className="weight-value">{Math.round((normalized.subscores[sub.id] ?? 0) * 100)}%</span>
               </div>

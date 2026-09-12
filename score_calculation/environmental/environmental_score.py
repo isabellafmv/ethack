@@ -45,16 +45,52 @@ Three of the four spec indicators have real data right now:
   pulled, and the spec itself expects this to stay sparse (manufacturing/
   mining only, ~120/500) even once it is.
 
-A company's final score is a weighted average over whichever sub-scores it
-actually has (renormalized), never a silent worst-case default for a
-missing one -- same pattern as transition_score.py and governance_score.py.
-Weights themselves are now PER-SECTOR (materiality-based) rather than one
-flat set for the whole index: a missing carbon_intensity_score for a
-Financials company barely moves its environmental_score, because carbon
-intensity is only ~13% of Financials' P1 weight to begin with; the same
-gap for a Utility (35% weight) would matter far more, which is exactly
-backwards from the coverage the two sectors actually have and precisely
-the problem materiality weighting exists to fix.
+A company's environmental_score_raw is a weighted average over whichever
+sub-scores it actually has (renormalized), never a silent worst-case default
+for a missing one -- same pattern as transition_score.py and
+governance_score.py. Weights themselves are now PER-SECTOR
+(materiality-based) rather than one flat set for the whole index: a missing
+carbon_intensity_score for a Financials company barely moves its
+environmental_score_raw, because carbon intensity is only ~13% of
+Financials' P1 weight to begin with; the same gap for a Utility (35% weight)
+would matter far more, which is exactly backwards from the coverage the two
+sectors actually have and precisely the problem materiality weighting
+exists to fix.
+
+Missing data on a sub-score doesn't mean one thing, though. This pillar
+distinguishes two kinds of "missing" (a third, structural zero, doesn't
+arise here -- there's no P1 indicator where "absent" is itself a real zero
+the way an unclaimed buyback line item is in governance_score.py):
+
+- PIPELINE_GAP_INDICATORS: null because the data source hasn't been pulled
+  for effectively the whole universe -- nobody's fault, and renormalizing
+  around it for free is correct. Only resource_waste_score qualifies right
+  now (S16/S17/S26, none pulled, 0/500). carbon_intensity_score and
+  energy_mix_score used to belong here too, back when GHGRP/eGRID weren't
+  wired up -- now that they're real (126/500 measured-tier, 475/500 via
+  S19), a company still missing one of those is missing it for a company-
+  specific reason (no measured scope1_tco2e on file, non-US headquarters),
+  not because nobody pulled the field, so they've moved to the list below.
+- Everything else in the per-sector weight table is a disclosure gap by
+  default: carbon_intensity_score, energy_mix_score, and
+  input_efficiency_score. A company missing one of these is missing real,
+  available-for-peers data, so it no longer renormalizes for free --
+  environmental_score applies an explicit coverage penalty on top of
+  environmental_score_raw:
+
+      environmental_score = environmental_score_raw * (0.6 + 0.4 * environmental_disclosure_coverage)
+
+  environmental_disclosure_coverage is weight_sum restricted to
+  disclosure-gap indicators -- using this company's own PER-SECTOR weights,
+  since that's the only weight table that exists here -- divided by that
+  sector's total weight across just those disclosure-gap indicators. 1.0
+  when every disclosure-gap indicator is present, scaling down toward the
+  0.6 floor as more of them go missing. The 0.6 floor means a company
+  disclosing almost nothing keeps 60% of its raw score rather than being
+  driven toward 0 purely for under-disclosing -- raw_score already
+  reflects what it does disclose; this penalty is about the disclosure gap
+  itself, a separate signal. environmental_score_raw is kept in the output
+  for auditability.
 """
 import sys
 from pathlib import Path
@@ -77,6 +113,16 @@ _INDICATOR_KEY = {
     "resource_waste_score": "resource_waste_intensity",
     "input_efficiency_score": "input_efficiency",
 }
+
+# Sub-indicators that are null because the data source isn't pulled for the
+# whole universe (not the company's fault) rather than because this specific
+# company doesn't disclose. See the module docstring.
+PIPELINE_GAP_INDICATORS = {"resource_waste_score"}
+
+# Floor applied to a company disclosing none of the category-3 (disclosure
+# gap) indicators -- see the module docstring's environmental_score formula.
+DISCLOSURE_COVERAGE_FLOOR = 0.6
+DISCLOSURE_COVERAGE_SLOPE = 0.4
 
 
 def _materiality_weights_per_sector() -> pd.DataFrame:
@@ -182,19 +228,42 @@ def compute_environmental_scores() -> pd.DataFrame:
     df = df.merge(weight_table, on="sector", how="left")
 
     available = df[sub_cols].notna()
-    weight_matrix = available.to_numpy(dtype=float) * df[weight_cols].to_numpy(dtype=float)
+    weight_matrix = pd.DataFrame(
+        available.to_numpy(dtype=float) * df[weight_cols].to_numpy(dtype=float),
+        columns=sub_cols, index=df.index,
+    )
     weight_sum = weight_matrix.sum(axis=1)
 
     with np.errstate(invalid="ignore", divide="ignore"):
-        scores = (df[sub_cols].fillna(0).to_numpy(dtype=float) * weight_matrix).sum(axis=1) / weight_sum
-    df["environmental_score"] = pd.Series(scores, index=df.index).where(weight_sum > 0)
+        scores = (
+            df[sub_cols].fillna(0).to_numpy(dtype=float) * weight_matrix.to_numpy(dtype=float)
+        ).sum(axis=1) / weight_sum.to_numpy(dtype=float)
+    df["environmental_score_raw"] = pd.Series(scores, index=df.index).where(weight_sum > 0)
     df["n_indicators_available"] = available.sum(axis=1)
+
+    # Coverage penalty: renormalize category-2 (pipeline-gap) indicators out
+    # for free, but category-3 (disclosure-gap) ones dock the score. Uses
+    # this company's own per-sector weights, since that's the only weight
+    # table that exists here. See the module docstring.
+    disclosure_cols = [c for c in sub_cols if c not in PIPELINE_GAP_INDICATORS]
+    disclosure_weight_cols = [f"{c}_weight" for c in disclosure_cols]
+    disclosure_weight_total = df[disclosure_weight_cols].sum(axis=1)
+    with np.errstate(invalid="ignore", divide="ignore"):
+        coverage = (
+            weight_matrix[disclosure_cols].sum(axis=1).to_numpy(dtype=float)
+            / disclosure_weight_total.to_numpy(dtype=float)
+        )
+    df["environmental_disclosure_coverage"] = pd.Series(coverage, index=df.index).where(disclosure_weight_total > 0)
+    df["environmental_score"] = df["environmental_score_raw"] * (
+        DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * df["environmental_disclosure_coverage"]
+    )
 
     columns = [
         "ticker", "company", "sector",
         "revenue_usd", "cogs_usd", "energy_cost_usd",
         "scope1_tco2e", "measured_intensity_tco2e_per_usd_mm", "grid_intensity_kgco2e_per_mwh",
-        *sub_cols, "n_indicators_available", "environmental_score",
+        *sub_cols, "n_indicators_available",
+        "environmental_score_raw", "environmental_disclosure_coverage", "environmental_score",
     ]
     return df[columns]
 
@@ -211,5 +280,11 @@ if __name__ == "__main__":
     print("Indicators available per company:")
     print(result["n_indicators_available"].value_counts().sort_index())
     print()
-    print(result["environmental_score"].describe())
+    print(result[["environmental_score_raw", "environmental_score"]].describe())
+
+    penalized = result[result["environmental_disclosure_coverage"] < 1.0]
+    print(f"\nDisclosure coverage < 1.0: {len(penalized)}/{len(result)} companies.")
+    if len(penalized):
+        diff = penalized["environmental_score_raw"] - penalized["environmental_score"]
+        print(f"Average raw-vs-adjusted point difference for those companies: {diff.mean():.2f}")
     print(f"\nSaved to {OUTPUT_PATH}")

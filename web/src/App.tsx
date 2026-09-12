@@ -92,22 +92,23 @@ export default function App() {
     <div className="app-shell">
       {matrix.isFixture && <FixtureBadge />}
       <header className="app-header">
-        <h1 className="app-title"><span className="app-title-block">S&amp;P 500 Sustainability Map</span></h1>
-        <div className="app-header-controls">
-          <nav className="view-tabs">
-            {VIEWS.map((v) => (
-              <button
-                key={v.id}
-                className={v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
-                onClick={() => state.setActiveViewId(v.id)}
-              >
-                {v.label}
-              </button>
-            ))}
-          </nav>
-          <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
-        </div>
+        <h1 className="app-title">S&amp;P 500 Sustainability Map</h1>
+        <p className="app-subtitle">A 3D view of environmental, transition &amp; governance impact</p>
       </header>
+      <div className="app-toolbar">
+        <nav className="view-tabs">
+          {VIEWS.map((v) => (
+            <button
+              key={v.id}
+              className={v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
+              onClick={() => state.setActiveViewId(v.id)}
+            >
+              {v.label}
+            </button>
+          ))}
+        </nav>
+        <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
+      </div>
 
       <div className="app-body">
         <aside className="app-sidebar app-sidebar--left">
@@ -132,7 +133,13 @@ export default function App() {
           <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} />
           <div className="camera-presets">
             {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
-              <button key={p} onClick={() => setCameraPreset(p)}>{p}</button>
+              <button
+                key={p}
+                className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
+                onClick={() => setCameraPreset(p)}
+              >
+                {p}
+              </button>
             ))}
           </div>
           <div className="scatter-container">

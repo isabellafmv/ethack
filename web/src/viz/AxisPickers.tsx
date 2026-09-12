@@ -19,8 +19,8 @@ export function AxisPickers({
   return (
     <div className="axis-pickers">
       {([0, 1, 2] as const).map((slot) => (
-        <label key={slot} className="axis-picker" style={{ borderColor: AXIS_COLORS[slot] }}>
-          <span className="axis-picker-name" style={{ color: AXIS_COLORS[slot] }}>{AXIS_NAMES[slot]}</span>
+        <label key={slot} className="axis-picker" style={{ color: AXIS_COLORS[slot] }}>
+          <span className="axis-picker-name">{AXIS_NAMES[slot]}</span>
           <select
             value={axisKey(axes[slot])}
             onChange={(e) => {

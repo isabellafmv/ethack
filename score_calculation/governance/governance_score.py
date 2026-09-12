@@ -52,16 +52,53 @@ EPA ECHO both landed):
   `esg_controversy_level_external` (S14): that field is validation-only by
   contract and must never enter a pillar score.
 
-A company's final score is a weighted average over whichever sub-scores it
-actually has (renormalized), never a silent worst-case default for a missing
-one -- see WEIGHTS.
+A company's governance_score_raw is a weighted average over whichever
+sub-scores it actually has (renormalized), never a silent worst-case default
+for a missing one -- see WEIGHTS.
 
-data_confidence_pct is the governance-side counterpart to
-transition_score.py's: how much of the composite rests on strong evidence
-(a real ratio, most/all of a multi-part indicator's components) versus a
+Missing data on a sub-score doesn't mean one thing, though. This pillar
+distinguishes two kinds of "missing" (a third, structural zero -- e.g. no
+buyback program -- is handled inside each sub-score function above via
+.fillna(0) on the raw input, never here):
+
+- PIPELINE_GAP_INDICATORS: null because the data source hasn't been pulled
+  for effectively the whole universe -- nobody's fault, and renormalizing
+  around it for free is correct. Empty right now: all five spec indicators
+  have real data as of this session (S04 proxy extraction, S18 EPA ECHO),
+  so there is currently no governance sub-score that's systematically
+  unpulled. Kept as an explicit (empty) list, not removed, because the next
+  sub-score this pillar adds may start life exactly this way.
+- Everything else in WEIGHTS is a disclosure gap by default: this company
+  specifically doesn't have a climate oversight committee disclosed, a
+  clawback policy, an independence ratio, etc., while its peers do. That's
+  a real signal about the company, not a data-pull artifact, so it no
+  longer renormalizes for free -- governance_score applies an explicit
+  coverage penalty on top of governance_score_raw:
+
+      governance_score = governance_score_raw * (0.6 + 0.4 * governance_disclosure_coverage)
+
+  governance_disclosure_coverage is weight_sum restricted to
+  disclosure-gap indicators (here, all five, since PIPELINE_GAP_INDICATORS
+  is empty) divided by their total weight -- 1.0 when every disclosure-gap
+  indicator is present, scaling down toward the 0.6 floor as more of them
+  go missing. The 0.6 floor means even a company disclosing almost nothing
+  keeps 60% of its raw score, rather than being driven toward 0 purely for
+  under-disclosing -- raw_score already reflects what it does disclose;
+  this penalty is about the disclosure gap itself, a separate signal.
+  governance_score_raw is kept in the output for auditability -- so the
+  size of the penalty is always visible, not just its result.
+
+data_confidence_pct is a different, complementary signal and is untouched
+by any of the above: how much of the composite rests on strong evidence (a
+real ratio, most/all of a multi-part indicator's components) versus a
 single weak flag or a partial reading -- not the same thing as
-n_indicators_available, which only counts how many sub-scores exist, not
-how well-evidenced each one is.
+n_indicators_available (how many sub-scores exist) or
+governance_disclosure_coverage (whether they exist at all); a sub-score can
+be present, confidently evidenced, and still count toward disclosure
+coverage identically to one that's present but weakly evidenced. This
+project doesn't yet have a case where a sub-score is simultaneously
+present-but-low-confidence AND its absence would matter for coverage in a
+different company, but the two signals are kept orthogonal on purpose.
 """
 from pathlib import Path
 
@@ -85,6 +122,18 @@ WEIGHTS = {
     "board_independence_score": 0.05,
     "controversy_score": 0.25,
 }
+
+# Sub-indicators in WEIGHTS that are null because the data source isn't
+# pulled for the whole universe (not the company's fault) rather than
+# because this specific company doesn't disclose. See the module docstring.
+# Empty right now -- all five have real data -- kept explicit for whatever
+# joins this pillar next in that state.
+PIPELINE_GAP_INDICATORS: set[str] = set()
+
+# Floor applied to a company disclosing none of the category-3 (disclosure
+# gap) indicators -- see the module docstring's governance_score formula.
+DISCLOSURE_COVERAGE_FLOOR = 0.6
+DISCLOSURE_COVERAGE_SLOPE = 0.4
 
 FULL_CONFIDENCE = 1.0
 PARTIAL_CONFIDENCE = 0.5
@@ -197,9 +246,21 @@ def compute_governance_scores() -> pd.DataFrame:
     weight_matrix = available * weights
     weight_sum = weight_matrix.sum(axis=1)
 
-    df["governance_score"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
+    df["governance_score_raw"] = (df[sub_cols].fillna(0) * weight_matrix).sum(axis=1) / weight_sum
     df["n_indicators_available"] = available.sum(axis=1)
-    df.loc[weight_sum == 0, "governance_score"] = pd.NA
+    df.loc[weight_sum == 0, "governance_score_raw"] = pd.NA
+
+    # Coverage penalty: renormalize category-2 (pipeline-gap) indicators out
+    # for free, but category-3 (disclosure-gap) ones dock the score. See the
+    # module docstring.
+    disclosure_cols = [c for c in sub_cols if c not in PIPELINE_GAP_INDICATORS]
+    disclosure_weight_total = sum(WEIGHTS[c] for c in disclosure_cols)
+    df["governance_disclosure_coverage"] = (
+        weight_matrix[disclosure_cols].sum(axis=1) / disclosure_weight_total
+    )
+    df["governance_score"] = df["governance_score_raw"] * (
+        DISCLOSURE_COVERAGE_FLOOR + DISCLOSURE_COVERAGE_SLOPE * df["governance_disclosure_coverage"]
+    )
 
     confidence_cols = [f"{c}_confidence" for c in sub_cols]
     confidence_df = df[confidence_cols].astype(float).fillna(0)
@@ -208,7 +269,8 @@ def compute_governance_scores() -> pd.DataFrame:
     columns = [
         "ticker", "company", "sector",
         "capex_usd", "rnd_expense_usd", "buybacks_usd", "dividends_paid_usd",
-        *sub_cols, "n_indicators_available", "data_confidence_pct", "governance_score",
+        *sub_cols, "n_indicators_available", "data_confidence_pct",
+        "governance_score_raw", "governance_disclosure_coverage", "governance_score",
     ]
     return df[columns]
 
@@ -223,5 +285,11 @@ if __name__ == "__main__":
     print("Indicators available per company:")
     print(result["n_indicators_available"].value_counts().sort_index())
     print()
-    print(result[["governance_score", "data_confidence_pct"]].describe())
+    print(result[["governance_score_raw", "governance_score", "data_confidence_pct"]].describe())
+
+    penalized = result[result["governance_disclosure_coverage"] < 1.0]
+    print(f"\nDisclosure coverage < 1.0: {len(penalized)}/{len(result)} companies.")
+    if len(penalized):
+        diff = penalized["governance_score_raw"] - penalized["governance_score"]
+        print(f"Average raw-vs-adjusted point difference for those companies: {diff.mean():.2f}")
     print(f"\nSaved to {OUTPUT_PATH}")
