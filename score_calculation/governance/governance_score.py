@@ -5,8 +5,8 @@ and controversy/enforcement record, combined into one weighted score.
 Reads Isabella's pipeline output directly (data/wide_FY2025_fallback.csv --
 see pipeline/export_wide.py), the same source transition_score.py uses.
 
-Four of the five spec indicators now have real data (S04 proxy extraction
-landed); only controversy/enforcement is still unbuilt:
+All five spec indicators now have real data (S04 proxy extraction and S18
+EPA ECHO both landed):
 
 - capital_stewardship_score: real, computed from XBRL (S01). Reinvestment
   share = (capex + R&D) / (capex + R&D + buybacks + dividends) -- the spec's
@@ -44,10 +44,13 @@ landed); only controversy/enforcement is still unbuilt:
   full confidence when the ratio is present, partial when it's the lone
   flag. Weight is deliberately the lowest of the five per the spec's own
   note: real and easy to pull, but weakly related to sustainability.
-- controversy_score: architecture is here, but still null for everyone --
-  S11 (Violation Tracker) has no public API and S18/S28/S29 haven't been
-  pulled. NOT `esg_controversy_level_external` (S14): that field is
-  validation-only by contract and must never enter a pillar score.
+- controversy_score: real, from EPA ECHO (S18) penalty totals -- universe-wide
+  percentile rank (498/500 covered), not sector-relative, since most
+  companies genuinely have $0 in EPA penalties and that tie shouldn't be
+  split arbitrarily by sector. S11 (Violation Tracker) still has no public
+  API and remains unbuilt; S28/S29 haven't been pulled. NOT
+  `esg_controversy_level_external` (S14): that field is validation-only by
+  contract and must never enter a pillar score.
 
 A company's final score is a weighted average over whichever sub-scores it
 actually has (renormalized), never a silent worst-case default for a missing
@@ -151,12 +154,26 @@ def _board_independence_score(df: pd.DataFrame) -> tuple[pd.Series, pd.Series]:
 
 
 def _controversy_score(df: pd.DataFrame) -> pd.Series:
-    """Penalty totals/counts from court and agency records (S11/S18/S28/S29).
-    Not pulled yet -- and NOT `esg_controversy_level_external` (S14): that
-    field is validation-only by contract (pipeline/common/fields.py -- "this
-    is the thing we are trying to beat") and must never enter a pillar score.
+    """Penalty totals from EPA ECHO (S18) -- court/agency enforcement
+    records, not news sentiment. NOT `esg_controversy_level_external` (S14):
+    that field is validation-only by contract and must never enter a pillar
+    score.
+
+    Ranked by percentile across the whole universe (not per-sector): most
+    companies genuinely have $0 in EPA penalties, so the tied-at-zero group
+    all lands at the same score rather than an arbitrary 100. Real, nonzero
+    penalties then rank below that.
+
+    Known limitation, not fixed here: the spec's own note says penalty COUNT
+    correlates with facility count and should be normalised per facility --
+    S18 doesn't carry a reliable facility count for every company, so this
+    is an absolute-dollar ranking, not an intensity measure. A large
+    single-facility company and a large multi-facility one with the same
+    total penalty read identically here.
     """
-    return pd.Series(pd.NA, index=df.index, dtype="Float64")
+    penalty = df["penalty_total_usd"]
+    pct_rank = penalty.rank(pct=True, method="average")
+    return (100 * (1 - pct_rank)).where(penalty.notna())
 
 
 def compute_governance_scores() -> pd.DataFrame:
@@ -170,7 +187,9 @@ def compute_governance_scores() -> pd.DataFrame:
     df["compensation_alignment_score"], df["compensation_alignment_score_confidence"] = _compensation_alignment_score(df)
     df["board_independence_score"], df["board_independence_score_confidence"] = _board_independence_score(df)
     df["controversy_score"] = _controversy_score(df)
-    df["controversy_score_confidence"] = pd.Series(pd.NA, index=df.index, dtype="Float64")
+    df["controversy_score_confidence"] = df["controversy_score"].notna().map(
+        {True: FULL_CONFIDENCE, False: float("nan")}
+    )
 
     sub_cols = list(WEIGHTS)
     weights = pd.Series(WEIGHTS)
