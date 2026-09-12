@@ -6,7 +6,11 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 DATA = REPO_ROOT / "data"
-CACHE = REPO_ROOT / "cache"
+# The raw cache is reproducible and enormous (SEC proxies alone are 1.3 GB,
+# sustainability PDFs will be several more). It does NOT belong in a synced
+# folder: iCloud will try to upload all of it, and may evict files locally,
+# at which point reads stall or fail. Override with ETHACK_CACHE.
+CACHE = Path(os.environ.get("ETHACK_CACHE", REPO_ROOT / "cache"))
 CACHE_RAW = CACHE / "raw"            # L1: source + key -> bytes, never deleted
 CACHE_EXTRACTED = CACHE / "extracted"  # L2: ticker + field -> json, cheap to delete
 OBSERVATIONS = DATA / "observations"  # append-only JSONL, one dir per source

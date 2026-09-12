@@ -1,42 +1,165 @@
-"""S10 — fetch to the L1 raw cache. NO PARSING, NO JSONL.
+"""S10 — corporate sustainability reports, via the responsibilityreports.com
+aggregator.
 
-See SOURCE.md in this folder for the full brief, endpoint and gotchas.
+The register is right that the hard part is finding 500 URLs, not reading them.
+This does it in two phases, on purpose:
 
-Contract:
-  * network in, bytes to cache/raw/S10/ out
-  * idempotent: a second run makes zero network calls
-  * never writes observations, never touches the database
+  --discover   fetch the index (one page, 4,400 companies) and each candidate's
+               company page; record ticker -> PDF URL. Small pages, no PDFs.
+  (default)    download the PDFs for whatever discovery found.
+
+Discovery first because the PDFs are 60-150 pages each and 500 of them is
+several GB. Knowing the match rate before spending that is worth one extra step.
+
+MATCHING: a name match only PROPOSES a candidate. The aggregator embeds the
+ticker in every PDF path (/HostedData/.../NYSE_MMM_2024.pdf), so the ticker in
+the URL is what CONFIRMS it. A proposed match whose URL ticker disagrees is
+discarded — name-only matching is how 'Delta' becomes three different companies.
 """
 
 from __future__ import annotations
 
 import argparse
+import json
+import re
 
 from ...common import cache
-from ...common.entities import tickers
+from ...common.entities import normalise_name, tickers, universe
+from ...common.http import PoliteSession
+from ...common.paths import DATA
 
 SOURCE = "S10"
-ENDPOINT = "https://www.responsibilityreports.com"
+BASE = "https://www.responsibilityreports.com"
+INDEX = f"{BASE}/Companies"
+MAP_PATH = DATA / "s10_report_urls.json"
+UA = "ETH Hackathon sustainability research (academic, non-commercial)"
+
+_SLUG = re.compile(r'href="(/Company/[^"]+)"[^>]*>([^<]{2,90})<', re.I)
+_PDF = re.compile(r'href="(/HostedData/[^"]+?_(?P<tk>[A-Z.]{1,6})_(?P<yr>\d{4})\.pdf)"', re.I)
 
 
-def pull(ticker_list: list[str] | None = None, *, limit: int | None = None) -> dict:
-    """Fetch raw material for `ticker_list` (default: the whole universe).
+def _session():
+    return PoliteSession(SOURCE, UA, per_second=2.0)
 
-    Returns a small dict of counts for the run log.
-    """
-    ticker_list = ticker_list or tickers(limit)
-    raise NotImplementedError(
-        "S10 pull() not implemented -- see SOURCE.md in this folder"
-    )
+
+def discover(ticker_list: list[str] | None = None, *, limit: int | None = None,
+             verbose: bool = True) -> dict:
+    sess = _session()
+    wanted = set(ticker_list or tickers(limit))
+    by_name = {normalise_name(r["company"]): r["ticker"] for r in universe()}
+
+    html = sess.get_text(INDEX, key="index", suffix=".html")
+    slugs = _SLUG.findall(html)
+    if verbose:
+        print(f"[S10] index lists {len(slugs)} companies")
+
+    # Propose candidates by name; the ticker in the PDF URL confirms or rejects.
+    candidates: dict[str, str] = {}
+    for href, label in slugs:
+        t = by_name.get(normalise_name(label))
+        if t and t in wanted and t not in candidates:
+            candidates[t] = href
+    if verbose:
+        print(f"[S10] {len(candidates)} name candidates among {len(wanted)} constituents")
+
+    found: dict[str, dict] = {}
+    rejected = []
+    for i, (t, href) in enumerate(sorted(candidates.items()), 1):
+        try:
+            page = sess.get_text(BASE + href, key=f"page-{t}", suffix=".html")
+        except Exception as e:                      # noqa: BLE001
+            rejected.append((t, f"page fetch failed: {str(e)[:60]}"))
+            continue
+        hits = [m.groupdict() | {"url": m.group(1)} for m in _PDF.finditer(page)]
+        ours = [h for h in hits if h["tk"].upper().replace(".", "-") ==
+                t.upper().replace(".", "-")]
+        if not ours:
+            rejected.append((t, f"ticker mismatch (urls say "
+                                f"{sorted({h['tk'] for h in hits})[:3]})"))
+            continue
+        latest = max(ours, key=lambda h: int(h["yr"]))
+        found[t] = {"url": BASE + latest["url"], "year": int(latest["yr"]),
+                    "page": BASE + href}
+        if verbose and i % 50 == 0:
+            print(f"  {i}/{len(candidates)}  confirmed={len(found)} "
+                  f"rejected={len(rejected)}")
+
+    MAP_PATH.parent.mkdir(parents=True, exist_ok=True)
+    MAP_PATH.write_text(json.dumps(found, indent=1, sort_keys=True))
+    if verbose:
+        print(f"[S10] confirmed {len(found)} report URLs -> {MAP_PATH}")
+        print(f"      {len(rejected)} candidates rejected by the ticker check")
+        for t, why in rejected[:6]:
+            print(f"        {t}: {why}")
+        yrs = {}
+        for v in found.values():
+            yrs[v["year"]] = yrs.get(v["year"], 0) + 1
+        print(f"      report years: {dict(sorted(yrs.items(), reverse=True))}")
+    return found
+
+
+def pull(ticker_list: list[str] | None = None, *, limit: int | None = None,
+         verbose: bool = True, priority_ghgrp: bool = True) -> dict:
+    """Download the PDFs discovery found. Large: budget ~10-20 MB each."""
+    if not MAP_PATH.exists():
+        raise FileNotFoundError(
+            f"{MAP_PATH} missing. Run discovery first:\n"
+            f"  python -m pipeline.sources.s10_reports.pull --discover")
+    urls = json.loads(MAP_PATH.read_text())
+    want = set(ticker_list) if ticker_list else set(urls)
+    order = sorted(want & set(urls))
+
+    if priority_ghgrp:
+        # Download the GHGRP-matched companies FIRST. The say-do gap needs both
+        # a measured and a self-reported figure for the same company, so those
+        # are worth more per megabyte than anything else in the list.
+        import sqlite3
+        from ...common.paths import DB_PATH
+        try:
+            conn = sqlite3.connect(DB_PATH)
+            measured = {r[0] for r in conn.execute(
+                "SELECT DISTINCT ticker FROM observations WHERE field='scope1_tco2e' "
+                "AND status='structural'")}
+            conn.close()
+            order.sort(key=lambda t: (t not in measured, t))
+        except sqlite3.Error:
+            pass
+
+    if limit:
+        order = order[:limit]
+
+    sess = _session()
+    stats = {"requested": len(order), "cached": 0, "fetched": 0, "bytes": 0, "failed": {}}
+    for i, t in enumerate(order, 1):
+        if cache.has_raw(SOURCE, f"report-{t}", ".pdf"):
+            stats["cached"] += 1
+            continue
+        try:
+            data = sess.get(urls[t]["url"], key=f"report-{t}", suffix=".pdf")
+            stats["fetched"] += 1
+            stats["bytes"] += len(data)
+        except Exception as e:                      # noqa: BLE001
+            stats["failed"][t] = str(e)[:90]
+        if verbose and i % 20 == 0:
+            print(f"  {i}/{len(order)}  fetched={stats['fetched']} "
+                  f"({stats['bytes']/1e6:.0f} MB) failed={len(stats['failed'])}")
+    if verbose:
+        print(f"[S10] {stats['fetched']} PDFs ({stats['bytes']/1e6:.0f} MB), "
+              f"{stats['cached']} cached, {len(stats['failed'])} failed")
+    return stats
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(description="S10 pull")
-    ap.add_argument("--tickers", help="comma-separated; default is the whole universe")
-    ap.add_argument("--limit", type=int, help="first N tickers, for a smoke run")
+    ap = argparse.ArgumentParser(description="S10 sustainability reports")
+    ap.add_argument("--discover", action="store_true",
+                    help="find report URLs only; no PDF downloads")
+    ap.add_argument("--tickers"); ap.add_argument("--limit", type=int)
     a = ap.parse_args()
     tl = a.tickers.split(",") if a.tickers else None
-    print(pull(tl, limit=a.limit))
+    if a.discover:
+        discover(tl, limit=a.limit)
+    else:
+        pull(tl, limit=a.limit)
 
 
 if __name__ == "__main__":

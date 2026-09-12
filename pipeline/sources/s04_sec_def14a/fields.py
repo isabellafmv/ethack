@@ -10,7 +10,6 @@ SOURCE = "S04"
 
 EMITS = [
     "has_climate_oversight_committee",
-    "comp_tied_to_emissions_target",
     "has_third_party_assurance",
     "assurance_level",
     "emissions_boundary_stated",

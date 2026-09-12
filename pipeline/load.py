@@ -86,10 +86,25 @@ def _split_value(v):
     return None, str(v)
 
 
-def build(db_path=DB_PATH, verbose: bool = True, base=None) -> dict:
+def build(db_path=DB_PATH, verbose: bool = True, base=None,
+          append: bool = False) -> dict:
+    """Rebuild the database FROM SCRATCH out of the JSONL log.
+
+    The table is emptied first, and that is the whole point. With
+    INSERT OR REPLACE alone the database only ever grew: a field we stopped
+    emitting, or a record we retracted, stayed in the DB forever because
+    nothing replaced its primary key. A retraction that silently does nothing
+    is worse than no retraction at all — we shipped `comp_tied_to_emissions_target`
+    for 500 companies after dropping it, and only noticed by chance.
+
+    The JSONL log is the source of truth. The database is derived, and derived
+    means reproducible: the rows in it are exactly the rows in the log.
+    """
     ensure_dirs()
     conn = sqlite3.connect(db_path)
     conn.executescript(DDL)
+    if not append:
+        conn.execute("DELETE FROM observations")
 
     files = all_runs(base=base)
     stats = {"files": len(files), "rows_read": 0, "rows_written": 0, "bad": 0, "by_source": {}}
@@ -138,5 +153,8 @@ def build(db_path=DB_PATH, verbose: bool = True, base=None) -> dict:
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Rebuild scores.db from the JSONL log.")
     ap.add_argument("--db", default=str(DB_PATH))
+    ap.add_argument("--append", action="store_true",
+                    help="add to the existing table instead of rebuilding it "
+                         "(leaves stale rows; almost never what you want)")
     args = ap.parse_args()
-    build(args.db)
+    build(args.db, append=args.append)

@@ -189,6 +189,18 @@ def test_writer_and_loader() -> None:
         build(db, verbose=False, base=tmp)
         check("rm scores.db && load rebuilds from scratch", db.exists())
 
+        # A record removed from the log must LEAVE the database. Without this,
+        # load only ever adds and a retraction silently does nothing.
+        for f in tmp.rglob("S15/*.jsonl"):
+            f.unlink()
+        build(db, verbose=False, base=tmp)
+        conn2 = sqlite3.connect(db)
+        gone = conn2.execute("SELECT COUNT(*) FROM observations "
+                             "WHERE source='S15'").fetchone()[0]
+        conn2.close()
+        check("a record dropped from the log disappears from the db",
+              gone == 0, f"{gone} stale rows survived")
+
     import shutil
     shutil.rmtree(tmp, ignore_errors=True)
 
