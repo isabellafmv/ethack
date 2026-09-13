@@ -148,30 +148,51 @@ function Axes({ axes }: { axes: [AxisSlot, AxisSlot, AxisSlot] }) {
 }
 
 function Point({
-  point, dimmed, onSelect, onHoverSector, onUnhover,
+  point, dimmed, highlight, onSelect, onHoverSector, onHoverTicker, onUnhover,
 }: {
   point: ScatterPoint;
   dimmed: boolean;
+  /** Hovered and/or selected -- either makes the point glow, selection adds
+   * the ring below so it stays visible after the pointer moves away (a
+   * hover-only glow would vanish the moment you're not touching it). */
+  highlight: { hovered: boolean; selected: boolean };
   onSelect: (ticker: string) => void;
   onHoverSector: (sector: string) => void;
+  onHoverTicker: (ticker: string | null) => void;
   onUnhover: () => void;
 }) {
-  const effectiveOpacity = dimmed ? point.opacity * DIMMED_OPACITY_FACTOR : point.opacity;
+  const isHighlighted = highlight.hovered || highlight.selected;
+  const effectiveOpacity = dimmed && !isHighlighted ? point.opacity * DIMMED_OPACITY_FACTOR : 1;
+  // Brighter, not a new hue: emissive uses the point's own colour, so a
+  // highlighted point reads as "this one, lit up" rather than introducing
+  // a fourth colour into a palette that's deliberately only ever three.
+  const radius = point.radius * (highlight.selected ? 1.6 : highlight.hovered ? 1.35 : 1);
+  const emissiveIntensity = highlight.selected ? 1.6 : highlight.hovered ? 1.1 : 0;
   return (
-    <mesh
-      position={point.position}
-      onClick={(e) => { e.stopPropagation(); onSelect(point.ticker); }}
-      onPointerOver={(e) => { e.stopPropagation(); onHoverSector(point.sector); }}
-      onPointerOut={(e) => { e.stopPropagation(); onUnhover(); }}
-    >
-      <sphereGeometry args={[point.radius, 16, 16]} />
-      <meshStandardMaterial
-        color={point.color}
-        transparent
-        opacity={effectiveOpacity}
-        wireframe={point.wireframe}
-      />
-    </mesh>
+    <group>
+      <mesh
+        position={point.position}
+        onClick={(e) => { e.stopPropagation(); onSelect(point.ticker); }}
+        onPointerOver={(e) => { e.stopPropagation(); onHoverSector(point.sector); onHoverTicker(point.ticker); }}
+        onPointerOut={(e) => { e.stopPropagation(); onHoverTicker(null); onUnhover(); }}
+      >
+        <sphereGeometry args={[radius, 16, 16]} />
+        <meshStandardMaterial
+          color={point.color}
+          transparent
+          opacity={effectiveOpacity}
+          wireframe={point.wireframe}
+          emissive={point.color}
+          emissiveIntensity={emissiveIntensity}
+        />
+      </mesh>
+      {highlight.selected && (
+        <mesh position={point.position} rotation={[Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[radius * 1.6, radius * 1.9, 32]} />
+          <meshBasicMaterial color="#AAB644" transparent opacity={0.9} side={THREE.DoubleSide} depthTest={false} />
+        </mesh>
+      )}
+    </group>
   );
 }
 
@@ -184,10 +205,14 @@ export interface ScatterViewProps {
   weights: WeightsState | Map<string, WeightsState>;
   onSelectCompany: (ticker: string) => void;
   cameraPreset: CameraPresetId | null;
+  /** The company currently open in DetailPanel, if any -- its point gets
+   * the ring highlight below so "which point did I click" stays visible
+   * even after the pointer moves away (unlike hover, which is transient). */
+  selectedTicker: string | null;
 }
 
 export function ScatterView({
-  companies, scores, axes, visibleSectors, referenceBySector, weights, onSelectCompany, cameraPreset,
+  companies, scores, axes, visibleSectors, referenceBySector, weights, onSelectCompany, cameraPreset, selectedTicker,
 }: ScatterViewProps) {
   const points = useMemo<ScatterPoint[]>(() => {
     const marketCaps = companies
@@ -239,8 +264,11 @@ export function ScatterView({
 
   // Hovering any point highlights its whole sector: every point from a
   // DIFFERENT sector fades to near-invisible, so the shape of "where does
-  // this sector sit" pops out without a separate filter action.
+  // this sector sit" pops out without a separate filter action. Which
+  // point specifically is hovered is tracked separately (below) so THAT
+  // one point can also glow, on top of the sector-level dim/fade.
   const [hoveredSector, setHoveredSector] = useState<string | null>(null);
+  const [hoveredTicker, setHoveredTicker] = useState<string | null>(null);
 
   return (
     <Canvas camera={{ position: CAMERA_PRESETS.isometric.position, fov: 45 }}>
@@ -253,8 +281,10 @@ export function ScatterView({
           key={p.ticker}
           point={p}
           dimmed={hoveredSector !== null && p.sector !== hoveredSector}
+          highlight={{ hovered: p.ticker === hoveredTicker, selected: p.ticker === selectedTicker }}
           onSelect={onSelectCompany}
           onHoverSector={setHoveredSector}
+          onHoverTicker={setHoveredTicker}
           onUnhover={() => setHoveredSector(null)}
         />
       ))}

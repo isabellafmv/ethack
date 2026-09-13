@@ -21,8 +21,8 @@ export function axisKey(axis: AxisSlot): string {
  * pickers, the weight panel, the coverage strip) so there's exactly one
  * place to keep them in sync. */
 export const PILLAR_SCORE_NAMES: Record<Pillar, string> = {
-  P1: "Environmental",
-  P2: "Transition",
+  P1: "Environmental Impact",
+  P2: "Transition Risk",
   P3: "Governance",
 };
 
