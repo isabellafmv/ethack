@@ -41,11 +41,25 @@ export interface ScatterPoint {
   wireframe: boolean;
 }
 
+// Every preset is chosen so the two axes visible on screen both read
+// "positive -> up/right", i.e. the best-scoring companies always end up
+// toward the top-right corner, in every orthographic view, not just one:
+//   - front (looking down -Z): X -> right, Y -> up. Default up=(0,1,0)
+//     already gives this (X-right is the standard lookAt convention here).
+//   - side: looking from -X (not +X) toward the origin, rather than +X,
+//     is what puts +Z on the right instead of the left -- same default
+//     up=(0,1,0), just viewed from the opposite side.
+//   - top: looking from BELOW (-Y) rather than above, with an explicit
+//     up=(0,0,1). Looking down from above can put +X-right or +Z-up, but
+//     not both at once (it's a mirror-image choice) -- looking from below
+//     is the one position+up pair that gives both simultaneously. Every
+//     preset sets `up` explicitly (not just top) so switching between them
+//     can't leave a stale up-vector from whichever was active before.
 export const CAMERA_PRESETS = {
-  isometric: { position: [12, 10, 12] as [number, number, number], target: [0, 0, 0] as [number, number, number] },
-  front: { position: [0, 0, 18], target: [0, 0, 0] as [number, number, number] },
-  top: { position: [0, 18, 0.001], target: [0, 0, 0] as [number, number, number] },
-  side: { position: [18, 0, 0], target: [0, 0, 0] as [number, number, number] },
+  isometric: { position: [12, 10, 12] as [number, number, number], target: [0, 0, 0] as [number, number, number], up: [0, 1, 0] as [number, number, number] },
+  front: { position: [0, 0, 18], target: [0, 0, 0] as [number, number, number], up: [0, 1, 0] as [number, number, number] },
+  top: { position: [0, -18, 0], target: [0, 0, 0] as [number, number, number], up: [0, 0, 1] as [number, number, number] },
+  side: { position: [-18, 0, 0], target: [0, 0, 0] as [number, number, number], up: [0, 1, 0] as [number, number, number] },
 };
 export type CameraPresetId = keyof typeof CAMERA_PRESETS;
 
@@ -56,6 +70,7 @@ function CameraRig({ preset }: { preset: CameraPresetId | null }) {
     if (preset && preset !== applied.current) {
       const cfg = CAMERA_PRESETS[preset];
       camera.position.set(cfg.position[0], cfg.position[1], cfg.position[2]);
+      camera.up.set(cfg.up[0], cfg.up[1], cfg.up[2]);
       if (controls) {
         controls.target.set(cfg.target[0], cfg.target[1], cfg.target[2]);
         controls.update();

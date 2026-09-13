@@ -21,7 +21,7 @@ import { TableView } from "./components/TableView";
 import { PortfolioAllocator } from "./components/PortfolioAllocator";
 import "./App.css";
 
-type DisplayMode = "3d" | "table" | "portfolio";
+type DisplayMode = "3d" | "table";
 
 export default function App() {
   const matrix = useMatrix();
@@ -29,6 +29,10 @@ export default function App() {
   const state = useAppState();
   const [cameraPreset, setCameraPreset] = useState<CameraPresetId | null>("isometric");
   const [displayMode, setDisplayMode] = useState<DisplayMode>("3d");
+  // Portfolio is a top-level tab next to Map (view-tabs), not a display
+  // mode alongside 3D/Table -- it isn't an axis view of the same scatter,
+  // it's a wholly different page, so it gets its own top-level toggle.
+  const [showPortfolio, setShowPortfolio] = useState(false);
 
   const companies = matrix.payload?.companies ?? [];
 
@@ -105,12 +109,18 @@ export default function App() {
           {VIEWS.map((v) => (
             <button
               key={v.id}
-              className={v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
-              onClick={() => state.setActiveViewId(v.id)}
+              className={!showPortfolio && v.id === state.activeViewId ? "view-tab view-tab--active" : "view-tab"}
+              onClick={() => { setShowPortfolio(false); state.setActiveViewId(v.id); }}
             >
               {v.label}
             </button>
           ))}
+          <button
+            className={showPortfolio ? "view-tab view-tab--active" : "view-tab"}
+            onClick={() => setShowPortfolio(true)}
+          >
+            Portfolio
+          </button>
         </nav>
         <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
       </div>
@@ -127,69 +137,64 @@ export default function App() {
         </aside>
 
         <main className="app-main">
-          <div className="display-mode-toggle">
-            <button
-              className={displayMode === "3d" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
-              onClick={() => setDisplayMode("3d")}
-            >
-              3D
-            </button>
-            <button
-              className={displayMode === "table" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
-              onClick={() => setDisplayMode("table")}
-            >
-              Table
-            </button>
-            <button
-              className={displayMode === "portfolio" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
-              onClick={() => setDisplayMode("portfolio")}
-            >
-              Portfolio
-            </button>
-          </div>
-          {displayMode === "3d" && (
-            <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} weights={state.weights} />
-          )}
-          {displayMode === "3d" && (
-            <div className="camera-presets">
-              {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
-                <button
-                  key={p}
-                  className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
-                  onClick={() => setCameraPreset(p)}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          )}
-          {displayMode !== "portfolio" && (
-            <div className="scatter-container">
-              {displayMode === "3d" ? (
-                <ScatterView
-                  companies={companies}
-                  scores={scores}
-                  axes={state.axes}
-                  visibleSectors={state.selectedSectors}
-                  referenceBySector={referenceBySector}
-                  weights={effectiveWeights}
-                  onSelectCompany={state.setSelectedTicker}
-                  cameraPreset={cameraPreset}
-                />
-              ) : (
-                <TableView
-                  companies={companies}
-                  scores={scores}
-                  visibleSectors={state.selectedSectors}
-                  onSelectCompany={state.setSelectedTicker}
-                />
-              )}
-            </div>
-          )}
-          {displayMode === "portfolio" && (
+          {showPortfolio ? (
             <div className="portfolio-container">
               <PortfolioAllocator companies={companies} scores={scores} />
             </div>
+          ) : (
+            <>
+              <div className="display-mode-toggle">
+                <button
+                  className={displayMode === "3d" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+                  onClick={() => setDisplayMode("3d")}
+                >
+                  3D
+                </button>
+                <button
+                  className={displayMode === "table" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+                  onClick={() => setDisplayMode("table")}
+                >
+                  Table
+                </button>
+              </div>
+              {displayMode === "3d" && (
+                <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} weights={state.weights} />
+              )}
+              {displayMode === "3d" && (
+                <div className="camera-presets">
+                  {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
+                    <button
+                      key={p}
+                      className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
+                      onClick={() => setCameraPreset(p)}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="scatter-container">
+                {displayMode === "3d" ? (
+                  <ScatterView
+                    companies={companies}
+                    scores={scores}
+                    axes={state.axes}
+                    visibleSectors={state.selectedSectors}
+                    referenceBySector={referenceBySector}
+                    weights={effectiveWeights}
+                    onSelectCompany={state.setSelectedTicker}
+                    cameraPreset={cameraPreset}
+                  />
+                ) : (
+                  <TableView
+                    companies={companies}
+                    scores={scores}
+                    visibleSectors={state.selectedSectors}
+                    onSelectCompany={state.setSelectedTicker}
+                  />
+                )}
+              </div>
+            </>
           )}
         </main>
 
@@ -198,11 +203,9 @@ export default function App() {
           <WeightPanel
             weights={state.weights}
             onChange={state.setWeights}
-            companies={companies}
             weightMode={state.weightMode}
             onChangeWeightMode={state.setWeightMode}
             materialityStatus={materiality.status}
-            sensitivityWeights={effectiveWeights}
           />
           {/* ReferencePicker parked, not deleted -- state.reference/deltaMode
               (and the coloring/delta logic everywhere that reads them) are
