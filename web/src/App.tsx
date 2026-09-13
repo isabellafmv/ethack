@@ -102,7 +102,7 @@ export default function App() {
       {matrix.isFixture && <FixtureBadge />}
       <header className="app-header">
         <h1 className="app-title">S&amp;P 500 Sustainability Map</h1>
-        <p className="app-subtitle">A 3D view of environmental, transition &amp; governance impact</p>
+        <p className="app-subtitle">A 3D view of environmental impact, transition risk &amp; governance</p>
       </header>
       <div className="app-toolbar">
         <nav className="view-tabs">
