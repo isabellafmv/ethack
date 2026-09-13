@@ -184,6 +184,7 @@ export default function App() {
                     weights={effectiveWeights}
                     onSelectCompany={state.setSelectedTicker}
                     cameraPreset={cameraPreset}
+                    selectedTicker={state.selectedTicker}
                   />
                 ) : (
                   <TableView

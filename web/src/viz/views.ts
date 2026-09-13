@@ -22,7 +22,7 @@ export function axisKey(axis: AxisSlot): string {
  * place to keep them in sync. */
 export const PILLAR_SCORE_NAMES: Record<Pillar, string> = {
   P1: "Environmental Impact",
-  P2: "Transition risk",
+  P2: "Transition Risk",
   P3: "Governance",
 };
 

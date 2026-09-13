@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { normalizedWeights, type CompanyScoreResult, type WeightsState } from "../scoring/pipeline";
 import { registryForPillar, type Pillar } from "../scoring/registry";
 import { PILLARS } from "../scoring/pipeline";
+import { PILLAR_SCORE_NAMES } from "../viz/views";
 import type { Company, FieldRecord } from "../scoring/types";
 import { loadQuotes } from "../data/useMatrix";
 
@@ -86,7 +87,7 @@ function PillarBlock({
   const pillarResult = result.pillars[pillar];
   return (
     <section className="detail-pillar">
-      <h3>{pillar} &mdash; {fmtScore(pillarResult.score)} <span className="count">(weight {(pillarWeight * 100).toFixed(0)}%)</span></h3>
+      <h3>{PILLAR_SCORE_NAMES[pillar]} &mdash; {fmtScore(pillarResult.score)} <span className="count">(weight {(pillarWeight * 100).toFixed(0)}%)</span></h3>
       {registryForPillar(pillar).map((sub) => {
         const subResult = pillarResult.subScores.find((s) => s.id === sub.id)!;
         return (
