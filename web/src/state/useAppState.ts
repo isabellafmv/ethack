@@ -11,14 +11,15 @@ import {
 import type { ReferenceSpec } from "../scoring/reference";
 import { VIEWS, viewById, type AxisSlot, type ViewConfig } from "../viz/views";
 
-/** The one place "is this sector currently visible" is decided -- an empty
- * `selectedSectors` means "show everything" (see toggleSector's own note),
- * so this is NOT simply `selectedSectors.has(sector)`. ScatterView, the
- * composite/coverage calc in App.tsx, and TableView all need the exact same
- * answer to this question; a second reimplementation is how the table and
- * the 3D view end up disagreeing about which companies are in scope. */
-export function isSectorVisible(sector: string, selectedSectors: ReadonlySet<string>): boolean {
-  return selectedSectors.size === 0 || selectedSectors.has(sector);
+/** The one place "is this sector currently visible" is decided -- `null`
+ * means "show everything" (the default, and what "Select all" resets to),
+ * distinct from an explicit empty Set (every sector deselected via "Unselect
+ * all", which shows nothing). ScatterView, the composite/coverage calc in
+ * App.tsx, and TableView all need the exact same answer to this question; a
+ * second reimplementation is how the table and the 3D view end up
+ * disagreeing about which companies are in scope. */
+export function isSectorVisible(sector: string, selectedSectors: ReadonlySet<string> | null): boolean {
+  return selectedSectors === null || selectedSectors.has(sector);
 }
 
 export interface AppState {
@@ -26,9 +27,10 @@ export interface AppState {
   setWeights: (w: WeightsState) => void;
   weightMode: WeightMode;
   setWeightMode: (m: WeightMode) => void;
-  selectedSectors: Set<string>;
+  selectedSectors: Set<string> | null;
   toggleSector: (sector: string, allSectors: string[]) => void;
   clearSectorFilter: () => void;
+  selectNoSectors: () => void;
   activeViewId: ViewConfig["id"];
   setActiveViewId: (id: ViewConfig["id"]) => void;
   axes: [AxisSlot, AxisSlot, AxisSlot];
@@ -48,7 +50,7 @@ export function useAppState(): AppState {
   const [weightMode, setWeightModeState] = useState<WeightMode>(
     () => decodeWeightModeFromHash(window.location.hash)
   );
-  const [selectedSectors, setSelectedSectors] = useState<Set<string>>(new Set());
+  const [selectedSectors, setSelectedSectors] = useState<Set<string> | null>(null);
   const [activeViewId, setActiveViewId] = useState<ViewConfig["id"]>("global");
   const [axesByView, setAxesByView] = useState<Record<string, [AxisSlot, AxisSlot, AxisSlot]>>(
     () => Object.fromEntries(VIEWS.map((v) => [v.id, v.defaultAxes]))
@@ -89,20 +91,25 @@ export function useAppState(): AppState {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  // `selectedSectors` empty means "all visible" -- a shorthand, not a literal
-  // empty selection. Toggling must expand that shorthand to the full set
-  // first, so unchecking one sector out of "all visible" excludes just that
-  // one sector rather than collapsing to "only this one" (checkbox semantics
-  // a viewer would otherwise read as inverted).
+  // `null` means "all visible" -- a shorthand for "every sector, including
+  // ones not loaded yet", not a literal Set. Toggling must expand that
+  // shorthand to the full set first, so unchecking one sector out of "all
+  // visible" excludes just that one sector rather than collapsing to "only
+  // this one" (checkbox semantics a viewer would otherwise read as
+  // inverted). Ending up back at the full set collapses to `null` too, so
+  // "Select all" and manually re-checking every box land in the same state.
   const toggleSector = useCallback((sector: string, allSectors: string[]) => {
     setSelectedSectors((prev) => {
-      const effective = prev.size === 0 ? new Set(allSectors) : new Set(prev);
+      const effective = prev === null ? new Set(allSectors) : new Set(prev);
       if (effective.has(sector)) effective.delete(sector);
       else effective.add(sector);
-      return effective.size === allSectors.length ? new Set() : effective;
+      return effective.size === allSectors.length ? null : effective;
     });
   }, []);
-  const clearSectorFilter = useCallback(() => setSelectedSectors(new Set()), []);
+  const clearSectorFilter = useCallback(() => setSelectedSectors(null), []);
+  // Explicit empty Set, not `null` -- `null` means "all visible", so hiding
+  // every sector needs its own literal (empty) selection to be distinguishable.
+  const selectNoSectors = useCallback(() => setSelectedSectors(new Set()), []);
 
   const setAxis = useCallback((slot: 0 | 1 | 2, axis: AxisSlot) => {
     setAxesByView((prev) => {
@@ -120,7 +127,7 @@ export function useAppState(): AppState {
   return {
     weights, setWeights,
     weightMode, setWeightMode,
-    selectedSectors, toggleSector, clearSectorFilter,
+    selectedSectors, toggleSector, clearSectorFilter, selectNoSectors,
     activeViewId, setActiveViewId,
     axes, setAxis,
     reference, setReference,

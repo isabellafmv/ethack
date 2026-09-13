@@ -49,12 +49,39 @@ def _rank(src: str) -> int:
     return SOURCE_PRIORITY.index(src) if src in SOURCE_PRIORITY else len(SOURCE_PRIORITY)
 
 
-#: The analysis year the dashboard scores on. Annual FLOWS are pinned to it so
-#: no ranking compares a June year-end's FY2026 against a calendar filer's
-#: FY2025. Snapshots (market cap, SBTi status) pass through — they are true as
-#: of a date and have no period to mismatch. 2023 is the latest year with
-#: EPA-measured emissions, which is what paces the whole framework.
-ANALYSIS_YEAR = 2023
+#: The analysis year the dashboard scores on. Annual FLOWS prefer this year,
+#: falling back per-field to the highest-priority source's most recent year
+#: when this year has nothing trustworthy -- see _select_key. GHGRP emissions
+#: (Scope 1) cap out at fiscal_year 2023, so they land there automatically
+#: under this same fallback rule, without a special case: no ranking compares
+#: a June year-end's FY2026 against a calendar filer's FY2025, but a 2025
+#: revenue figure is still compared against a 2023 emissions figure, because
+#: that is genuinely the newest real number each field has.
+#:
+#: MUST match `python -m pipeline.export_wide --year <ANALYSIS_YEAR>
+#: --fallback` (data/wide_FY2025_fallback.csv) field-for-field, fiscal-year-
+#: for-fiscal-year -- that CSV is what score_calculation's Python pillar
+#: scores are actually computed from, and web/scripts/verify-scoring-parity.ts
+#: diffs THIS payload's computeScores() output against those Python scores.
+#: If the two ever select a different year for the same field, no amount of
+#: fixing web/src/scoring's formulas will make the numbers agree, because
+#: they will be scoring genuinely different inputs.
+ANALYSIS_YEAR = 2025
+
+
+def _select_key(rec: dict, year: int | None) -> tuple:
+    """Sorts ascending = best first, so the `best` loop below can keep
+    replacing on `<`. Mirrors export_wide.py's collect()/score() ordering
+    exactly (translated to this module's min-wins convention): an exact hit
+    on `year` outranks a newer or higher-priority-source row from any other
+    year; ties break on source precedence, then on most recent fiscal year.
+    Applied uniformly to every field, snapshot/timeless included -- export_
+    wide.py's own fallback scoring does the same, and special-casing them
+    here would silently pick a different row than that CSV does for the
+    same field.
+    """
+    exact = 0 if (year and rec["fy"] == year) else 1
+    return (exact, _rank(rec["src"]), -rec["fy"])
 
 
 def export(db_path=DB_PATH, out=MATRIX_PATH, quotes_out=None,
@@ -66,13 +93,12 @@ def export(db_path=DB_PATH, out=MATRIX_PATH, quotes_out=None,
         "('structural','quote_verified','imputed') ORDER BY fiscal_year DESC"
     ).fetchall()
     conn.close()
-    if year:
-        keep = []
-        for r in rows:
-            spec = FIELDS.get(r["field"])
-            if spec is None or spec.timeless or spec.snapshot or r["fiscal_year"] == year:
-                keep.append(r)
-        rows = keep
+    # No upfront year filter: every trustworthy row stays in play, and
+    # _select_key below picks the single best one per (ticker, field) --
+    # an exact hit on `year` wins when one exists, otherwise the best
+    # available row from whatever year actually has one. A hard pre-filter
+    # (this module's old behavior) would just have to duplicate this same
+    # fallback rule a second time to recover the rows it dropped.
 
     # Intern the repeated strings. source_url is the longest field on every
     # record and there are only a few hundred distinct values across 30k
@@ -101,7 +127,7 @@ def export(db_path=DB_PATH, out=MATRIX_PATH, quotes_out=None,
             "url": intern(r["source_url"]),
         }
         cur = best.get(k)
-        if cur is None or (_rank(rec["src"]), -rec["fy"]) < (_rank(cur["src"]), -cur["fy"]):
+        if cur is None or _select_key(rec, year) < _select_key(cur, year):
             if cur is not None and cur["src"] != rec["src"]:
                 alts[k].append(cur)
             best[k] = rec

@@ -72,18 +72,18 @@ body { background: var(--bg); color: var(--ink); }
 /* ---- Header: full-bleed olive block + plain toolbar below ----------- */
 .app-header {
   background: var(--accent);
-  padding: 2.75rem 2.5rem 2rem;
+  padding: 1rem 2.5rem 0.85rem;
 }
 .app-title {
   margin: 0; color: var(--ink);
   font-weight: 900; text-transform: uppercase;
-  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
   line-height: 1.05; letter-spacing: -0.02em;
 }
 .app-subtitle {
-  margin: 0.6rem 0 0; color: var(--ink); opacity: 0.65;
+  margin: 0.3rem 0 0; color: var(--ink); opacity: 0.65;
   font-weight: 700; text-transform: uppercase;
-  font-size: 0.72rem; letter-spacing: 0.08em;
+  font-size: 0.68rem; letter-spacing: 0.08em;
 }
 
 .app-toolbar {
@@ -105,7 +105,7 @@ body { background: var(--bg); color: var(--ink); }
 .app-body {
   flex: 1;
   display: grid;
-  grid-template-columns: 260px 1fr 300px;
+  grid-template-columns: 260px 1fr;
   min-height: 0;
   position: relative;
 }
@@ -119,7 +119,6 @@ body { background: var(--bg); color: var(--ink); }
   gap: 2rem;
 }
 .app-sidebar--left { padding-right: 2.25rem; }
-.app-sidebar--right { padding-left: 2.25rem; }
 
 /* min-height: 0 here is the vertical twin of .scatter-container/
    .table-view-wrap's min-width: 0 below -- .app-main is a GRID item of
@@ -144,8 +143,28 @@ body { background: var(--bg); color: var(--ink); }
   flex: 1; min-height: 0; min-width: 0; margin: 0 2rem 2rem;
   border-radius: 16px; overflow: hidden; border: 1px solid var(--ink-12);
   display: flex; flex-direction: column;
+  position: relative; /* anchors .legend-overlay to the map, not the page */
 }
 .scatter-container canvas { display: block; }
+
+/* Legend, on the map itself (Task: "put the legend on the map") -- a
+   floating card in the corner of the 3D view rather than a permanent slice
+   of the right sidebar (removed entirely to give the data more width). The
+   canvas has no natural background for it to sit on, so unlike the sidebar's
+   transparent .panel, this needs its own opaque card chrome to stay legible
+   over scattered points. */
+.legend-overlay {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  background: var(--bg);
+  border: 1px solid var(--ink-12);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  pointer-events: none; /* a corner readout, not a control -- never eats an orbit-drag */
+}
 
 /* ---- Data table (TableView) ------------------------------------------ */
 /* min-width: 0 is load-bearing here, not decorative -- a flex item defaults
@@ -174,7 +193,7 @@ body { background: var(--bg); color: var(--ink); }
   border: none;
   padding: 0;
 }
-.panel h3, .sector-filter > summary {
+.panel h3, .panel > summary {
   margin: 0 0 0.9rem;
   font-size: 0.85rem;
   font-weight: 800;
@@ -185,16 +204,20 @@ body { background: var(--bg); color: var(--ink); }
 }
 /* Group labels get a hairline + air above them to separate one group from
    the next -- the first panel in a sidebar sits flush under the header, so
-   it's excluded. */
-.app-sidebar > .panel:not(:first-child) h3, .app-sidebar > .sector-filter:not(:first-child) > summary {
+   it's excluded. Covers both a plain <h3> panel and a collapsible
+   <details className="panel">/<summary> one (sector filter, weights,
+   coverage) with the same rule -- one selector, not one per panel. */
+.app-sidebar > .panel:not(:first-child) h3, .app-sidebar > .panel:not(:first-child) > summary {
   padding-top: 1.25rem;
   border-top: 2px solid var(--ink);
 }
 .panel-header { display: flex; justify-content: space-between; align-items: center; }
 
 .link-button { background: none; border: none; color: var(--ink); text-decoration: underline; cursor: pointer; font-size: 0.75rem; font-family: inherit; }
+.link-button:disabled { color: var(--ink-55); text-decoration: none; cursor: default; }
 .count { color: var(--ink-55); font-size: 0.85em; }
 
+.sector-filter-actions { display: flex; gap: 0.9rem; margin: 0.4rem 0 0.6rem; }
 .sector-filter ul { list-style: none; margin: 0; padding: 0; max-height: 220px; overflow-y: auto; }
 .sector-filter li { font-size: 0.85rem; padding: 0.25rem 0; }
 .sector-filter label { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
@@ -207,7 +230,7 @@ body { background: var(--bg); color: var(--ink); }
   background: transparent;
   cursor: pointer;
 }
-.sector-filter input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+.sector-filter input[type="checkbox"]:checked { background: var(--accent); border-color: var(--ink); }
 
 input[type="radio"] { accent-color: var(--accent); }
 
@@ -280,6 +303,7 @@ input[type="radio"] { accent-color: var(--accent); }
 }
 .axis-picker-popover--right { left: auto; right: 0; }
 .axis-picker-popover p { margin: 0 0 0.6rem; }
+.axis-picker-popover ul { margin: 0 0 0.6rem; padding-left: 1.1rem; }
 .axis-picker-popover-weight { color: var(--ink-55); font-size: 0.72rem; margin-bottom: 0 !important; }
 
 .camera-presets { display: flex; gap: 1.5rem; padding: 0 2rem 0.9rem; border-bottom: 1px solid var(--ink-12); }
@@ -346,17 +370,6 @@ input[type="radio"] { accent-color: var(--accent); }
    the slider track itself in a 3-column layout. */
 .weight-row-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.85rem; font-weight: 600; margin: 0.5rem 0 0.4rem; }
 .weight-row-top .weight-value { font-weight: 400; }
-
-.rank-sensitivity { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--ink); }
-.rank-sensitivity button {
-  width: 100%; background: var(--ink); color: var(--bg); border: none; padding: 0.75rem;
-  border-radius: 999px; cursor: pointer; font-weight: 800; font-size: 0.8rem; font-family: inherit;
-  text-transform: uppercase; letter-spacing: 0.04em;
-}
-.rank-sensitivity button:hover:not(:disabled) { background: var(--accent); color: var(--ink); }
-.rank-sensitivity button:disabled { opacity: 0.5; cursor: wait; }
-.rank-sensitivity-results { font-size: 0.78rem; margin-top: 0.85rem; }
-.rank-sensitivity-results ol { padding-left: 1.1rem; margin: 0.3rem 0; }
 
 /* ---- Detail panel: solid ink surface with a faint dot-grid texture --- */
 .detail-panel {
@@ -484,3 +497,34 @@ blockquote { margin: 0.25rem 0 0; padding-left: 0.6rem; border-left: 2px solid v
   letter-spacing: 0.02em; color: var(--ink-55); font-weight: 700;
 }
 .portfolio-ticker { color: var(--ink-55); font-size: 0.78rem; }
+
+/* ---- Detail panel: percentile bars + plain-language context ---------
+   Same rule as the rest of the file: fills are the accent at full or
+   reduced opacity, tracks are bg-opacity-on-ink, never a new hue -- a
+   percentile bar and a coverage bar read the same "how full is this"
+   language as everything else in the app. */
+.composite-explainer { margin: 0.35rem 0 0; font-size: 0.72rem; color: var(--bg-55); line-height: 1.45; }
+.pct-bar { height: 5px; border-radius: 999px; background: var(--bg-12); overflow: hidden; margin: 0.3rem 0 0.2rem; }
+.pct-bar-fill { height: 100%; background: var(--accent); border-radius: 999px; }
+.pct-bar--pillar { height: 6px; margin-top: 0.5rem; }
+.pct-caption { margin: 0 0 0.5rem; font-size: 0.7rem; color: var(--bg-55); }
+.data-conflict {
+  background: var(--bg-06); border-left: 2px solid var(--accent); border-radius: 0 8px 8px 0;
+  padding: 0.55rem 0.75rem; margin-top: 0.4rem; font-size: 0.78rem; color: var(--bg-75);
+}
+.data-conflict strong {
+  display: block; color: var(--bg); font-size: 0.66rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.3rem;
+}
+.data-conflict p { margin: 0; }
+.data-conflict b { color: var(--accent); }
+
+/* ---- Table view: inline bars instead of bare digits ------------------ */
+.table-view-hint { font-size: 0.75rem; color: var(--ink-55); margin: 0 0 0.75rem; line-height: 1.5; max-width: 72ch; }
+.cell-score-inner { display: flex; align-items: center; gap: 0.5rem; }
+.cell-score-num { font-variant-numeric: tabular-nums; min-width: 2.6em; text-align: right; }
+.cell-score-bar { display: inline-block; width: 54px; height: 5px; border-radius: 999px; background: var(--ink-08); overflow: hidden; flex-shrink: 0; }
+.cell-score-bar-fill { display: block; height: 100%; background: var(--accent); border-radius: 999px; }
+.cell-coverage { white-space: nowrap; }
+.coverage-mini { display: inline-block; width: 32px; height: 5px; border-radius: 999px; background: var(--ink-08); overflow: hidden; margin-right: 0.4rem; vertical-align: middle; }
+.coverage-mini-fill { display: block; height: 100%; background: var(--ink-35); border-radius: 999px; }

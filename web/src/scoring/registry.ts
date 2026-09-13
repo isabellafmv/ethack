@@ -394,6 +394,50 @@ function computeTransitionAffordability(companies: readonly Company[]): Map<stri
   return out;
 }
 
+/** p2_carbon_price_exposure's crossCompanyCompute -- mirrors
+ * transition_score.py's carbon_price_exposure_score exactly, including its
+ * `estimated_emissions_tco2e` fallback: real scope1_tco2e when measured,
+ * else the same sector intensity benchmark x this company's own revenue
+ * that p2_sector_exposure/p2_transition_affordability use ("modelled"
+ * tier). An earlier version of this sub-score deliberately excluded the
+ * modelled tier on the theory that including it would "reward silence" --
+ * that was a real divergence from the Python oracle this registry exists to
+ * match bit-for-bit, not a defensible design choice, so it's gone. */
+function computeCarbonPriceExposure(companies: readonly Company[]): Map<string, number | null> {
+  const intensity = buildSectorIntensityTable(companies);
+  const out = new Map<string, number | null>();
+  for (const c of companies) {
+    const scope1Rec = c.fields["scope1_tco2e"];
+    const revenueRec = c.fields["revenue_usd"];
+    const ebitdaRec = c.fields["ebitda_usd"];
+
+    let estimatedEmissions: number | null = null;
+    if (scope1Rec && TRUSTED_STATUSES.has(scope1Rec.st)) {
+      const measured = coerceFieldValue(scope1Rec.v);
+      if (Number.isFinite(measured)) estimatedEmissions = measured;
+    }
+    if (estimatedEmissions === null && revenueRec && TRUSTED_STATUSES.has(revenueRec.st)) {
+      const revenue = coerceFieldValue(revenueRec.v);
+      const sectorIntensity = intensity.get(c.sector);
+      if (Number.isFinite(revenue) && sectorIntensity !== undefined) {
+        estimatedEmissions = sectorIntensity * (revenue / 1e6);
+      }
+    }
+
+    const ebitda = ebitdaRec && TRUSTED_STATUSES.has(ebitdaRec.st) ? coerceFieldValue(ebitdaRec.v) : NaN;
+
+    let rawValue: number | null = null;
+    if (estimatedEmissions !== null && Number.isFinite(ebitda) && ebitda > 0) {
+      const carbonCostUsd = estimatedEmissions * 100; // ASSUMED_CARBON_PRICE_USD_PER_TON
+      const pctErosion = (carbonCostUsd * 100) / ebitda;
+      const clipped = Math.max(0, Math.min(50, pctErosion));
+      rawValue = 100 * (1 - clipped / 50);
+    }
+    out.set(c.ticker, rawValue);
+  }
+  return out;
+}
+
 export const REGISTRY: SubScoreDef[] = [
   // === P1 Environmental =====================================================
   {
@@ -529,58 +573,35 @@ export const REGISTRY: SubScoreDef[] = [
     id: "p2_carbon_price_exposure",
     pillar: "P2",
     label: "Carbon-price exposure",
-    polarity: "higher_is_better",
-    inputs: ["scope1_tco2e", "ebitda_usd"],
-    // Ceiling-mapped, modelled on transition_score.py's _ceiling_score: an
-    // assumed $100/ton carbon price (ASSUMED_CARBON_PRICE_USD_PER_TON) against
-    // Scope 1 emissions, as a share of EBITDA, clipped to 0-50% erosion and
-    // mapped so 0% erosion -> 100 (best) and >=50% erosion -> 0 (worst).
-    // compute() already returns an oriented 0-100 value here -- scoringMode
-    // 'absolute' below stops it from being percentile-ranked a second time.
-    //
-    // Two deliberate divergences from transition_score.py's
-    // carbon_price_exposure_score:
-    // 1. Scope 1 only, not Scope 1+2 -- matches what GHGRP actually
-    //    publishes (facility-level Scope 1 combustion emissions; GHGRP
-    //    doesn't report Scope 2) and matches Python's own
-    //    estimated_emissions_tco2e, which is scope1_tco2e alone.
-    //    scope2_location_tco2e has 0/500 real coverage in this pipeline --
-    //    requiring it (as an earlier version of this sub-score did) made
-    //    this whole sub-score permanently unavailable for every company,
-    //    a real bug, not a design choice.
-    // 2. NOT using transition_score.py's sector-benchmark fallback for
-    //    non-reporters (estimated_emissions_tco2e's "modelled" tier) --
-    //    that's the exact "reward silence" pattern this project exists to
-    //    avoid. A company missing scope1_tco2e stays honestly excluded via
-    //    nullPolicy below, same stance as p1_carbon_intensity. (Contrast
-    //    p2_transition_affordability below, which DOES use the modelled
-    //    tier -- Python's own formula for that one is defined in terms of
-    //    estimated_emissions_tco2e, and matching it exactly requires the
-    //    same fallback there.)
-    compute: (f) => {
-      if (f.ebitda_usd <= 0) return NaN; // <=0, not ===0: negative EBITDA
-      const carbonCostUsd = f.scope1_tco2e * 100; // ASSUMED_CARBON_PRICE_USD_PER_TON
-      const pctErosion = (carbonCostUsd * 100) / f.ebitda_usd;
-      const clipped = Math.max(0, Math.min(50, pctErosion));
-      return 100 * (1 - clipped / 50);
-    },
+    polarity: "higher_is_better", // crossCompanyCompute below already returns an oriented, final 0-100 value
+    // Ingredients of computeCarbonPriceExposure, for
+    // assertRegistryMatchesSchema/UI display only -- see that function's own
+    // doc comment. revenue_usd is here because the modelled-tier fallback
+    // needs it (via the shared sector intensity table), same as
+    // p2_transition_affordability below.
+    inputs: ["scope1_tco2e", "ebitda_usd", "revenue_usd"],
+    compute: () => NaN, // unused -- see crossCompanyCompute
+    crossCompanyCompute: computeCarbonPriceExposure,
     scoringMode: "absolute",
     nullPolicy: "not_disclosed",
     // Matches transition_score.py's PIPELINE_GAP_INDICATORS: null here comes
-    // from missing/non-positive EBITDA (a financial-statement pull gap) or a
-    // missing scope1_tco2e, never a company choosing not to disclose.
+    // from missing/non-positive EBITDA (a financial-statement pull gap), or
+    // an unresolvable emissions estimate, never a company choosing not to
+    // disclose.
     gapKind: "pipeline_gap",
     basis: "FY2023",
     description:
       "How exposed a company's profits are to a hypothetical carbon price, assuming " +
       "$100 per ton on its Scope 1 (direct) emissions only -- not Scope 2 or 3, since " +
-      "Scope 1 is what's actually available here. The erosion of EBITDA that would cause " +
-      "is capped at 50% (beyond that, more erosion no longer changes the score) and then " +
-      "flipped so a low-exposure company scores highest. A company missing emissions or " +
-      "EBITDA data is excluded rather than estimated from sector averages -- unlike some " +
-      "other measures on this dataset, silence here is not filled in. This is already a " +
-      "direct 0-100 score, not ranked against sector peers a second time -- 0 = most " +
-      "exposed, 100 = least, comparable across every sector.",
+      "Scope 1 is what's actually available here. A company with no measured Scope 1 " +
+      "figure is not excluded -- its emissions are modelled from its sector's typical " +
+      "carbon intensity times its own revenue, the same benchmark used for the sector " +
+      "carbon-intensity axis. The erosion of EBITDA that would cause is capped at 50% " +
+      "(beyond that, more erosion no longer changes the score) and then flipped so a " +
+      "low-exposure company scores highest. A company is excluded only when EBITDA itself " +
+      "is missing or non-positive, since the underlying math needs a positive number to " +
+      "divide by. This is already a direct 0-100 score, not ranked against sector peers a " +
+      "second time -- 0 = most exposed, 100 = least, comparable across every sector.",
   },
   {
     id: "p2_sector_exposure",
@@ -742,35 +763,53 @@ export const REGISTRY: SubScoreDef[] = [
     pillar: "P3",
     label: "Compensation alignment",
     polarity: "higher_is_better",
-    inputs: ["has_clawback_policy", "has_psu_plan", "performance_period_years"],
-    // Modelled on governance_score.py's _compensation_alignment_score: mean
-    // of the two booleans and the LTI performance period, capped at 3 years
-    // (longer periods reward long-term thinking; 3+ years is already a
-    // strong signal, more isn't better). Replaces comp_tied_to_emissions_target,
-    // which is in the pillar spec's four booleans but S04 doesn't actually
-    // emit it -- 0/500, structurally, not a temporary gap -- so requiring it
-    // made this sub-score permanently unavailable for the whole universe, a
-    // real bug rather than an honest data gap. Relabelled from "Climate-linked
-    // pay design" to "Compensation alignment" since none of its three real
-    // components are climate-specific -- this measures general pay-governance
-    // structure, and the label should say so honestly.
+    // Modelled on governance_score.py's _compensation_alignment_score: the
+    // SKIP-NULL mean of has_clawback_policy, has_psu_plan (both ~495/500,
+    // high-confidence booleans) and performance_period_years (capped at 3
+    // years -> 100; longer periods reward long-term thinking, 3+ years is
+    // already a strong signal, more isn't better) -- NOT a mean requiring
+    // all three, which wrongly excluded any company missing just one of
+    // them (a real bug: Python's `components.mean(axis=1, skipna=True)`
+    // never requires all three). All three are optional so requiresAnyOf
+    // below is what stops "none disclosed" from being misread as "measured,
+    // score 0". Replaces comp_tied_to_emissions_target, which is in the
+    // pillar spec's four booleans but S04 doesn't actually emit it --
+    // 0/500, structurally, not a temporary gap. Relabelled from
+    // "Climate-linked pay design" to "Compensation alignment" since none of
+    // its three real components are climate-specific -- this measures
+    // general pay-governance structure, and the label should say so
+    // honestly.
+    inputs: [],
+    optionalInputs: [
+      { field: "has_clawback_policy", fillValue: NaN },
+      { field: "has_psu_plan", fillValue: NaN },
+      { field: "performance_period_years", fillValue: NaN },
+    ],
+    requiresAnyOf: ["has_clawback_policy", "has_psu_plan", "performance_period_years"],
     compute: (f) => {
-      const performanceComponent = (Math.min(f.performance_period_years, 3) / 3) * 100;
-      return (f.has_clawback_policy * 100 + f.has_psu_plan * 100 + performanceComponent) / 3;
+      const clawback = Number.isFinite(f.has_clawback_policy) ? f.has_clawback_policy * 100 : NaN;
+      const psu = Number.isFinite(f.has_psu_plan) ? f.has_psu_plan * 100 : NaN;
+      const performance = Number.isFinite(f.performance_period_years)
+        ? (Math.min(f.performance_period_years, 3) / 3) * 100
+        : NaN;
+      const components = [clawback, psu, performance].filter((x) => Number.isFinite(x));
+      if (components.length === 0) return NaN;
+      return components.reduce((a, b) => a + b, 0) / components.length;
     },
     scoringMode: "absolute",
     nullPolicy: "not_disclosed",
     basis: "FY2023",
     description:
-      "How well executive pay structure is set up to reward long-term performance: an " +
-      "even mix of whether the company has a clawback policy (can claw back bonuses after " +
-      "misconduct or a restatement), whether it uses performance-based stock units, and " +
-      "how long the performance measurement period is (capped at 3+ years, since longer " +
-      "isn't scored as better beyond that). This is a general pay-governance structure " +
-      "measure, not specifically about climate or sustainability -- none of its three " +
-      "components tie executive pay to emissions or ESG targets. Already a direct 0-100 " +
-      "score, not ranked against sector peers: 0 = weakest pay alignment, 100 = strongest, " +
-      "comparable across every sector.",
+      "How well executive pay structure is set up to reward long-term performance: the " +
+      "mean of whichever of three signals a company discloses -- a clawback policy (can " +
+      "claw back bonuses after misconduct or a restatement), use of performance-based stock " +
+      "units, and how long the performance measurement period is (capped at 3+ years, since " +
+      "longer isn't scored as better beyond that). A company is excluded only when it " +
+      "discloses NONE of the three. This is a general pay-governance structure measure, not " +
+      "specifically about climate or sustainability -- none of its three components tie " +
+      "executive pay to emissions or ESG targets. Already a direct 0-100 score, not ranked " +
+      "against sector peers: 0 = weakest pay alignment, 100 = strongest, comparable across " +
+      "every sector.",
   },
   {
     id: "p3_climate_governance",

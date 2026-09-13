@@ -6,19 +6,33 @@
 import type { Polarity } from "./registry";
 
 /**
- * Percentile rank of `value` within `distribution`, normalised so 0 is the
- * worst performer in the group and 100 is the best, regardless of polarity
- * -- that normalisation happens exactly once, here, so nothing downstream
- * ever has to remember which direction a field points.
+ * Percentile rank of `value` within `distribution`, oriented so a higher
+ * score is always "better" regardless of polarity -- that orientation
+ * happens exactly once, here, so nothing downstream ever has to remember
+ * which direction a field points.
  *
- * Uses the (rank - 1) / (n - 1) convention (the worst value maps to exactly
- * 0, the best to exactly 100) rather than a fractional mid-rank, because a
- * sub-score axis where nobody ever hits the ends of their own sector's range
- * reads as broken on stage. Ties share the average rank of their block, so a
- * value tied with the whole distribution lands at 50. A lone company in a
- * sector (n = 1) is trivially both its own best and worst: scores 100.
- * Returns null if the distribution is empty -- there is nothing to rank
- * against, which is itself a finding, not a zero.
+ * Mirrors environmental_score.py's `_sector_percentile_vs_measured` (and
+ * transition_score.py's identical shape) EXACTLY, not a generic rank
+ * convention invented here: `percentile = count(v' in distribution : v' <=
+ * value) / n` -- equivalent to `np.searchsorted(sorted_ref, value,
+ * side="right") / len(sorted_ref)`. A tied block therefore all shares the
+ * same percentile (the block's own upper edge, not an average), and even
+ * the best value in an n-element distribution lands at (n-1)/n rather than
+ * exactly 100 -- a real, if odd-looking, property of Python's own formula
+ * that this MUST reproduce bit-for-bit, not smooth over. A lone company in
+ * a sector (n = 1) counts itself as 100% <= itself, so `lower_is_better`
+ * scores 0 and `higher_is_better` scores 100 -- asymmetric on purpose,
+ * because that is what the ported formula actually does.
+ *
+ * Use this for scoringMode 'sector_percentile' (and PercentileComponent,
+ * which is the same shape one metric at a time). 'universe_percentile'
+ * (p3_controversy_flags) needs `universeRankPercentile` below instead --
+ * governance_score.py's `_controversy_score` uses pandas' `rank(pct=True,
+ * method="average")`, a DIFFERENT tie-handling rule (the tied block's
+ * average rank, not its upper edge), so one shared function would get one
+ * of the two Python call sites wrong. Returns null if the distribution is
+ * empty -- there is nothing to rank against, which is itself a finding, not
+ * a zero.
  */
 export function percentileRank(
   value: number,
@@ -27,7 +41,32 @@ export function percentileRank(
 ): number | null {
   const n = distribution.length;
   if (n === 0 || !Number.isFinite(value)) return null;
-  if (n === 1) return 100;
+
+  let countLessOrEqual = 0;
+  for (const v of distribution) {
+    if (v <= value) countLessOrEqual++;
+  }
+  const pct = countLessOrEqual / n;
+  return polarity === "lower_is_better" ? 100 * (1 - pct) : 100 * pct;
+}
+
+/**
+ * Percentile rank matching pandas' `Series.rank(pct=True,
+ * method="average")` -- a tied block shares the AVERAGE of the ranks it
+ * occupies (1-indexed), divided by n, unlike `percentileRank` above (which
+ * shares the tied block's upper edge). Only governance_score.py's
+ * `_controversy_score` uses this shape today (scoringMode
+ * 'universe_percentile', ranked across the whole index rather than one
+ * sector) -- see that function's own `penalty.rank(pct=True,
+ * method="average")` call.
+ */
+export function universeRankPercentile(
+  value: number,
+  distribution: readonly number[],
+  polarity: Polarity
+): number | null {
+  const n = distribution.length;
+  if (n === 0 || !Number.isFinite(value)) return null;
 
   let below = 0;
   let equal = 0;
@@ -36,8 +75,8 @@ export function percentileRank(
     else if (v === value) equal++;
   }
   const avgRank = below + (equal + 1) / 2; // 1-indexed average rank of the tied block
-  const raw = ((avgRank - 1) / (n - 1)) * 100;
-  return polarity === "lower_is_better" ? 100 - raw : raw;
+  const pct = avgRank / n;
+  return polarity === "lower_is_better" ? 100 * (1 - pct) : 100 * pct;
 }
 
 export function median(values: readonly number[]): number | null {

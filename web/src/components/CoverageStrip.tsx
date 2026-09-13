@@ -7,12 +7,12 @@ import type { AxisCoverage } from "../viz/coverage";
 
 export function CoverageStrip({ coverages }: { coverages: AxisCoverage[] }) {
   return (
-    <div className="panel coverage-strip">
-      <h3>Coverage (this view)</h3>
+    <details className="panel coverage-strip">
+      <summary>Coverage (this view)</summary>
       {coverages.map((cov) => (
         <CoverageBar key={JSON.stringify(cov.axis)} axis={cov.axis} coverage={cov} />
       ))}
-    </div>
+    </details>
   );
 }
 

@@ -236,15 +236,8 @@ export function PortfolioAllocator({
   return (
     <div className="portfolio-allocator">
       <div className="panel portfolio-explainer">
-        <h3>How much to invest — you set the rule</h3>
-        <p>
-          No volatility, correlation, or trading-volume data exists anywhere in this pipeline, so sizing here is an
-          explicit, adjustable <strong>rule</strong>, not a risk-optimizer: conviction is how far a company's
-          Sustainability Score clears your bar, boosted or zeroed by sector preference, capped by how many companies
-          you'll hold and how much any one sector can take. <strong>Risk Score</strong> (0–100, higher = riskier) is a
-          fundamentals-only proxy -- the mean of company size (smaller market cap → riskier) and financial fragility
-          (thin or negative FCF margin → riskier), each ranked with this app's own percentile function.
-        </p>
+        <h3>Build your $1B portfolio</h3>
+        <p>Adjust the controls below to see how much of the fund goes into each company, updated instantly.</p>
       </div>
 
       <div className="panel portfolio-controls">
@@ -256,15 +249,17 @@ export function PortfolioAllocator({
           <div className="range-wrap" style={fillStyle(minScore)}>
             <input type="range" min={0} max={100} step={1} value={minScore} onChange={(e) => setMinScore(Number(e.target.value))} />
           </div>
+          <p className="portfolio-hint">Only companies scoring above this are considered.</p>
         </div>
         <div className="weight-group">
           <div className="weight-row-top">
             <label>Max risk tolerance</label>
-            <span className="weight-value">{maxRisk}</span>
+            <span className="weight-value">{maxRisk}%</span>
           </div>
           <div className="range-wrap" style={fillStyle(maxRisk)}>
             <input type="range" min={0} max={100} step={1} value={maxRisk} onChange={(e) => setMaxRisk(Number(e.target.value))} />
           </div>
+          <p className="portfolio-hint">Excludes smaller, financially weaker companies once lowered.</p>
         </div>
         <div className="weight-group">
           <div className="weight-row-top">
@@ -274,6 +269,7 @@ export function PortfolioAllocator({
           <div className="range-wrap" style={fillStyle((maxHoldings / 500) * 100)}>
             <input type="range" min={5} max={500} step={5} value={maxHoldings} onChange={(e) => setMaxHoldings(Number(e.target.value))} />
           </div>
+          <p className="portfolio-hint">The most companies the fund will hold at once.</p>
         </div>
         <div className="weight-group">
           <div className="weight-row-top">
@@ -283,13 +279,14 @@ export function PortfolioAllocator({
           <div className="range-wrap" style={fillStyle(maxSectorPct)}>
             <input type="range" min={5} max={100} step={5} value={maxSectorPct} onChange={(e) => setMaxSectorPct(Number(e.target.value))} />
           </div>
+          <p className="portfolio-hint">The most any one industry can take up of the fund.</p>
         </div>
         <button className="link-button" onClick={resetAll}>Reset to defaults</button>
       </div>
 
       <div className="panel portfolio-sector-prefs">
         <h3>Prioritize sectors</h3>
-        <p className="portfolio-hint">Avoid excludes a sector entirely; Prefer boosts its conviction {PREFER_BOOST}x.</p>
+        <p className="portfolio-hint">Avoid leaves a sector out entirely. Prefer gives it a bigger share.</p>
         <div className="portfolio-sector-grid">
           {sectors.map((s) => {
             const pref = sectorPrefs[s] ?? "neutral";
@@ -314,7 +311,7 @@ export function PortfolioAllocator({
       </div>
 
       <div className="panel portfolio-filters">
-        <h3>Filter out companies below a threshold</h3>
+        <h3>Only include companies that meet these minimums</h3>
         <div className="portfolio-filters-grid">
           <label>Revenue CAGR ≥ <input type="number" value={filters.revenueCagr} onChange={(e) => setFilters((f) => ({ ...f, revenueCagr: e.target.value }))} placeholder="e.g. 0" />%</label>
           <label>FCF Yield ≥ <input type="number" value={filters.fcfYield} onChange={(e) => setFilters((f) => ({ ...f, fcfYield: e.target.value }))} placeholder="e.g. 2" />%</label>
@@ -334,11 +331,11 @@ export function PortfolioAllocator({
           <div className="portfolio-stat"><div className="portfolio-stat-label">Cash / undeployed</div><div className="portfolio-stat-value">${(cash / 1e9).toFixed(2)}B <span className="portfolio-stat-sub">({(100 * cash / FUND_USD).toFixed(1)}%)</span></div></div>
           <div className="portfolio-stat"><div className="portfolio-stat-label">Sectors represented</div><div className="portfolio-stat-value">{new Set(holdings.map((r) => r.sector)).size} / {sectors.length}</div></div>
           <div className="portfolio-stat"><div className="portfolio-stat-label">Top-5 concentration</div><div className="portfolio-stat-value">{top5Pct.toFixed(1)}%</div></div>
-          <div className="portfolio-stat"><div className="portfolio-stat-label">Eligible under sliders/filters</div><div className="portfolio-stat-value">{eligibleCount}</div></div>
+          <div className="portfolio-stat"><div className="portfolio-stat-label">Companies considered</div><div className="portfolio-stat-value">{eligibleCount}</div></div>
         </div>
 
         <div className="portfolio-sector-breakdown">
-          {sectorBreakdown.entries.length === 0 && <p className="portfolio-hint">No holdings clear the current sliders/filters — loosen them to see a portfolio.</p>}
+          {sectorBreakdown.entries.length === 0 && <p className="portfolio-hint">No companies match yet — loosen the controls above to build a portfolio.</p>}
           {sectorBreakdown.entries.map(([sector, usd]) => (
             <div className="portfolio-breakdown-row" key={sector}>
               <span className="portfolio-breakdown-name">{sector}</span>

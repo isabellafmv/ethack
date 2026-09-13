@@ -196,10 +196,17 @@ _SPECS = [
     _f("lead_independent_director", bool, None, "P3", "Lead independent director present", ["S04"], snapshot=True),
     _f("buybacks_usd", float, "usd", "P3", "Share repurchases", ["S01"]),
     _f("dividends_paid_usd", float, "usd", "P3", "Dividends paid", ["S01"]),
+    # SNAPSHOT, not an annual flow: EPA ECHO's enforcement totals are pulled
+    # as of extraction (every observed row is stamped fiscal_year=2026, the
+    # pull date, not a real reporting period) -- pinning an analysis year
+    # would silently zero out every one of these real, trusted rows exactly
+    # the way market_cap_usd/an SBTi status would if THEY weren't marked
+    # snapshot too.
     _f("penalty_total_usd", float, "usd", "P3",
        "Penalties from COURT AND AGENCY RECORDS, not news sentiment. News-based "
-       "controversy scores measure media volume, which tracks company size.", ["S11", "S18"]),
-    _f("penalty_count", int, "count", "P3", "Number of penalty records", ["S11", "S18"]),
+       "controversy scores measure media volume, which tracks company size.",
+       ["S11", "S18"], snapshot=True),
+    _f("penalty_count", int, "count", "P3", "Number of penalty records", ["S11", "S18"], snapshot=True),
 ]
 
 FIELDS: dict[str, FieldSpec] = {s.name: s for s in _SPECS}

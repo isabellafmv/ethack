@@ -6,6 +6,13 @@
 // (companies/scores/visibleSectors/onSelectCompany) -- this is a second
 // renderer over the exact same computeScores() output and the exact same
 // sector-visibility rule (isSectorVisible), not a second data pipeline.
+//
+// Every score column carries its own inline bar (0-100 scaled to the cell
+// width) so a reader can compare two rows -- or two columns in the same
+// row -- at a glance instead of reading eight columns of bare digits and
+// doing the comparison in their head. Coverage gets the same treatment:
+// a short filled/unfilled bar reads faster than "6/13 (46%)" ever will,
+// with the fraction kept alongside for anyone who wants the exact count.
 import { useMemo, useState } from "react";
 import type { CompanyScoreResult, PillarResult } from "../scoring/pipeline";
 import { PILLARS } from "../scoring/pipeline";
@@ -17,7 +24,7 @@ import { PILLAR_SCORE_NAMES } from "../viz/views";
 export interface TableViewProps {
   companies: readonly Company[];
   scores: Map<string, CompanyScoreResult>;
-  visibleSectors: Set<string>;
+  visibleSectors: Set<string> | null;
   onSelectCompany: (ticker: string) => void;
 }
 
@@ -68,14 +75,59 @@ function fmtScore(v: number | null): string {
   return v === null ? "n/a" : v.toFixed(1);
 }
 
-const COLUMNS: { key: SortKey; label: string }[] = [
+/** A 0-100 score rendered as a number plus an inline bar, so its position
+ * within the possible range is visible without reading the digits -- the
+ * same score column two rows apart is now a length comparison, not a
+ * subtraction. `title` carries the one-line "what is this number" text
+ * that used to live nowhere in the table at all. */
+function ScoreCell({ value, title }: { value: number | null; title: string }) {
+  if (value === null) return <td className="cell-na" title={title}>n/a</td>;
+  return (
+    <td className="cell-score" title={title}>
+      <span className="cell-score-inner">
+        <span className="cell-score-num">{value.toFixed(1)}</span>
+        <span className="cell-score-bar"><span className="cell-score-bar-fill" style={{ width: `${value}%` }} /></span>
+      </span>
+    </td>
+  );
+}
+
+function CoverageCell({ pillar, pillarName, ticker }: { pillar: PillarResult; pillarName: string; ticker: string }) {
+  const n = nAvailable(pillar);
+  const total = pillar.subScores.length;
+  const pct = total > 0 ? n / total : 0;
+  return (
+    <td
+      className="cell-coverage"
+      title={`${ticker}: ${n} of ${total} ${pillarName} indicators disclosed (${Math.round(pct * 100)}%).`}
+    >
+      <span className="coverage-mini"><span className="coverage-mini-fill" style={{ width: `${pct * 100}%` }} /></span>
+      <span className="count">{n}/{total}</span>
+    </td>
+  );
+}
+
+const COLUMN_HELP: Partial<Record<SortKey, string>> = {
+  composite: "0–100. Blends Environmental, Transition and Governance, each already scored against sector peers.",
+  confidence: "How much of this company's overall picture rests on measured (not imputed) data.",
+};
+
+const COLUMNS: { key: SortKey; label: string; help?: string }[] = [
   { key: "ticker", label: "Ticker" },
   { key: "name", label: "Company" },
   { key: "sector", label: "Sector" },
-  { key: "composite", label: "Composite" },
-  ...PILLARS.map((p): { key: SortKey; label: string } => ({ key: `pillar:${p}`, label: PILLAR_SCORE_NAMES[p] })),
-  { key: "confidence", label: "Confidence" },
-  ...PILLARS.map((p): { key: SortKey; label: string } => ({ key: `coverage:${p}`, label: `${PILLAR_SCORE_NAMES[p]} coverage` })),
+  { key: "composite", label: "Composite", help: COLUMN_HELP.composite },
+  ...PILLARS.map((p): { key: SortKey; label: string; help?: string } => ({
+    key: `pillar:${p}`,
+    label: PILLAR_SCORE_NAMES[p],
+    help: `${PILLAR_SCORE_NAMES[p]} pillar score, 0–100 — open a row for what feeds into it.`,
+  })),
+  { key: "confidence", label: "Confidence", help: COLUMN_HELP.confidence },
+  ...PILLARS.map((p): { key: SortKey; label: string; help?: string } => ({
+    key: `coverage:${p}`,
+    label: `${PILLAR_SCORE_NAMES[p]} coverage`,
+    help: `Share of ${PILLAR_SCORE_NAMES[p]} indicators this company has actually disclosed.`,
+  })),
 ];
 
 export function TableView({ companies, scores, visibleSectors, onSelectCompany }: TableViewProps) {
@@ -123,11 +175,14 @@ export function TableView({ companies, scores, visibleSectors, onSelectCompany }
 
   return (
     <div className="table-view-wrap">
+      <p className="table-view-hint">
+        Composite, pillar and coverage scores are 0&ndash;100. Most are the company&rsquo;s standing among its own sector peers, not a fixed scale &mdash; hover any header or bar for what it measures.
+      </p>
       <table className="data-table">
         <thead>
           <tr>
             {COLUMNS.map((col) => (
-              <th key={col.key} onClick={() => toggleSort(col.key)}>
+              <th key={col.key} onClick={() => toggleSort(col.key)} title={col.help}>
                 {col.label}
                 {sort.key === col.key && <span className="sort-arrow">{sort.direction === "asc" ? " ▲" : " ▼"}</span>}
               </th>
@@ -140,17 +195,17 @@ export function TableView({ companies, scores, visibleSectors, onSelectCompany }
               <td>{row.ticker}</td>
               <td>{row.name}</td>
               <td>{row.sector}</td>
-              <td className={row.composite === null ? "cell-na" : undefined}>{fmtScore(row.composite)}</td>
+              <ScoreCell value={row.composite} title={`${row.ticker} composite: ${fmtScore(row.composite)} of 100.`} />
               {PILLARS.map((p) => (
-                <td key={p} className={row.pillars[p].score === null ? "cell-na" : undefined}>
-                  {fmtScore(row.pillars[p].score)}
-                </td>
+                <ScoreCell
+                  key={p}
+                  value={row.pillars[p].score}
+                  title={`${row.ticker} ${PILLAR_SCORE_NAMES[p]}: ${fmtScore(row.pillars[p].score)} of 100.`}
+                />
               ))}
               <td>{Math.round(row.confidence * 100)}%</td>
               {PILLARS.map((p) => (
-                <td key={p} className="count">
-                  {nAvailable(row.pillars[p])}/{row.pillars[p].subScores.length} ({Math.round(row.pillars[p].disclosureCoverage * 100)}%)
-                </td>
+                <CoverageCell key={p} pillar={row.pillars[p]} pillarName={PILLAR_SCORE_NAMES[p]} ticker={row.ticker} />
               ))}
             </tr>
           ))}

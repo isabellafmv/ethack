@@ -20,7 +20,7 @@
 // See registry.ts's own doc comments on those two fields for why.
 
 import { coerceFieldValue, MEASURED_STATUSES, TRUSTED_STATUSES, type Company } from "./types";
-import { median, percentileRank, weightedMeanSkippingNulls } from "./percentile";
+import { median, percentileRank, universeRankPercentile, weightedMeanSkippingNulls } from "./percentile";
 import {
   PYTHON_P2_WEIGHTS,
   PYTHON_P3_WEIGHTS,
@@ -342,10 +342,26 @@ export function resolveAndBuildDistributions(
       continue;
     }
 
+    // A 'sector_percentile' sub-score's distribution is measured-tier only,
+    // mirroring _sector_percentile_vs_measured's explicit "real peers only"
+    // filter -- an imputed value is scored against the distribution but must
+    // never widen it (see registry.ts's MEASURED_STATUSES comment). But
+    // 'universe_percentile' (p3_controversy_flags) has no such distinction
+    // in Python: governance_score.py's `penalty.rank(pct=True)` ranks every
+    // TRUSTED value in the wide CSV as-is, regardless of which DB status
+    // tier produced it -- EPA ECHO penalty rows happen to be tagged
+    // 'imputed' in this pipeline's own schema (a derived/court-record value,
+    // not a company disclosure), and requiring 'measured' here would empty
+    // the universe-wide distribution for everyone, a real bug, not a
+    // deliberate restriction Python shares.
+    const distributionRequiresMeasured = (sub.scoringMode ?? "sector_percentile") !== "universe_percentile";
     for (const company of companies) {
       const r = resolveInputs(company, sub);
       resolved.get(company.ticker)!.set(sub.id, r);
-      if (r.statusClass === "measured" && r.inputs) {
+      const eligibleForDistribution = distributionRequiresMeasured
+        ? r.statusClass === "measured"
+        : r.statusClass !== "unavailable";
+      if (eligibleForDistribution && r.inputs) {
         const rawValue = sub.compute(r.inputs);
         if (Number.isFinite(rawValue)) pushDistribution(company.sector, sub.id, rawValue);
       }
@@ -429,7 +445,20 @@ export function computeScores(
             id: r.id,
             value: r.score,
             weight: subW[r.id] ?? 1,
-            disclosed: r.statusClass !== "unavailable",
+            // Mirrors score_calculation's own weight_matrix: `available =
+            // df[sub_cols].notna()` checks the COMPUTED SUB-SCORE COLUMN,
+            // not whether the inputs resolved -- a sub-score whose inputs
+            // are all present but whose formula still legitimately returns
+            // null (e.g. p3_capital_stewardship when reinvestment+buybacks+
+            // dividends totals <= 0) must count as NOT disclosed for
+            // coverage purposes, the same as Python does, even though
+            // resolveInputs called it 'measured'. The one deliberate
+            // exception is nullPolicy 'sector_median': there, a present-but-
+            // substituted stand-in score is non-null yet still isn't real
+            // disclosure (see AggregationEntry's own doc comment) -- no
+            // sub-score in this registry uses that policy today, but the
+            // branch is here so adding one doesn't silently regress this.
+            disclosed: sub.nullPolicy === "sector_median" ? r.statusClass !== "unavailable" : r.score !== null,
             gapKind: sub.gapKind,
           };
         })
@@ -516,6 +545,7 @@ function computeSubScore(
   let score: number | null;
   if (rawValue === null) score = null;
   else if (scoringMode === "absolute" || scoringMode === "sector_normalized") score = rawValue;
+  else if (scoringMode === "universe_percentile") score = universeRankPercentile(rawValue, rankingDistribution, sub.polarity);
   else score = percentileRank(rawValue, rankingDistribution, sub.polarity);
 
   return { id: sub.id, statusClass: r.statusClass, rawValue, score, coverageN: rankingDistribution.length };

@@ -26,17 +26,23 @@ const companies = [
 ];
 
 describe("resolveReference", () => {
-  it("sector_median lands exactly at percentile 50", () => {
+  it("sector_median percentile-ranks against the same CDF-style distribution scores use", () => {
+    // dist = [10, 20, 30]; median = 20; count(<=20)/3 = 2/3 -> pct 0.6667 ->
+    // 100*(1-0.6667) for lower_is_better. Mirrors percentileRank's
+    // _sector_percentile_vs_measured formula exactly -- not a round 50.
     const ref = resolveReference(companies, { mode: "sector_median" }, "Energy");
     const carbon = ref.get("p1_carbon_intensity")!;
-    expect(carbon.score).toBe(50);
+    expect(carbon.score).toBeCloseTo(100 / 3);
   });
 
   it("sector_best resolves to the polarity-correct extreme (lowest intensity, since lower is better)", () => {
+    // Even the best value in a 3-element distribution doesn't land at
+    // exactly 100 under the CDF formula: count(<=10)/3 = 1/3 -> pct 0.333 ->
+    // 100*(1-0.333) = 66.67. A real property of the ported Python formula.
     const ref = resolveReference(companies, { mode: "sector_best" }, "Energy");
     const carbon = ref.get("p1_carbon_intensity")!;
     expect(carbon.raw).toBeCloseTo(10); // A's intensity is the lowest, hence best
-    expect(carbon.score).toBe(100);
+    expect(carbon.score).toBeCloseTo(200 / 3);
   });
 
   it("a named company's own value round-trips as the reference", () => {

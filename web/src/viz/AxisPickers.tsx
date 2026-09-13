@@ -6,9 +6,9 @@ import { useEffect, useId, useRef, useState } from "react";
 import { axisKey, axisLabel, axisDescription, axisWeightPct, type AxisSlot, type ViewConfig } from "./views";
 import type { WeightsState } from "../scoring/pipeline";
 
-// Palette-only axis identity: X = ink, Y = accent, Z = a faded shade of ink
-// (rather than a third hue) so the three stay visually distinct.
-const AXIS_COLORS = ["rgba(0,0,0,0.7)", "#AAB644", "rgba(0,0,0,0.3)"];
+// Palette-only axis identity: X = dark green, Y = ink, Z = a faded shade of
+// ink (rather than a third hue) so the three stay visually distinct.
+const AXIS_COLORS = ["#2C5628", "rgba(0,0,0,0.7)", "rgba(0,0,0,0.3)"];
 const AXIS_NAMES = ["X", "Y", "Z"];
 
 export function AxisPickers({
@@ -123,7 +123,21 @@ function AxisPicker({
           className={slot === 2 ? "axis-picker-popover axis-picker-popover--right" : "axis-picker-popover"}
           role="tooltip"
         >
-          <p>{axisDescription(axis)}</p>
+          {axisDescription(axis).map((block, i) => {
+            if (block.kind === "ul") {
+              return (
+                <ul key={i}>
+                  {block.items.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              );
+            }
+            return (
+              <p key={i}>
+                {"label" in block && <strong>{block.label}: </strong>}
+                {block.text}
+              </p>
+            );
+          })}
           {weightPct !== null && (
             <p className="axis-picker-popover-weight">Current weight: {weightPct.toFixed(0)}%</p>
           )}
