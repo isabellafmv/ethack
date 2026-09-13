@@ -3,7 +3,7 @@
 // exactly one median implementation and one percentile implementation in
 // this codebase, or the map and the table would eventually disagree.
 
-import { median, percentileRank } from "./percentile";
+import { median, percentileRank, universeRankPercentile } from "./percentile";
 import { REGISTRY, type Polarity } from "./registry";
 import { resolveAndBuildDistributions, type SectorDistributions } from "./pipeline";
 import type { Company } from "./types";
@@ -111,7 +111,9 @@ export function resolveReference(
         ? null
         : scoringMode === "absolute" || scoringMode === "sector_normalized"
           ? raw
-          : percentileRank(raw, distributionForScore, sub.polarity);
+          : scoringMode === "universe_percentile"
+            ? universeRankPercentile(raw, distributionForScore, sub.polarity)
+            : percentileRank(raw, distributionForScore, sub.polarity);
     out.set(sub.id, { raw, score });
   }
   return out;

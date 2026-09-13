@@ -32,44 +32,62 @@ export function axisLabel(axis: AxisSlot): string {
   return subScoreById(axis.id).label;
 }
 
-/** Plain-language paragraph for each pillar, shown in the axis-picker info
- * popover (Task 7) when a pillar rather than a sub-score is selected. Each
- * one names how its sub-scores combine (a weighted mean, with weights the
- * viewer controls in the sidebar) and what the disclosure-coverage penalty
- * does when one of them is missing for a company. */
-export const PILLAR_DESCRIPTIONS: Record<Pillar, string> = {
-  P1: "A weighted average of this company's environmental sub-scores (carbon intensity, grid " +
-    "carbon intensity, waste diversion, input efficiency), each already ranked against " +
-    "sector peers on a 0-100 scale. The weights are set in the sidebar and can be adjusted " +
-    "or switched to sector-materiality mode. If a sub-score is missing for a company (not " +
-    "disclosed), it's dropped from the average rather than counted as zero -- but the " +
-    "pillar score is then scaled down by a disclosure-coverage penalty (as low as 60% of " +
-    "the raw average when every disclosure-dependent sub-score is missing), so a company " +
-    "can't score well simply by not reporting.",
-  P2: "A weighted average of this company's transition-risk sub-scores (carbon-price " +
-    "exposure, sector carbon intensity, regulatory commitment, transition affordability), " +
-    "each already on a 0-100 scale -- some ranked against sector peers, others an absolute " +
-    "score comparable across every sector (each sub-score's own info popover says which). " +
-    "The weights are set in the sidebar and can be adjusted or switched to sector-" +
-    "materiality mode; the manual default here isn't an even split -- it starts from the " +
-    "same fixed weights the underlying model itself uses for this pillar. If a sub-score " +
-    "is missing for a company (not " +
-    "disclosed), it's dropped from the average rather than counted as zero -- but the " +
-    "pillar score is then scaled down by a disclosure-coverage penalty (as low as 60% of " +
-    "the raw average when every disclosure-dependent sub-score is missing), so a company " +
-    "can't score well simply by not reporting.",
-  P3: "A weighted average of this company's governance sub-scores (board independence, " +
-    "compensation alignment, climate governance, penalty record, capital stewardship), " +
-    "each already on a 0-100 scale -- penalty record is ranked against every company in the " +
-    "index, the rest are absolute scores comparable across every sector (each sub-score's " +
-    "own info popover says which). The weights are set in the sidebar and can be adjusted " +
-    "or switched to sector-materiality mode; the manual default here isn't an even split -- " +
-    "it starts from the same fixed weights the underlying model itself uses for this " +
-    "pillar. If a sub-score is missing for a company (not disclosed), it's dropped from " +
-    "the average rather than counted as zero -- " +
-    "but the pillar score is then scaled down by a disclosure-coverage penalty (as low as " +
-    "60% of the raw average when every disclosure-dependent sub-score is missing), so a " +
-    "company can't score well simply by not reporting.",
+/** A block of the axis-picker info popover: a plain paragraph, a paragraph
+ * with a bold lead-in label (e.g. "Weights:"), or a bullet list. Lets the
+ * pillar descriptions below carry real structure (a metric list, a labeled
+ * weights note) instead of being flattened into one run-on paragraph. */
+export type DescriptionBlock =
+  | { kind: "p"; text: string }
+  | { kind: "p"; label: string; text: string }
+  | { kind: "ul"; items: string[] };
+export type Description = DescriptionBlock[];
+
+const p = (text: string): DescriptionBlock => ({ kind: "p", text });
+const labeled = (label: string, text: string): DescriptionBlock => ({ kind: "p", label, text });
+const ul = (items: string[]): DescriptionBlock => ({ kind: "ul", items });
+
+const MISSING_DATA_NOTE =
+  "Undisclosed metrics are excluded from the average rather than scored as zero, but " +
+  "trigger a disclosure penalty (up to a 40% reduction) so non-reporting cannot inflate a " +
+  "company's score.";
+
+/** Structured copy for each pillar, shown in the axis-picker info popover
+ * (Task 7) when a pillar rather than a sub-score is selected. Each one names
+ * how its sub-scores combine (a weighted mean, with weights the viewer
+ * controls in the sidebar) and what the disclosure-coverage penalty does
+ * when one of them is missing for a company. */
+export const PILLAR_DESCRIPTIONS: Record<Pillar, Description> = {
+  P1: [
+    p("Environmental Impact is a weighted average of four peer-ranked metrics (0–100):"),
+    ul(["Carbon Intensity", "Grid Carbon Intensity", "Waste Diversion", "Input Efficiency"]),
+    labeled("Weights", "Customize sliders in the sidebar or toggle to sector-materiality weighting."),
+    labeled("Missing Data", MISSING_DATA_NOTE),
+  ],
+  P2: [
+    p("Transition Risk is a weighted average of four sub-scores (0–100):"),
+    ul(["Carbon-Price Exposure", "Sector Carbon Intensity", "Regulatory Commitment", "Transition Affordability"]),
+    p("(Metrics use either peer-ranked or absolute scales; see each sub-score's info popover for details.)"),
+    labeled(
+      "Weights",
+      "Default to the underlying model’s fixed baseline (not an even split). You can adjust " +
+        "sliders manually or switch to sector-materiality mode in the sidebar."
+    ),
+    labeled("Missing Data", MISSING_DATA_NOTE),
+  ],
+  P3: [
+    p("Governance is a weighted average of five sub-scores (0–100):"),
+    ul(["Board Independence", "Compensation Alignment", "Climate Governance", "Penalty Record", "Capital Stewardship"]),
+    p(
+      "(Penalty Record is ranked across the entire index; other metrics use cross-sector " +
+        "absolute scores. See each sub-score's popover for details.)"
+    ),
+    labeled(
+      "Weights",
+      "Default to the underlying model’s fixed baseline (not an even split). You can adjust " +
+        "sliders manually or switch to sector-materiality mode in the sidebar."
+    ),
+    labeled("Missing Data", MISSING_DATA_NOTE),
+  ],
 };
 
 /** Shown when the axis picker has "Composite" selected. */
@@ -80,12 +98,13 @@ export const COMPOSITE_DESCRIPTION =
   "company, it's dropped from this average rather than counted as zero -- the composite is " +
   "not itself penalized a second time for that on top of what each pillar already applied.";
 
-/** Static plain-language text for the axis-picker info popover: per-sub-score
- * copy from the registry, or the pillar/composite paragraphs above. */
-export function axisDescription(axis: AxisSlot): string {
-  if (axis.kind === "composite") return COMPOSITE_DESCRIPTION;
+/** Static text for the axis-picker info popover: per-sub-score copy from the
+ * registry, or the pillar/composite content above -- always normalized to a
+ * block list so the popover has one rendering path regardless of axis kind. */
+export function axisDescription(axis: AxisSlot): Description {
+  if (axis.kind === "composite") return [p(COMPOSITE_DESCRIPTION)];
   if (axis.kind === "pillar") return PILLAR_DESCRIPTIONS[axis.pillar];
-  return subScoreById(axis.id).description;
+  return [p(subScoreById(axis.id).description)];
 }
 
 /** The weight this axis currently carries in its parent aggregation -- a

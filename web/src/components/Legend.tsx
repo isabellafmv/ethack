@@ -7,7 +7,7 @@ export function Legend() {
       <h3>Legend</h3>
       <div className="legend-row">
         <div className="legend-swatch legend-swatch--gradient" />
-        <strong>Colour</strong>
+        <strong>Low to High Scoring</strong>
       </div>
       <div className="legend-row">
         <div className="legend-sizes">
@@ -15,14 +15,14 @@ export function Legend() {
           <span className="legend-dot legend-dot--md" />
           <span className="legend-dot legend-dot--lg" />
         </div>
-        <strong>Size</strong>
+        <strong>Market Cap</strong>
       </div>
       <div className="legend-row">
         <div className="legend-sizes">
           <span className="legend-dot legend-dot--dim" />
           <span className="legend-dot legend-dot--bright" />
         </div>
-        <strong>Opacity</strong>
+        <strong>Calculation Confidence</strong>
       </div>
       {/* <div className="legend-row">
         <div className="legend-sizes">

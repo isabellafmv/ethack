@@ -72,18 +72,18 @@ body { background: var(--bg); color: var(--ink); }
 /* ---- Header: full-bleed olive block + plain toolbar below ----------- */
 .app-header {
   background: var(--accent);
-  padding: 2.75rem 2.5rem 2rem;
+  padding: 1rem 2.5rem 0.85rem;
 }
 .app-title {
   margin: 0; color: var(--ink);
   font-weight: 900; text-transform: uppercase;
-  font-size: clamp(1.9rem, 4vw, 3.1rem);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
   line-height: 1.05; letter-spacing: -0.02em;
 }
 .app-subtitle {
-  margin: 0.6rem 0 0; color: var(--ink); opacity: 0.65;
+  margin: 0.3rem 0 0; color: var(--ink); opacity: 0.65;
   font-weight: 700; text-transform: uppercase;
-  font-size: 0.72rem; letter-spacing: 0.08em;
+  font-size: 0.68rem; letter-spacing: 0.08em;
 }
 
 .app-toolbar {
@@ -207,7 +207,7 @@ body { background: var(--bg); color: var(--ink); }
   background: transparent;
   cursor: pointer;
 }
-.sector-filter input[type="checkbox"]:checked { background: var(--accent); border-color: var(--accent); }
+.sector-filter input[type="checkbox"]:checked { background: var(--accent); border-color: var(--ink); }
 
 input[type="radio"] { accent-color: var(--accent); }
 
@@ -280,6 +280,7 @@ input[type="radio"] { accent-color: var(--accent); }
 }
 .axis-picker-popover--right { left: auto; right: 0; }
 .axis-picker-popover p { margin: 0 0 0.6rem; }
+.axis-picker-popover ul { margin: 0 0 0.6rem; padding-left: 1.1rem; }
 .axis-picker-popover-weight { color: var(--ink-55); font-size: 0.72rem; margin-bottom: 0 !important; }
 
 .camera-presets { display: flex; gap: 1.5rem; padding: 0 2rem 0.9rem; border-bottom: 1px solid var(--ink-12); }
@@ -346,17 +347,6 @@ input[type="radio"] { accent-color: var(--accent); }
    the slider track itself in a 3-column layout. */
 .weight-row-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.85rem; font-weight: 600; margin: 0.5rem 0 0.4rem; }
 .weight-row-top .weight-value { font-weight: 400; }
-
-.rank-sensitivity { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--ink); }
-.rank-sensitivity button {
-  width: 100%; background: var(--ink); color: var(--bg); border: none; padding: 0.75rem;
-  border-radius: 999px; cursor: pointer; font-weight: 800; font-size: 0.8rem; font-family: inherit;
-  text-transform: uppercase; letter-spacing: 0.04em;
-}
-.rank-sensitivity button:hover:not(:disabled) { background: var(--accent); color: var(--ink); }
-.rank-sensitivity button:disabled { opacity: 0.5; cursor: wait; }
-.rank-sensitivity-results { font-size: 0.78rem; margin-top: 0.85rem; }
-.rank-sensitivity-results ol { padding-left: 1.1rem; margin: 0.3rem 0; }
 
 /* ---- Detail panel: solid ink surface with a faint dot-grid texture --- */
 .detail-panel {

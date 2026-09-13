@@ -1,37 +1,26 @@
-// Task 2: pillar weight sliders, presets, and the rank sensitivity readout
-// -- "a ranking that collapses under a 10% weight change is not a ranking."
-// Rank sensitivity is computed on demand (a button, not every slider tick):
-// 30 resampled computeScores() calls is cheap once, but running it on every
-// drag frame would make the sliders feel laggy for no benefit -- the
-// composite recompute itself already happens live.
+// Task 2: pillar weight sliders and presets.
 //
 // Sub-score weight sliders were removed from this panel (pillar weights
 // only, now) -- weights.subscores stays at its default equal split within
 // each pillar, since there's no UI left to change it. computeScores/
 // normalizedWeights/materiality mode all still support per-sub-score
 // weights underneath; only this control surface shrank.
-import { useState, type CSSProperties } from "react";
+import type { CSSProperties } from "react";
 import { PILLARS, normalizedWeights, type WeightsState } from "../scoring/pipeline";
 import type { Pillar } from "../scoring/registry";
 import { PRESETS, type PresetId, type WeightMode, applyPreset } from "../scoring/weights";
-import { rankSensitivity, type RankSpread } from "../scoring/rankSensitivity";
 import { PILLAR_SCORE_NAMES } from "../viz/views";
-import type { Company } from "../scoring/types";
 
 export function WeightPanel({
-  weights, onChange, companies, weightMode, onChangeWeightMode, materialityStatus, sensitivityWeights,
+  weights, onChange, weightMode, onChangeWeightMode, materialityStatus,
 }: {
   weights: WeightsState;
   onChange: (w: WeightsState) => void;
-  companies: readonly Company[];
   weightMode: WeightMode;
   onChangeWeightMode: (m: WeightMode) => void;
   materialityStatus: "loading" | "ready" | "unavailable";
-  sensitivityWeights: WeightsState | Map<string, WeightsState>;
 }) {
   const normalized = normalizedWeights(weights);
-  const [sensitivity, setSensitivity] = useState<Map<string, RankSpread> | null>(null);
-  const [computing, setComputing] = useState(false);
   const isMateriality = weightMode === "materiality";
 
   // Three sliders that always sum to 100%, not three independent 0-3
@@ -60,23 +49,6 @@ export function WeightPanel({
     onChangeWeightMode("manual");
     onChange(applyPreset(preset, weights));
   };
-
-  const runSensitivity = () => {
-    setComputing(true);
-    // Yield a frame so the "computing..." state actually paints before the
-    // ~30-sample resampling work runs on the main thread.
-    requestAnimationFrame(() => {
-      setSensitivity(rankSensitivity(companies, sensitivityWeights));
-      setComputing(false);
-    });
-  };
-
-  const topVolatile = sensitivity
-    ? [...sensitivity.values()].sort((a, b) => b.spread - a.spread).slice(0, 5)
-    : [];
-  const medianSpread = sensitivity
-    ? median([...sensitivity.values()].map((s) => s.spread))
-    : null;
 
   return (
     <div className="panel weight-panel">
@@ -125,32 +97,6 @@ export function WeightPanel({
           </div>
         );
       })}
-
-      <div className="rank-sensitivity">
-        <button onClick={runSensitivity} disabled={computing}>
-          {computing ? "Computing..." : "Check rank sensitivity (±10%)"}
-        </button>
-        {sensitivity && (
-          <div className="rank-sensitivity-results">
-            <p>Median rank spread across the index: <strong>{medianSpread}</strong> places.</p>
-            <p>Most rank-sensitive companies at this weighting:</p>
-            <ol>
-              {topVolatile.map((s) => (
-                <li key={s.ticker}>
-                  {s.ticker}: rank #{s.baseRank}, swings #{s.minRank}&ndash;#{s.maxRank} (&Delta;{s.spread})
-                </li>
-              ))}
-            </ol>
-          </div>
-        )}
-      </div>
     </div>
   );
-}
-
-function median(values: number[]): number {
-  if (values.length === 0) return 0;
-  const sorted = [...values].sort((a, b) => a - b);
-  const mid = Math.floor(sorted.length / 2);
-  return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
 }

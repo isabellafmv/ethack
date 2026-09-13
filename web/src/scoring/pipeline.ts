@@ -20,7 +20,7 @@
 // See registry.ts's own doc comments on those two fields for why.
 
 import { coerceFieldValue, MEASURED_STATUSES, TRUSTED_STATUSES, type Company } from "./types";
-import { median, percentileRank, weightedMeanSkippingNulls } from "./percentile";
+import { median, percentileRank, universeRankPercentile, weightedMeanSkippingNulls } from "./percentile";
 import {
   PYTHON_P2_WEIGHTS,
   PYTHON_P3_WEIGHTS,
@@ -516,6 +516,7 @@ function computeSubScore(
   let score: number | null;
   if (rawValue === null) score = null;
   else if (scoringMode === "absolute" || scoringMode === "sector_normalized") score = rawValue;
+  else if (scoringMode === "universe_percentile") score = universeRankPercentile(rawValue, rankingDistribution, sub.polarity);
   else score = percentileRank(rawValue, rankingDistribution, sub.polarity);
 
   return { id: sub.id, statusClass: r.statusClass, rawValue, score, coverageN: rankingDistribution.length };

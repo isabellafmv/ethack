@@ -89,7 +89,11 @@ describe("computeScores: the sector-dummy pathology", () => {
   it("gives every company in a sector the same score when the sector has zero within-sector variance", () => {
     // This is exactly the --degenerate fixture shape: one distinct value per
     // GICS sector. The scoring layer must make this visible (everyone tied
-    // at 50), not paper over it.
+    // at the SAME score), not paper over it. Per percentileRank's CDF
+    // formula (mirroring _sector_percentile_vs_measured exactly): a value
+    // tied with the WHOLE distribution has count(<=v) == n, so pct == 1,
+    // which is 0 for lower_is_better -- not 50. This is a real, if
+    // odd-looking, property of the ported Python formula, not a bug.
     const companies = [
       makeCompany("A", "Energy", { scope1_tco2e: field(500), revenue_usd: field(1_000_000) }),
       makeCompany("B", "Energy", { scope1_tco2e: field(500), revenue_usd: field(1_000_000) }),
@@ -98,7 +102,7 @@ describe("computeScores: the sector-dummy pathology", () => {
     const scores = computeScores(companies, defaultWeights());
     for (const ticker of ["A", "B", "C"]) {
       const s = scores.get(ticker)!.pillars.P1.subScores.find((x) => x.id === "p1_carbon_intensity")!;
-      expect(s.score).toBe(50);
+      expect(s.score).toBe(0);
     }
   });
 });
@@ -336,17 +340,23 @@ describe("computeScores: p2_carbon_price_exposure (real registry sub-score, ceil
   });
 
   it("is null (not a false best score) when EBITDA is negative", () => {
+    // A crossCompanyCompute sub-score's statusClass is derived purely from
+    // whether its computed raw value is null, not from resolveInputs'
+    // field-presence gating (see registry.ts's crossCompanyCompute doc
+    // comment) -- so a company whose inputs are all disclosed but whose
+    // formula doesn't resolve (negative EBITDA) still reads "unavailable",
+    // same convention as p2_sector_exposure/p2_transition_affordability.
     const companies = [
-      makeCompany("A", "Energy", { scope1_tco2e: field(100), ebitda_usd: field(-1) }),
+      makeCompany("A", "Energy", { scope1_tco2e: field(100), revenue_usd: field(1_000_000), ebitda_usd: field(-1) }),
     ];
     const scores = computeScores(companies, defaultWeights());
     const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
-    expect(a.statusClass).toBe("measured"); // every input IS disclosed
+    expect(a.statusClass).toBe("unavailable");
     expect(a.rawValue).toBeNull(); // the ratio just isn't meaningful
     expect(a.score).toBeNull();
   });
 
-  it("is unavailable when scope1_tco2e is missing, even with EBITDA present (no scope2 or modelled-tier fallback)", () => {
+  it("is unavailable when scope1_tco2e AND revenue_usd are both missing (no measured or modelled emissions estimate)", () => {
     const companies = [
       makeCompany("A", "Energy", { ebitda_usd: field(1_000_000) }),
     ];
@@ -354,6 +364,23 @@ describe("computeScores: p2_carbon_price_exposure (real registry sub-score, ceil
     const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
     expect(a.statusClass).toBe("unavailable");
     expect(a.score).toBeNull();
+  });
+
+  it("falls back to the sector's modelled emissions estimate (benchmark x own revenue) when scope1_tco2e is missing but revenue_usd is present", () => {
+    // Mirrors transition_score.py's estimated_emissions_tco2e: a company
+    // missing its own measured scope1_tco2e is NOT excluded -- it's scored
+    // off the same sector intensity benchmark p2_sector_exposure/
+    // p2_transition_affordability use, times its own revenue. B here has no
+    // measured scope1_tco2e at all, but the sector benchmark (built from A's
+    // real 100 tCO2e / $1mm revenue) still gives it a real, non-null score.
+    const companies = [
+      makeCompany("A", "Energy", { scope1_tco2e: field(100), revenue_usd: field(1_000_000), ebitda_usd: field(1_000_000) }),
+      makeCompany("B", "Energy", { revenue_usd: field(1_000_000), ebitda_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_carbon_price_exposure")!;
+    expect(b.statusClass).toBe("measured");
+    expect(b.rawValue).not.toBeNull();
   });
 });
 
@@ -547,14 +574,26 @@ describe("computeScores: p3_exec_compensation (real registry sub-score, compensa
     expect(a.rawValue).toBeCloseTo(100 / 3);
   });
 
-  it("is unavailable (not silently scored) now that the dead comp_tied_to_emissions_target field is gone", () => {
+  it("means whichever of the three components are present -- a missing one doesn't make the whole sub-score unavailable", () => {
+    // Mirrors governance_score.py's _compensation_alignment_score:
+    // components.mean(axis=1, skipna=True) never requires all three. An
+    // earlier version of this sub-score wrongly required all three inputs,
+    // making it unavailable for any company missing just one -- a real
+    // divergence from Python, not a design choice.
     const companies = [
       makeCompany("A", "Financials", { has_clawback_policy: field(true), has_psu_plan: field(true) }),
-      // performance_period_years missing -- this sub-score used to require a
-      // field (comp_tied_to_emissions_target) that real data never has at
-      // all, making it permanently unavailable; it must not still gate on a
-      // field the pipeline can actually supply.
+      // performance_period_years missing -- should still score on the mean
+      // of the two present components, not go unavailable.
     ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_exec_compensation")!;
+    expect(a.statusClass).toBe("measured");
+    expect(a.rawValue).toBeCloseTo(100); // (100 + 100) / 2
+    expect(a.score).not.toBeNull();
+  });
+
+  it("is unavailable only when NONE of the three components are disclosed", () => {
+    const companies = [makeCompany("A", "Financials", {})];
     const scores = computeScores(companies, defaultWeights());
     const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_exec_compensation")!;
     expect(a.statusClass).toBe("unavailable");

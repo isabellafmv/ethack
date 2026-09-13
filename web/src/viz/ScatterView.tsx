@@ -18,9 +18,9 @@ import { axisIsImputed, axisLabel, axisValue, type AxisSlot } from "./views";
 import { divergingColor, referenceScoreForAxis } from "./referenceColor";
 import { isSectorVisible } from "../state/useAppState";
 
-// Palette-only axis identity: X = ink, Y = accent, Z = a faded shade of ink
-// (rather than a third hue), matching AxisPickers' AXIS_COLORS.
-const AXIS_COLORS = ["#000000", "#AAB644", "#000000"];
+// Palette-only axis identity: X = dark green, Y = ink, Z = a faded shade of
+// ink (rather than a third hue), matching AxisPickers' AXIS_COLORS.
+const AXIS_COLORS = ["#2C5628", "#000000", "#000000"];
 const AXIS_OPACITIES = [0.85, 0.9, 0.4];
 
 const HALF_EXTENT = 5;
