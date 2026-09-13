@@ -175,9 +175,9 @@ export function TableView({ companies, scores, visibleSectors, onSelectCompany }
 
   return (
     <div className="table-view-wrap">
-      <p className="table-view-hint">
+      {/* <p className="table-view-hint">
         Composite, pillar and coverage scores are 0&ndash;100. Most are the company&rsquo;s standing among its own sector peers, not a fixed scale &mdash; hover any header or bar for what it measures.
-      </p>
+      </p>  */}
       <table className="data-table">
         <thead>
           <tr>
