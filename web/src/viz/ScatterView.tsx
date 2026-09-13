@@ -88,21 +88,30 @@ function CameraRig({ preset }: { preset: CameraPresetId | null }) {
  * fetch, no CDN, consistent with the "no in-scene text pulled from a font
  * loader" constraint this file has always had -- it just no longer means
  * "no in-scene text at all". */
-function useLabelTexture(text: string, color: string): THREE.CanvasTexture {
+// World units per texture pixel, held constant across all labels so text
+// sizes consistently regardless of string length -- the canvas is sized to
+// fit each label's measured width instead of a fixed box, which is what was
+// clipping long labels like "Environmental Impact" at a fixed 512px canvas.
+const LABEL_TEXTURE_SCALE = 0.35 / 128;
+
+function useLabelTexture(text: string, color: string): { texture: THREE.CanvasTexture; width: number } {
   return useMemo(() => {
     const canvas = document.createElement("canvas");
-    canvas.width = 512;
-    canvas.height = 128;
     const ctx = canvas.getContext("2d")!;
+    const font = "700 64px 'Arial Nova', Arial, Helvetica, sans-serif";
+    ctx.font = font;
+    const padding = 6;
+    canvas.width = Math.ceil(ctx.measureText(text).width) + padding * 2;
+    canvas.height = 128;
+    ctx.font = font; // resizing the canvas resets context state
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.font = "700 64px 'Arial Nova', Arial, Helvetica, sans-serif";
     ctx.fillStyle = color;
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillText(text, 6, canvas.height / 2);
+    ctx.fillText(text, padding, canvas.height / 2);
     const texture = new THREE.CanvasTexture(canvas);
     texture.needsUpdate = true;
-    return texture;
+    return { texture, width: canvas.width * LABEL_TEXTURE_SCALE };
   }, [text, color]);
 }
 
@@ -118,7 +127,7 @@ function Axis({ dir, color, opacity, label }: { dir: AxisDir; color: string; opa
     dir === "x" ? [HALF_EXTENT, 0, 0] : dir === "z" ? [0, 0, HALF_EXTENT] : [0, HALF_EXTENT, 0];
   const labelPos: [number, number, number] =
     dir === "x" ? [HALF_EXTENT + 0.7, 0, 0] : dir === "z" ? [0, 0, HALF_EXTENT + 0.7] : [0, HALF_EXTENT + 0.7, 0];
-  const texture = useLabelTexture(label, color);
+  const { texture, width } = useLabelTexture(label, color);
 
   return (
     <>
@@ -130,7 +139,7 @@ function Axis({ dir, color, opacity, label }: { dir: AxisDir; color: string; opa
         <coneGeometry args={[0.11, 0.26, 10]} />
         <meshBasicMaterial color={color} transparent opacity={Math.min(1, opacity + 0.1)} />
       </mesh>
-      <sprite position={labelPos} scale={[1.4, 0.35, 1]}>
+      <sprite position={labelPos} scale={[width, 0.35, 1]}>
         <spriteMaterial map={texture} transparent depthTest={false} />
       </sprite>
     </>
