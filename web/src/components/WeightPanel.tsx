@@ -1,26 +1,22 @@
-// Task 2: pillar + sub-score weight sliders, presets, and the rank
-// sensitivity readout -- "a ranking that collapses under a 10% weight change
-// is not a ranking." Rank sensitivity is computed on demand (a button, not
-// every slider tick): 30 resampled computeScores() calls is cheap once, but
-// running it on every drag frame would make the sliders feel laggy for no
-// benefit -- the composite recompute itself already happens live.
+// Task 2: pillar weight sliders, presets, and the rank sensitivity readout
+// -- "a ranking that collapses under a 10% weight change is not a ranking."
+// Rank sensitivity is computed on demand (a button, not every slider tick):
+// 30 resampled computeScores() calls is cheap once, but running it on every
+// drag frame would make the sliders feel laggy for no benefit -- the
+// composite recompute itself already happens live.
+//
+// Sub-score weight sliders were removed from this panel (pillar weights
+// only, now) -- weights.subscores stays at its default equal split within
+// each pillar, since there's no UI left to change it. computeScores/
+// normalizedWeights/materiality mode all still support per-sub-score
+// weights underneath; only this control surface shrank.
 import { useState, type CSSProperties } from "react";
 import { PILLARS, normalizedWeights, type WeightsState } from "../scoring/pipeline";
-import { registryForPillar, type Pillar } from "../scoring/registry";
+import type { Pillar } from "../scoring/registry";
 import { PRESETS, type PresetId, type WeightMode, applyPreset } from "../scoring/weights";
 import { rankSensitivity, type RankSpread } from "../scoring/rankSensitivity";
 import { PILLAR_SCORE_NAMES } from "../viz/views";
 import type { Company } from "../scoring/types";
-
-const SLIDER_MAX = 3;
-/** The displayed percentage AND the fill bar both have to track this same
- * value/max ratio -- the same one the native thumb itself is positioned by
- * (0-3, not each pillar's normalized 0-100% share of the total, which
- * depends on the OTHER two sliders too). A slider can only ever honestly
- * represent its OWN position; showing the normalized share next to it read
- * as "the number and the dot disagree" the moment more than one slider
- * differed from its default, because they were never the same quantity. */
-const rawPct = (value: number) => Math.round((value / SLIDER_MAX) * 100);
 
 export function WeightPanel({
   weights, onChange, companies, weightMode, onChangeWeightMode, materialityStatus, sensitivityWeights,
@@ -38,12 +34,28 @@ export function WeightPanel({
   const [computing, setComputing] = useState(false);
   const isMateriality = weightMode === "materiality";
 
-  const setPillarWeight = (pillar: Pillar, value: number) => {
-    onChange({ ...weights, pillars: { ...weights.pillars, [pillar]: value } });
+  // Three sliders that always sum to 100%, not three independent 0-3
+  // multipliers renormalized behind the scenes -- dragging one to a target
+  // percentage rescales the OTHER two proportionally (preserving their
+  // relative ratio to each other) to consume exactly the remaining budget.
+  // That's what makes "drag one, watch all three move" true instead of just
+  // the number next to the dragged slider changing while its siblings sit
+  // still: every slider's `value` is this same normalized share, so a
+  // change to any one of them re-renders every thumb's position, not just
+  // its label.
+  const setPillarWeight = (pillar: Pillar, targetPct: number) => {
+    const others = PILLARS.filter((p) => p !== pillar);
+    const oldOtherSum = others.reduce((sum, p) => sum + Math.max(0, weights.pillars[p] ?? 1), 0);
+    const remaining = 100 - targetPct;
+    const rescaledOthers = Object.fromEntries(
+      others.map((p) => [
+        p,
+        oldOtherSum > 0 ? (Math.max(0, weights.pillars[p] ?? 1) / oldOtherSum) * remaining : remaining / others.length,
+      ])
+    );
+    onChange({ ...weights, pillars: { ...weights.pillars, [pillar]: targetPct, ...rescaledOthers } });
   };
-  const setSubWeight = (id: string, value: number) => {
-    onChange({ ...weights, subscores: { ...weights.subscores, [id]: value } });
-  };
+
   const runPreset = (preset: PresetId) => {
     onChangeWeightMode("manual");
     onChange(applyPreset(preset, weights));
@@ -91,53 +103,28 @@ export function WeightPanel({
         </p>
       )}
 
-      {PILLARS.map((pillar) => (
-        <div key={pillar} className="weight-group">
-          {/* Its own stacked layout, not the 3-column weight-row grid the
-              sub-score rows use below -- "Environmental Impact"/"Transition
-              risk" are long enough that giving them a fixed label column
-              wide enough to avoid truncating squeezed the slider track down
-              to a few px in this sidebar's width (the actual cause of a
-              "the fill doesn't show" report -- it was rendering, just inside
-              an invisibly narrow track, not a browser bug). A full-width
-              label row above a full-width slider row has room for both. */}
-          <div className="weight-row-top">
-            <label>{PILLAR_SCORE_NAMES[pillar]}</label>
-            <span className="weight-value">{Math.round(normalized.pillars[pillar] * 100)}%</span>
+      {PILLARS.map((pillar) => {
+        const pct = Math.round(normalized.pillars[pillar] * 100);
+        return (
+          <div key={pillar} className="weight-group">
+            <div className="weight-row-top">
+              <label>{PILLAR_SCORE_NAMES[pillar]}</label>
+              <span className="weight-value">{pct}%</span>
+            </div>
+            <div
+              className={isMateriality ? "range-wrap range-wrap--disabled" : "range-wrap"}
+              style={{ "--fill": `${pct}%` } as CSSProperties}
+            >
+              <input
+                type="range" min={0} max={100} step={1}
+                value={pct}
+                disabled={isMateriality}
+                onChange={(e) => setPillarWeight(pillar, Number(e.target.value))}
+              />
+            </div>
           </div>
-          <div
-            className={isMateriality ? "range-wrap range-wrap--disabled" : "range-wrap"}
-            style={{ "--fill": `${rawPct(weights.pillars[pillar] ?? 1)}%` } as CSSProperties}
-          >
-            <input
-              type="range" min={0} max={SLIDER_MAX} step={0.05}
-              value={weights.pillars[pillar] ?? 1}
-              disabled={isMateriality}
-              onChange={(e) => setPillarWeight(pillar, Number(e.target.value))}
-            />
-          </div>
-          <details>
-            <summary>Sub-scores</summary>
-            {registryForPillar(pillar).map((sub) => (
-              <div key={sub.id} className="weight-row weight-row--sub">
-                <label>{sub.label}</label>
-                <div
-                  className={isMateriality ? "range-wrap range-wrap--disabled" : "range-wrap"}
-                  style={{ "--fill": `${rawPct(weights.subscores[sub.id] ?? 1)}%` } as CSSProperties}
-                >
-                  <input
-                    type="range" min={0} max={SLIDER_MAX} step={0.05}
-                    value={weights.subscores[sub.id] ?? 1}
-                    disabled={isMateriality}
-                    onChange={(e) => setSubWeight(sub.id, Number(e.target.value))}
-                  />
-                </div>
-                <span className="weight-value">{Math.round((normalized.subscores[sub.id] ?? 0) * 100)}%</span>
-              </div>
-            ))}
-          </details>
-        </div>
-      ))}
+        );
+      })}
 
       <div className="rank-sensitivity">
         <button onClick={runSensitivity} disabled={computing}>

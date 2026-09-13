@@ -24,12 +24,12 @@ export function Legend() {
         </div>
         <strong>Opacity</strong>
       </div>
-      <div className="legend-row">
+      {/* <div className="legend-row">
         <div className="legend-sizes">
           <span className="legend-dot legend-dot--wire" />
         </div>
         <strong>Wireframe</strong>
-      </div>
+      </div>*/}
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { defaultWeights } from "./pipeline";
+import { defaultWeights, normalizedWeights } from "./pipeline";
+import { PYTHON_P2_WEIGHTS, PYTHON_P3_WEIGHTS } from "./registry";
 import {
   applyPreset, decodeWeightModeFromHash, decodeWeightsFromHash,
-  encodeWeightModeToHash, encodeWeightsToHash, PRESETS,
+  encodeWeightModeToHash, encodeWeightsToHash, PRESETS, pythonDefaultWeights,
 } from "./weights";
 
 describe("presets", () => {
@@ -72,5 +73,45 @@ describe("weight mode persistence", () => {
 
   it("manual mode encodes to an empty segment, keeping manual-mode URLs unchanged", () => {
     expect(encodeWeightModeToHash("manual")).toBe("");
+  });
+});
+
+describe("pythonDefaultWeights", () => {
+  const sectorWeights = {
+    Energy: { pillars: { P1: 1, P2: 1, P3: 1 }, subscores: { p1_carbon_intensity: 18, p1_energy_mix: 4 }, rationale: "why" },
+    Financials: { pillars: { P1: 1, P2: 1, P3: 1 }, subscores: { p1_carbon_intensity: 4, p1_energy_mix: 4 }, rationale: "why not" },
+  };
+
+  it("keeps pillar weights flat/equal for every sector, matching final_score.py's fixed 1/3 split", () => {
+    const out = pythonDefaultWeights(sectorWeights);
+    for (const sector of out.values()) expect(sector.pillars).toEqual({ P1: 1, P2: 1, P3: 1 });
+  });
+
+  it("overlays Python's fixed P2/P3 WEIGHTS onto every sector, identically", () => {
+    const out = pythonDefaultWeights(sectorWeights);
+    for (const sector of out.values()) {
+      for (const [id, w] of Object.entries(PYTHON_P2_WEIGHTS)) expect(sector.subscores[id]).toBe(w);
+      for (const [id, w] of Object.entries(PYTHON_P3_WEIGHTS)) expect(sector.subscores[id]).toBe(w);
+    }
+  });
+
+  it("keeps each sector's own P1 sub-score weights, not shared across sectors", () => {
+    const out = pythonDefaultWeights(sectorWeights);
+    expect(out.get("Energy")!.subscores.p1_carbon_intensity).toBe(18);
+    expect(out.get("Financials")!.subscores.p1_carbon_intensity).toBe(4);
+  });
+
+  it("passes through the rationale per sector", () => {
+    const out = pythonDefaultWeights(sectorWeights);
+    expect(out.get("Energy")!.rationale).toBe("why");
+  });
+
+  it("normalizes P2's fixed weights to exactly Python's own proportions once run through normalizedWeights", () => {
+    const out = pythonDefaultWeights(sectorWeights);
+    const { subscores } = normalizedWeights(out.get("Energy")!);
+    const p2Total = Object.values(PYTHON_P2_WEIGHTS).reduce((a, b) => a + b, 0);
+    for (const [id, w] of Object.entries(PYTHON_P2_WEIGHTS)) {
+      expect(subscores[id]).toBeCloseTo(w / p2Total);
+    }
   });
 });

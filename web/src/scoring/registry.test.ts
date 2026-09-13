@@ -4,7 +4,7 @@ import { assertRegistryMatchesSchema, REGISTRY } from "./registry";
 function fullSchema(): Record<string, unknown> {
   const schema: Record<string, unknown> = {};
   for (const sub of REGISTRY) {
-    for (const field of [...sub.inputs, ...(sub.optionalInputs ?? [])]) schema[field] = {};
+    for (const field of [...sub.inputs, ...(sub.optionalInputs ?? []).map((o) => o.field)]) schema[field] = {};
   }
   return schema;
 }
@@ -58,6 +58,11 @@ describe("assertRegistryMatchesSchema", () => {
   it("covers exactly the pillar spec's default sub-score counts", () => {
     const counts = { P1: 0, P2: 0, P3: 0 } as Record<string, number>;
     for (const s of REGISTRY) counts[s.pillar]++;
-    expect(counts).toEqual({ P1: 4, P2: 4, P3: 4 });
+    // P2 gained p2_transition_affordability (Python's single highest-weighted
+    // transition indicator, previously missing entirely) and lost
+    // p2_innovation (no Python equivalent, ~0/500 covered) -- net unchanged
+    // at 4. P3 gained p3_climate_governance (Python's second-highest-weighted
+    // governance indicator, previously missing entirely) -- 5.
+    expect(counts).toEqual({ P1: 4, P2: 4, P3: 5 });
   });
 });

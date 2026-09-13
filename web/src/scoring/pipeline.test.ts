@@ -168,6 +168,7 @@ describe("resolveInputs: nullPolicy 'zero'", () => {
     compute: (f) => f.penalty_count,
     nullPolicy: "zero",
     basis: "FY2023",
+    description: "test fixture",
   };
 
   it("fills a missing input with a literal 0 but still marks the point unavailable/hollow", () => {
@@ -250,18 +251,59 @@ describe("computeScores: p3_capital_stewardship (real registry sub-score, option
   });
 });
 
-describe("computeScores: p2_regulatory_momentum (real registry sub-score, sector_median nullPolicy)", () => {
-  it("scores a company with no stated target against the sector's median target strength, not as a neutral gap", () => {
+describe("computeScores: p2_regulatory_momentum (real registry sub-score, SBTi tier + R&D blend)", () => {
+  it("scores a validated net-zero target above a bare, unvalidated commitment", () => {
     const companies = [
-      makeCompany("A", "Energy", { target_reduction_pct: field(30), sbti_target_validated: field(true) }), // 30
-      makeCompany("B", "Energy", { target_reduction_pct: field(50), sbti_target_validated: field(false) }), // 35
-      makeCompany("C", "Energy", {}), // no target at all
+      makeCompany("A", "Energy", { sbti_target_validated: field(true), sbti_target_type: field("net-zero") }),
+      makeCompany("B", "Energy", { sbti_target_validated: field(true), sbti_target_type: field("commitment") }),
     ];
     const scores = computeScores(companies, defaultWeights());
-    const c = scores.get("C")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
-    expect(c.statusClass).toBe("unavailable"); // genuinely undisclosed...
-    expect(c.rawValue).toBeCloseTo(32.5); // ...but median(30, 35), not null
-    expect(c.score).toBe(50); // falls exactly between its two sector peers
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    expect(a.rawValue).toBeCloseTo(100);
+    expect(b.rawValue).toBeCloseTo(25);
+  });
+
+  it("treats an unvalidated target as no_target (0), regardless of sbti_target_type", () => {
+    const companies = [
+      makeCompany("A", "Energy", { sbti_target_validated: field(false), sbti_target_type: field("net-zero") }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    expect(a.rawValue).toBeCloseTo(0);
+  });
+
+  it("blends 0.7 tier + 0.3 R&D-intensity (capped at 15% of revenue) when R&D is disclosed", () => {
+    const companies = [
+      makeCompany("A", "Energy", {
+        sbti_target_validated: field(true), sbti_target_type: field("near-term"), // tier 75
+        rnd_expense_usd: field(150_000), revenue_usd: field(1_000_000), // 15% of revenue -> R&D component maxes at 100
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    expect(a.rawValue).toBeCloseTo(0.7 * 75 + 0.3 * 100); // 82.5
+  });
+
+  it("uses the tier score alone (no R&D component) when R&D is not disclosed", () => {
+    const companies = [
+      makeCompany("A", "Energy", { sbti_target_validated: field(true), sbti_target_type: field("near-term") }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    expect(a.rawValue).toBeCloseTo(75);
+  });
+
+  it("is always 'measured' -- even with nothing at all disclosed -- matching transition_score.py's own documented caveat that this indicator is never actually null", () => {
+    const companies = [
+      makeCompany("A", "Energy", {}),
+      makeCompany("B", "Energy", { sbti_target_validated: field(true), sbti_target_type: field("net-zero") }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_regulatory_momentum")!;
+    expect(a.statusClass).toBe("measured");
+    expect(a.rawValue).toBeCloseTo(0);
+    expect(a.score).toBeCloseTo(0);
   });
 });
 
@@ -388,6 +430,7 @@ describe("resolveInputs: nullPolicy 'sector_median' (via computeScores)", () => 
     compute: (f) => f.independent_director_count,
     nullPolicy: "sector_median",
     basis: "FY2023",
+    description: "test fixture",
   };
 
   it("substitutes the sector median and scores at ~50 when the input is missing", () => {
@@ -529,5 +572,150 @@ describe("computeScores: p3_controversy_flags (real registry sub-score, penalty 
     const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_controversy_flags")!;
     const b = scores.get("B")!.pillars.P3.subScores.find((s) => s.id === "p3_controversy_flags")!;
     expect(a.score!).toBeGreaterThan(b.score!);
+  });
+
+  it("ranks universe-wide, not per sector -- a company scores against peers in every sector", () => {
+    const companies = [
+      makeCompany("A", "Industrials", { penalty_total_usd: field(0) }),
+      makeCompany("B", "Energy", { penalty_total_usd: field(500) }),
+      makeCompany("C", "Energy", { penalty_total_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_controversy_flags")!;
+    // A is alone in Industrials, but is ranked against B and C too (universe-wide) --
+    // n=1 within its own sector would trivially score 100 if this were sector-scoped.
+    expect(a.coverageN).toBe(3);
+  });
+});
+
+describe("computeScores: p3_board_independence (real registry sub-score, ratio + lead-director blend)", () => {
+  it("means the ratio and the lead-director flag when both are disclosed", () => {
+    const companies = [
+      makeCompany("A", "Financials", {
+        independent_director_count: field(8), board_size: field(10), // 80%
+        lead_independent_director: field(true), // 100
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_board_independence")!;
+    expect(a.rawValue).toBeCloseTo((80 + 100) / 2);
+  });
+
+  it("scores on the lead-director flag alone when the ratio isn't disclosed", () => {
+    const companies = [makeCompany("A", "Financials", { lead_independent_director: field(true) })];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_board_independence")!;
+    expect(a.statusClass).toBe("measured");
+    expect(a.rawValue).toBeCloseTo(100);
+  });
+
+  it("is unavailable when neither the ratio nor the lead-director flag is disclosed", () => {
+    const companies = [makeCompany("A", "Financials", {})];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_board_independence")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+});
+
+describe("computeScores: p3_climate_governance (real registry sub-score, mean of up to 3 booleans)", () => {
+  it("means whichever of the three booleans are disclosed", () => {
+    const companies = [
+      makeCompany("A", "Utilities", {
+        has_climate_oversight_committee: field(true),
+        has_third_party_assurance: field(false),
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_climate_governance")!;
+    expect(a.rawValue).toBeCloseTo(50);
+  });
+
+  it("is unavailable when none of the three is disclosed", () => {
+    const companies = [makeCompany("A", "Utilities", {})];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P3.subScores.find((s) => s.id === "p3_climate_governance")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+});
+
+describe("computeScores: p2_sector_exposure (crossCompanyCompute, sector-level GHGRP benchmark)", () => {
+  it("gives every company in the same sector the identical value", () => {
+    const companies = [
+      makeCompany("A", "Energy", { scope1_tco2e: field(1000), revenue_usd: field(1_000_000) }),
+      makeCompany("B", "Energy", { scope1_tco2e: field(500), revenue_usd: field(1_000_000) }),
+      makeCompany("C", "Utilities", { scope1_tco2e: field(1), revenue_usd: field(1_000_000) }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_sector_exposure")!;
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_sector_exposure")!;
+    const c = scores.get("C")!.pillars.P2.subScores.find((s) => s.id === "p2_sector_exposure")!;
+    expect(a.rawValue).toBeCloseTo(b.rawValue!);
+    expect(c.rawValue!).toBeGreaterThan(a.rawValue!); // Utilities is far less carbon-intense here
+  });
+
+  it("gives a sector with zero measured companies the least-intensive sector's floor value", () => {
+    const companies = [
+      makeCompany("A", "Energy", { scope1_tco2e: field(1000), revenue_usd: field(1_000_000) }),
+      makeCompany("B", "Financials", {}), // no measured data for this sector at all
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_sector_exposure")!;
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_sector_exposure")!;
+    expect(b.rawValue).toBeCloseTo(a.rawValue!); // only one measured sector -> its own intensity is also the floor
+  });
+});
+
+describe("computeScores: p2_transition_affordability (crossCompanyCompute)", () => {
+  it("scores higher when the annualized transition cost is a smaller share of free cash flow", () => {
+    const companies = [
+      makeCompany("A", "Energy", {
+        scope1_tco2e: field(1000), revenue_usd: field(1_000_000),
+        target_reduction_pct: field(30), target_year: field(2030),
+        free_cash_flow_usd: field(10_000_000),
+      }),
+      makeCompany("B", "Energy", {
+        scope1_tco2e: field(1000), revenue_usd: field(1_000_000),
+        target_reduction_pct: field(30), target_year: field(2030),
+        free_cash_flow_usd: field(1_000),
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_transition_affordability")!;
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_transition_affordability")!;
+    expect(a.rawValue!).toBeGreaterThan(b.rawValue!);
+  });
+
+  it("is unavailable when free cash flow is missing or non-positive", () => {
+    const companies = [
+      makeCompany("A", "Energy", {
+        scope1_tco2e: field(1000), revenue_usd: field(1_000_000),
+        target_reduction_pct: field(30), target_year: field(2030),
+        free_cash_flow_usd: field(-1),
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const a = scores.get("A")!.pillars.P2.subScores.find((s) => s.id === "p2_transition_affordability")!;
+    expect(a.statusClass).toBe("unavailable");
+    expect(a.score).toBeNull();
+  });
+
+  it("falls back to the sector-modelled emissions and a counterfactual target when a company discloses neither", () => {
+    const companies = [
+      makeCompany("A", "Energy", {
+        scope1_tco2e: field(1000), revenue_usd: field(1_000_000),
+        target_reduction_pct: field(30), target_year: field(2030),
+        free_cash_flow_usd: field(1_000_000),
+      }),
+      makeCompany("B", "Energy", {
+        revenue_usd: field(1_000_000),
+        free_cash_flow_usd: field(1_000_000),
+      }),
+    ];
+    const scores = computeScores(companies, defaultWeights());
+    const b = scores.get("B")!.pillars.P2.subScores.find((s) => s.id === "p2_transition_affordability")!;
+    expect(b.statusClass).toBe("measured");
+    expect(b.score).not.toBeNull();
   });
 });

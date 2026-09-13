@@ -54,8 +54,23 @@ export function resolveReference(
   const out: ReferenceValues = new Map();
 
   for (const sub of REGISTRY) {
+    // A percentileComponents sub-score (p1_input_efficiency) has no single
+    // raw value and no top-level distribution entry of its own -- its real
+    // per-company score already comes from averaging independently-ranked
+    // components in pipeline.ts, which this reference machinery has no
+    // equivalent for. Left null rather than reported wrong: sub.compute is
+    // a dummy for these, and percentile-ranking a placeholder would be
+    // actively misleading, worse than showing nothing.
+    if (sub.percentileComponents) {
+      out.set(sub.id, { raw: null, score: null });
+      continue;
+    }
+
+    const scoringMode = sub.scoringMode ?? "sector_percentile";
     let raw: number | null = null;
-    let distributionForScore = sectorDist.get(sub.id) ?? [];
+    let distributionForScore = scoringMode === "universe_percentile"
+      ? mergeAllSectors(distributions, sub.id)
+      : sectorDist.get(sub.id) ?? [];
 
     if (spec.mode === "sector_median") {
       raw = median(distributionForScore);
@@ -68,15 +83,35 @@ export function resolveReference(
     } else if (spec.mode === "company") {
       const refCompany = companies.find((c) => c.ticker === spec.companyTicker);
       const refSectorDist = refCompany ? distributions.get(refCompany.sector)?.get(sub.id) ?? [] : [];
-      if (refCompany) {
+      if (refCompany && !sub.crossCompanyCompute) {
         const { resolved } = resolveAndBuildDistributions([refCompany]);
         const r = resolved.get(refCompany.ticker)?.get(sub.id);
-        if (r && r.inputs && r.statusClass !== "unavailable") raw = sub.compute(r.inputs);
+        if (r && r.inputs && r.statusClass !== "unavailable") {
+          const v = sub.compute(r.inputs);
+          raw = Number.isFinite(v) ? v : null;
+        }
+      } else if (refCompany && sub.crossCompanyCompute) {
+        // Needs the FULL universe, not just the one reference company, to
+        // resolve a sector-level benchmark or counterfactual target --
+        // mirrors pipeline.ts's own crossCompanyCompute handling.
+        raw = sub.crossCompanyCompute(companies).get(refCompany.ticker) ?? null;
       }
-      distributionForScore = refSectorDist;
+      distributionForScore = scoringMode === "universe_percentile" ? mergeAllSectors(distributions, sub.id) : refSectorDist;
     }
 
-    const score = raw === null ? null : percentileRank(raw, distributionForScore, sub.polarity);
+    // 'absolute' and 'sector_normalized' sub-scores are already final,
+    // oriented 0-100 values (see registry.ts's ScoringMode doc comment) --
+    // percentile-ranking a reference point a second time here would be the
+    // same double-percentile bug those scoringModes exist to prevent in
+    // pipeline.ts itself. 'sector_percentile'/'universe_percentile' still
+    // need the percentile step to land on the same 0-100 scale the
+    // company's own score uses.
+    const score =
+      raw === null
+        ? null
+        : scoringMode === "absolute" || scoringMode === "sector_normalized"
+          ? raw
+          : percentileRank(raw, distributionForScore, sub.polarity);
     out.set(sub.id, { raw, score });
   }
   return out;

@@ -16,6 +16,7 @@ import type { Company } from "../scoring/types";
 import type { ReferenceValues } from "../scoring/reference";
 import { axisIsImputed, axisLabel, axisValue, type AxisSlot } from "./views";
 import { divergingColor, referenceScoreForAxis } from "./referenceColor";
+import { isSectorVisible } from "../state/useAppState";
 
 // Palette-only axis identity: X = ink, Y = accent, Z = a faded shade of ink
 // (rather than a third hue), matching AxisPickers' AXIS_COLORS.
@@ -184,7 +185,7 @@ export function ScatterView({
 
     const out: ScatterPoint[] = [];
     for (const company of companies) {
-      if (visibleSectors.size > 0 && !visibleSectors.has(company.sector)) continue;
+      if (!isSectorVisible(company.sector, visibleSectors)) continue;
       const result = scores.get(company.ticker);
       if (!result) continue;
 

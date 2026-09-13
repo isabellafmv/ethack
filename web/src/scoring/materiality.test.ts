@@ -6,7 +6,6 @@ import {
   assertIndicatorColumnsKnown,
   deriveMaterialityWeights,
   INDICATOR_TO_SUBSCORE,
-  NEUTRAL_SUBSCORES,
   UNMAPPED_INDICATORS,
   type MaterialityRow,
 } from "./materiality";
@@ -26,69 +25,50 @@ function row(overrides: Record<string, string> = {}): MaterialityRow {
 }
 
 describe("INDICATOR_TO_SUBSCORE", () => {
-  it("maps each of the 10 known indicator columns to the correct sub-score id", () => {
+  it("maps only the 4 P1 indicator columns -- P2/P3 use Python's fixed WEIGHTS dicts instead", () => {
     expect(INDICATOR_TO_SUBSCORE).toEqual({
       carbon_intensity: "p1_carbon_intensity",
       energy_mix: "p1_energy_mix",
       resource_waste_intensity: "p1_resource_waste",
       input_efficiency: "p1_input_efficiency",
-      carbon_price_exposure: "p2_carbon_price_exposure",
-      innovation_momentum: "p2_innovation",
-      compensation_alignment: "p3_exec_compensation",
-      board_independence: "p3_board_independence",
-      capital_stewardship: "p3_capital_stewardship",
-      controversy_record: "p3_controversy_flags",
     });
   });
 });
 
 describe("deriveMaterialityWeights", () => {
-  it("puts the 3 unmapped indicators' weight mass nowhere in the output", () => {
+  it("only ever produces the 4 mapped P1 sub-score weights -- no P2/P3 keys leak in", () => {
     const out = deriveMaterialityWeights([row()]);
     const sector = out.TestSector;
-    // The subscores object's keys are exactly the mapped sub-score ids plus
-    // the two neutral defaults -- none of the three unmapped indicators
-    // (transition_affordability, structural_disruption, climate_governance)
-    // contribute a key, a value, or a share of any pillar sum.
-    const expectedKeys = new Set([...Object.values(INDICATOR_TO_SUBSCORE), ...NEUTRAL_SUBSCORES]);
-    expect(new Set(Object.keys(sector.subscores))).toEqual(expectedKeys);
-    expect(UNMAPPED_INDICATORS.size).toBe(3);
-    const pillarTotal = sector.pillars.P1 + sector.pillars.P2 + sector.pillars.P3;
-    const mappedTotal = Object.values(INDICATOR_TO_SUBSCORE)
-      .map((id) => sector.subscores[id])
-      .reduce((a, b) => a + b, 0);
-    expect(pillarTotal).toBe(mappedTotal); // no extra mass leaked in from anywhere
+    expect(new Set(Object.keys(sector.subscores))).toEqual(new Set(Object.values(INDICATOR_TO_SUBSCORE)));
+    expect(UNMAPPED_INDICATORS.size).toBe(9);
   });
 
-  it("gives the 2 unmapped P2 sub-scores the neutral default weight, excluded from the P2 pillar sum", () => {
-    const out = deriveMaterialityWeights([row()]);
-    const sector = out.TestSector;
-    for (const id of NEUTRAL_SUBSCORES) expect(sector.subscores[id]).toBe(1);
-    // P2 pillar sum should be carbon_price_exposure(10) + innovation_momentum(5) = 15,
-    // NOT +1+1 for the two neutral sub-scores.
-    expect(sector.pillars.P2).toBe(15);
-  });
-
-  it("pillar weight equals the sum of exactly the mapped sub-scores for that pillar, for two very different sectors", () => {
+  it("pillars are always the flat {P1:1, P2:1, P3:1} regardless of the sector's CSV weights", () => {
     const energy = row({
       sector: "Energy",
       carbon_intensity: "18", energy_mix: "4", resource_waste_intensity: "4", input_efficiency: "6",
-      carbon_price_exposure: "16", innovation_momentum: "6",
-      compensation_alignment: "3", board_independence: "2", capital_stewardship: "6", controversy_record: "3",
     });
     const financials = row({
       sector: "Financials",
       carbon_intensity: "4", energy_mix: "4", resource_waste_intensity: "2", input_efficiency: "3",
-      carbon_price_exposure: "3", innovation_momentum: "8",
-      compensation_alignment: "7", board_independence: "4", capital_stewardship: "20", controversy_record: "13",
     });
     const out = deriveMaterialityWeights([energy, financials]);
-    expect(out.Energy.pillars.P1).toBe(18 + 4 + 4 + 6);
-    expect(out.Energy.pillars.P2).toBe(16 + 6);
-    expect(out.Energy.pillars.P3).toBe(3 + 2 + 6 + 3);
-    expect(out.Financials.pillars.P1).toBe(4 + 4 + 2 + 3);
-    expect(out.Financials.pillars.P2).toBe(3 + 8);
-    expect(out.Financials.pillars.P3).toBe(7 + 4 + 20 + 13);
+    expect(out.Energy.pillars).toEqual({ P1: 1, P2: 1, P3: 1 });
+    expect(out.Financials.pillars).toEqual({ P1: 1, P2: 1, P3: 1 });
+  });
+
+  it("reads each P1 sub-score's weight straight from its CSV column, per sector", () => {
+    const energy = row({
+      sector: "Energy",
+      carbon_intensity: "18", energy_mix: "4", resource_waste_intensity: "4", input_efficiency: "6",
+    });
+    const out = deriveMaterialityWeights([energy]);
+    expect(out.Energy.subscores).toEqual({
+      p1_carbon_intensity: 18,
+      p1_energy_mix: 4,
+      p1_resource_waste: 4,
+      p1_input_efficiency: 6,
+    });
   });
 
   it("passes through the CSV rationale per sector", () => {

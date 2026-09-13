@@ -112,6 +112,7 @@ body { background: var(--bg); color: var(--ink); }
 
 .app-sidebar {
   overflow-y: auto;
+  min-height: 0; /* same grid-item min-size:auto trap as .app-main -- see its comment */
   padding: 2rem 1.5rem;
   display: flex;
   flex-direction: column;
@@ -120,12 +121,53 @@ body { background: var(--bg); color: var(--ink); }
 .app-sidebar--left { padding-right: 2.25rem; }
 .app-sidebar--right { padding-left: 2.25rem; }
 
-.app-main { display: flex; flex-direction: column; min-width: 0; }
+/* min-height: 0 here is the vertical twin of .scatter-container/
+   .table-view-wrap's min-width: 0 below -- .app-main is a GRID item of
+   .app-body, which also defaults to min-height:auto (content-sized). A tall
+   table would otherwise grow .app-main (and the grid row, and the whole
+   page) past 100vh instead of clipping and scrolling inside its own card,
+   pushing the footer down to wherever the now-taller document happens to
+   end -- the exact same bug as the width one, just on the other axis. */
+.app-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+
+.display-mode-toggle { display: flex; gap: 0.6rem; padding: 1rem 2rem 1.25rem; }
+.display-mode-tab {
+  background: transparent; border: none; color: var(--ink-55); font-family: inherit;
+  padding: 0.4rem 1.1rem; border-radius: 999px; cursor: pointer;
+  font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em;
+}
+.display-mode-tab:hover { background: var(--ink-05); color: var(--ink); }
+.display-mode-tab--active { background: var(--ink); color: var(--bg); font-weight: 800; }
+.display-mode-tab--active:hover { background: var(--ink); }
+
 .scatter-container {
-  flex: 1; min-height: 0; margin: 0 2rem 2rem;
+  flex: 1; min-height: 0; min-width: 0; margin: 0 2rem 2rem;
   border-radius: 16px; overflow: hidden; border: 1px solid var(--ink-12);
+  display: flex; flex-direction: column;
 }
 .scatter-container canvas { display: block; }
+
+/* ---- Data table (TableView) ------------------------------------------ */
+/* min-width: 0 is load-bearing here, not decorative -- a flex item defaults
+   to min-width:auto (its content's own natural width), so without this a
+   wide nowrap table forces EVERY ancestor in the chain (this wrap, the
+   card, .app-main, the grid track) to grow to fit it instead of clipping
+   and scrolling, spilling the table out over the sidebars/footer. */
+.table-view-wrap { flex: 1; min-height: 0; min-width: 0; overflow: auto; background: var(--bg); }
+.data-table { width: max-content; min-width: 100%; border-collapse: collapse; font-size: 0.78rem; white-space: nowrap; }
+.data-table thead th {
+  position: sticky; top: 0; background: var(--bg);
+  text-align: left; padding: 0.6rem 0.9rem; cursor: pointer;
+  border-bottom: 2px solid var(--ink);
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--ink-55);
+}
+.data-table thead th:hover { color: var(--ink); }
+.data-table .sort-arrow { color: var(--accent); }
+.data-table tbody td { padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--ink-12); }
+.data-table tbody tr { cursor: pointer; }
+.data-table tbody tr:hover td { background: var(--accent-15); }
+.data-table .cell-na { color: var(--ink-35); font-style: italic; }
 
 .panel {
   background: transparent;
@@ -216,9 +258,29 @@ input[type="radio"] { accent-color: var(--accent); }
 .range-wrap input[type="range"]:disabled::-moz-range-thumb { background: var(--ink-35); }
 
 .axis-pickers { display: flex; gap: 2rem; padding: 1.1rem 2rem 0.75rem; }
-.axis-picker { display: flex; align-items: center; gap: 0.4rem; }
+.axis-picker { display: flex; align-items: center; gap: 0.4rem; position: relative; }
 .axis-picker-name { font-weight: 800; font-size: 0.8rem; }
 .axis-picker select { background: transparent; color: inherit; border: none; font-size: 0.85rem; font-weight: 600; font-family: inherit; }
+
+.axis-picker-info {
+  width: 17px; height: 17px; flex-shrink: 0; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid currentColor; border-radius: 50%; background: transparent;
+  color: inherit; font-size: 0.65rem; font-weight: 800; font-family: inherit;
+  line-height: 1; cursor: pointer; opacity: 0.7;
+}
+.axis-picker-info:hover, .axis-picker-info:focus-visible { opacity: 1; background: var(--ink-08); }
+.axis-picker-popover {
+  position: absolute; top: calc(100% + 0.6rem); left: 0; z-index: 60;
+  width: 320px; max-width: min(320px, 80vw);
+  background: var(--bg); color: var(--ink);
+  border: 2px solid var(--ink); border-radius: 12px;
+  padding: 0.85rem 1rem; font-size: 0.78rem; line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+.axis-picker-popover--right { left: auto; right: 0; }
+.axis-picker-popover p { margin: 0 0 0.6rem; }
+.axis-picker-popover-weight { color: var(--ink-55); font-size: 0.72rem; margin-bottom: 0 !important; }
 
 .camera-presets { display: flex; gap: 1.5rem; padding: 0 2rem 0.9rem; border-bottom: 1px solid var(--ink-12); }
 .camera-preset {
@@ -277,18 +339,13 @@ input[type="radio"] { accent-color: var(--accent); }
 .preset-materiality--active { background: var(--ink); color: var(--bg); border-color: var(--ink); font-weight: 700; }
 .materiality-explainer { font-size: 0.72rem; color: var(--ink-55); margin: -0.5rem 0 1rem; line-height: 1.5; }
 .weight-group { margin-bottom: 1.4rem; }
-.weight-row { display: grid; grid-template-columns: 130px 1fr 40px; align-items: center; gap: 0.6rem; font-size: 0.78rem; margin: 0.35rem 0; }
-.weight-row label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.weight-row input:disabled { opacity: 0.35; }
 .weight-value { text-align: right; color: var(--ink-55); }
-/* Pillar rows (Environmental Impact/Transition risk/Governance) get their
-   own full-width label line above a full-width slider line, rather than the
-   3-column grid the (shorter-labelled) sub-score rows below use -- those
-   pillar names are long enough that a fixed label column wide enough not to
-   truncate them left almost no room for the slider track itself. */
+/* Full-width label line above a full-width slider line -- pillar names like
+   "Environmental Impact"/"Transition risk" are long enough that a fixed
+   label column wide enough not to truncate them left almost no room for
+   the slider track itself in a 3-column layout. */
 .weight-row-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.85rem; font-weight: 600; margin: 0.5rem 0 0.4rem; }
 .weight-row-top .weight-value { font-weight: 400; }
-details summary { cursor: pointer; font-size: 0.75rem; color: var(--ink-55); margin: 0.3rem 0; }
 
 .rank-sensitivity { margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px solid var(--ink); }
 .rank-sensitivity button {
@@ -362,3 +419,68 @@ blockquote { margin: 0.25rem 0 0; padding-left: 0.6rem; border-left: 2px solid v
 }
 .provenance-footer--stale { border-top: 2px solid var(--accent); }
 .provenance-footer-warning { font-weight: 800; color: var(--accent); }
+
+/* ---- Portfolio tab (bonus $1B allocator) -------------------------------
+   Same three-colour rule as the rest of this file: "eligible/prefer" reads
+   as accent, "avoid/excluded" reads as reduced-opacity ink, never a new
+   hue (no red/green semantic pair like a typical finance UI would reach
+   for -- see the :root comment at the top of this file). */
+.portfolio-container {
+  flex: 1; min-height: 0; min-width: 0; margin: 0 2rem 2rem;
+  border-radius: 16px; overflow-y: auto; overflow-x: hidden; border: 1px solid var(--ink-12);
+  padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;
+}
+.portfolio-allocator { display: flex; flex-direction: column; gap: 1.25rem; }
+.portfolio-explainer p { font-size: 0.85rem; color: var(--ink-55); line-height: 1.55; margin: 0; }
+
+.portfolio-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem 1.75rem; align-items: end; }
+
+.portfolio-hint { font-size: 0.78rem; color: var(--ink-55); margin: 0.4rem 0 0; }
+
+.portfolio-sector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.5rem 1.25rem; margin-top: 0.75rem; }
+.portfolio-sector-row { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; font-size: 0.82rem; }
+.portfolio-pref-buttons { display: flex; gap: 0.25rem; }
+.pref-btn {
+  font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;
+  padding: 0.25rem 0.55rem; border-radius: 999px; border: 1px solid var(--ink-12);
+  background: transparent; color: var(--ink-55); cursor: pointer; font-family: inherit;
+}
+.pref-btn:hover { background: var(--ink-05); }
+.pref-btn--active.pref-btn--neutral { background: var(--ink-12); color: var(--ink); border-color: var(--ink-12); }
+.pref-btn--active.pref-btn--prefer { background: var(--accent); color: var(--ink); border-color: var(--accent); font-weight: 800; }
+.pref-btn--active.pref-btn--avoid { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+.portfolio-filters-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem 1.25rem; margin-top: 0.75rem; }
+.portfolio-filters-grid label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; color: var(--ink-55); }
+.portfolio-filters-grid input[type="number"] {
+  width: 64px; background: var(--ink-05); border: 1px solid var(--ink-12); border-radius: 6px;
+  padding: 0.25rem 0.4rem; color: var(--ink); font-size: 0.8rem; font-family: inherit;
+}
+
+.portfolio-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-bottom: 1rem; }
+.portfolio-stat { background: var(--ink-05); border-radius: 10px; padding: 0.6rem 0.8rem; }
+.portfolio-stat-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--ink-55); }
+.portfolio-stat-value { font-size: 1.05rem; font-weight: 800; margin-top: 0.15rem; }
+.portfolio-stat-sub { font-size: 0.7rem; font-weight: 400; color: var(--ink-55); }
+
+.portfolio-sector-breakdown { margin-bottom: 1rem; }
+.portfolio-breakdown-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.4rem; font-size: 0.78rem; }
+.portfolio-breakdown-name { width: 190px; flex-shrink: 0; color: var(--ink-55); }
+.portfolio-breakdown-track { flex: 1; background: var(--ink-08); border-radius: 4px; height: 12px; overflow: hidden; }
+.portfolio-breakdown-fill { display: block; background: var(--accent); height: 100%; border-radius: 4px 0 0 4px; }
+.portfolio-breakdown-fill--cash { background: var(--ink-20); }
+.portfolio-breakdown-pct { width: 46px; text-align: right; flex-shrink: 0; }
+
+.portfolio-search {
+  width: 100%; background: var(--ink-05); border: 1px solid var(--ink-12); border-radius: 8px;
+  padding: 0.5rem 0.7rem; color: var(--ink); font-size: 0.85rem; font-family: inherit; margin-bottom: 0.75rem;
+}
+.portfolio-table-scroll { overflow-x: auto; border: 1px solid var(--ink-12); border-radius: 10px; }
+.portfolio-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; white-space: nowrap; }
+.portfolio-table th, .portfolio-table td { padding: 0.45rem 0.7rem; text-align: right; border-bottom: 1px solid var(--ink-08); }
+.portfolio-table th:nth-child(-n+3), .portfolio-table td:nth-child(-n+3) { text-align: left; }
+.portfolio-table th {
+  position: sticky; top: 0; background: var(--bg); font-size: 0.68rem; text-transform: uppercase;
+  letter-spacing: 0.02em; color: var(--ink-55); font-weight: 700;
+}
+.portfolio-ticker { color: var(--ink-55); font-size: 0.78rem; }

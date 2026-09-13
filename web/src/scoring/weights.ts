@@ -1,8 +1,9 @@
 // Weight presets and URL-hash persistence. Kept separate from pipeline.ts
 // because none of this touches company data -- it's pure state shaping.
 
-import { REGISTRY, type Pillar } from "./registry";
+import { PYTHON_P2_WEIGHTS, PYTHON_P3_WEIGHTS, REGISTRY, type Pillar } from "./registry";
 import { defaultWeights, PILLARS, type WeightsState } from "./pipeline";
+import type { SectorWeights } from "./materiality";
 
 export type PresetId = "equal" | "environmental_led" | "transition_led" | "governance_led";
 
@@ -23,6 +24,36 @@ export const PRESETS: Record<PresetId, { label: string; pillars: Record<Pillar, 
 
 export function applyPreset(preset: PresetId, current: WeightsState): WeightsState {
   return { pillars: { ...PRESETS[preset].pillars }, subscores: { ...current.subscores } };
+}
+
+/**
+ * The per-sector WeightsState Map that reproduces score_calculation/'s own
+ * default weighting exactly -- the thing this app should score against by
+ * default (see App.tsx's use of it once materiality.json has loaded), not
+ * an opt-in "materiality mode" among several equally-valid choices.
+ *
+ * Combines two DIFFERENT weight sources, because Python itself does:
+ * - P1 sub-score weights: `sectorWeights`'s own per-sector materiality
+ *   values (deriveMaterialityWeights's output) -- environmental_score.py
+ *   applies these, renormalized within P1, per sector.
+ * - P2/P3 sub-score weights: PYTHON_P2_WEIGHTS/PYTHON_P3_WEIGHTS, identical
+ *   for every sector -- transition_score.py/governance_score.py's own fixed
+ *   WEIGHTS dicts, which are NOT sector-varying in Python at all.
+ * - Pillar weights: always the flat {P1:1, P2:1, P3:1} -- final_score.py's
+ *   fixed equal 1/3 split, never a materiality-derived pillar mix.
+ */
+export function pythonDefaultWeights(
+  sectorWeights: Record<string, SectorWeights>
+): Map<string, WeightsState & { rationale: string }> {
+  const out = new Map<string, WeightsState & { rationale: string }>();
+  for (const [sector, sw] of Object.entries(sectorWeights)) {
+    out.set(sector, {
+      pillars: { P1: 1, P2: 1, P3: 1 },
+      subscores: { ...sw.subscores, ...PYTHON_P2_WEIGHTS, ...PYTHON_P3_WEIGHTS },
+      rationale: sw.rationale,
+    });
+  }
+  return out;
 }
 
 // --- URL hash persistence ---------------------------------------------------

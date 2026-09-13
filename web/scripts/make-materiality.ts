@@ -10,6 +10,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseCsv } from "./csv";
 import { assertIndicatorColumnsKnown, deriveMaterialityWeights } from "../src/scoring/materiality";
+import { pythonDefaultWeights } from "../src/scoring/weights";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, "..", "..");
@@ -21,19 +22,26 @@ function main() {
   if (rows.length === 0) throw new Error(`no rows parsed from ${CSV_PATH}`);
   assertIndicatorColumnsKnown(Object.keys(rows[0]));
 
-  const weights = deriveMaterialityWeights(rows);
+  // pythonDefaultWeights combines the CSV's per-sector P1 weights with
+  // Python's fixed P2/P3 WEIGHTS dicts and equal pillar weights -- this
+  // file is the app's actual default scoring weights, not an opt-in
+  // "materiality mode" among equally-valid choices. See its own doc
+  // comment in weights.ts.
+  const weights = pythonDefaultWeights(deriveMaterialityWeights(rows));
+  const weightsObj = Object.fromEntries(weights);
 
   mkdirSync(dirname(OUT_PATH), { recursive: true });
-  writeFileSync(OUT_PATH, JSON.stringify(weights));
+  writeFileSync(OUT_PATH, JSON.stringify(weightsObj));
 
-  const kb = (Buffer.byteLength(JSON.stringify(weights), "utf-8") / 1024).toFixed(1);
-  console.log(`wrote ${OUT_PATH} -- ${Object.keys(weights).length} sectors, ${kb} KB`);
-  console.log("pillar weights per sector:");
-  for (const [sector, w] of Object.entries(weights)) {
-    console.log(
-      `  ${sector.padEnd(24)} P1=${w.pillars.P1.toFixed(1).padStart(5)}  ` +
-        `P2=${w.pillars.P2.toFixed(1).padStart(5)}  P3=${w.pillars.P3.toFixed(1).padStart(5)}`
-    );
+  const kb = (Buffer.byteLength(JSON.stringify(weightsObj), "utf-8") / 1024).toFixed(1);
+  console.log(`wrote ${OUT_PATH} -- ${weights.size} sectors, ${kb} KB`);
+  console.log("P1 sub-score weights per sector (P2/P3 are Python's fixed WEIGHTS dicts, same for every sector):");
+  for (const [sector, w] of weights) {
+    const p1 = Object.entries(w.subscores)
+      .filter(([id]) => id.startsWith("p1_"))
+      .map(([id, v]) => `${id}=${v}`)
+      .join(" ");
+    console.log(`  ${sector.padEnd(24)} ${p1}`);
   }
 }
 

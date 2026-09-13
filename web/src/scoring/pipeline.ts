@@ -5,10 +5,37 @@
 // DOM, no randomness (rankSensitivity.ts is the one exception, and it takes
 // an explicit seed for that reason). That purity is what makes it safe to
 // call synchronously from a memoised selector on every slider tick.
+//
+// Three sub-scores don't fit the "compute one raw value, then rank it"
+// shape above, and each gets its own dedicated handling below rather than
+// forcing a generic compute()/percentileRank contract to cover cases it
+// can't express:
+//   - p1_input_efficiency (SubScoreDef.percentileComponents): the skip-null
+//     MEAN of two independently sector-percentiled metrics.
+//   - p2_sector_exposure, p2_transition_affordability
+//     (SubScoreDef.crossCompanyCompute): a raw value that depends on more
+//     than one company's own fields (a sector-level benchmark, a
+//     counterfactual median) -- computed once per computeScores() call over
+//     the whole company list, not per company.
+// See registry.ts's own doc comments on those two fields for why.
 
-import { percentileRank, weightedMeanSkippingNulls, median } from "./percentile";
-import { REGISTRY, type GapKind, type Pillar, type RawInputs, type SubScoreDef } from "./registry";
-import { MEASURED_STATUSES, TRUSTED_STATUSES, type Company } from "./types";
+import { coerceFieldValue, MEASURED_STATUSES, TRUSTED_STATUSES, type Company } from "./types";
+import { median, percentileRank, weightedMeanSkippingNulls } from "./percentile";
+import {
+  PYTHON_P2_WEIGHTS,
+  PYTHON_P3_WEIGHTS,
+  REGISTRY,
+  SBTI_TARGET_TYPE_CODES,
+  type GapKind,
+  type OptionalInput,
+  type Pillar,
+  type RawInputs,
+  type SubScoreDef,
+} from "./registry";
+
+// Re-exported so callers of defaultWeights() don't need a second import from
+// registry.ts just to see what it used.
+export { PYTHON_P2_WEIGHTS, PYTHON_P3_WEIGHTS };
 
 export const PILLARS: Pillar[] = ["P1", "P2", "P3"];
 
@@ -20,10 +47,18 @@ export interface WeightsState {
   subscores: Partial<Record<string, number>>;
 }
 
+/** Default (pre-slider) sub-score weights: P1 stays flat/equal here (true
+ * per-sector, materiality-derived P1 weights need a sector to compute at
+ * all -- see weights.ts's pythonDefaultWeights, which is what the app
+ * actually defaults to once materiality.json has loaded). P2/P3 use
+ * Python's own fixed WEIGHTS dicts even in this flat/manual form, since
+ * those are NOT sector-varying in Python either. */
 export function defaultWeights(): WeightsState {
   const pillars: Partial<Record<Pillar, number>> = { P1: 1, P2: 1, P3: 1 };
   const subscores: Partial<Record<string, number>> = {};
-  for (const s of REGISTRY) subscores[s.id] = 1;
+  for (const s of REGISTRY) {
+    subscores[s.id] = PYTHON_P2_WEIGHTS[s.id] ?? PYTHON_P3_WEIGHTS[s.id] ?? 1;
+  }
   return { pillars, subscores };
 }
 
@@ -69,12 +104,49 @@ export function weightsForSector(
 
 export type StatusClass = "measured" | "imputed" | "unavailable";
 
+/** sbti_target_type arrives as a category string, not a number --
+ * coerceFieldValue (shared, numeric-only) returns NaN for it; this layers
+ * registry.ts's small SBTI_TARGET_TYPE_CODES lookup on top for exactly that
+ * one field, so RawInputs stays numeric everywhere else. */
 function coerce(v: number | string | boolean | undefined): number {
-  if (v === undefined) return NaN;
-  if (typeof v === "boolean") return v ? 1 : 0;
-  if (typeof v === "number") return v;
-  const n = Number(v);
-  return Number.isFinite(n) ? n : NaN;
+  const n = coerceFieldValue(v);
+  if (Number.isFinite(n)) return n;
+  return typeof v === "string" ? SBTI_TARGET_TYPE_CODES[v] ?? NaN : NaN;
+}
+
+/** Resolves one set of fields (either a sub-score's own `inputs`, or a
+ * PercentileComponent's `inputs`) off one company: `required` gates
+ * availability (any missing/untrusted field makes the whole set
+ * 'unavailable'), `optional` never does (an absent optional field is
+ * substituted with its own fillValue, and its presence/absence is reported
+ * separately via `anyOptionalPresent` for requiresAnyOf to use). Shared by
+ * resolveInputs (below) and resolveAndBuildDistributions's
+ * percentileComponents handling, so there's exactly one field-resolution
+ * rule in the codebase regardless of which of the two calls it. */
+function resolveFieldSet(
+  company: Company,
+  required: readonly string[],
+  optional: readonly OptionalInput[]
+): { worst: StatusClass; inputs: RawInputs; anyOptionalPresent: boolean } {
+  let worst: StatusClass = "measured";
+  const inputs: RawInputs = {};
+  for (const field of required) {
+    const rec = company.fields[field];
+    if (!rec || !TRUSTED_STATUSES.has(rec.st)) {
+      worst = "unavailable";
+      continue;
+    }
+    if (!MEASURED_STATUSES.has(rec.st) && worst !== "unavailable") worst = "imputed";
+    inputs[field] = coerce(rec.v);
+  }
+  let anyOptionalPresent = false;
+  for (const opt of optional) {
+    const rec = company.fields[opt.field];
+    const present = !!rec && TRUSTED_STATUSES.has(rec.st);
+    if (present) anyOptionalPresent = true;
+    inputs[opt.field] = present ? coerce(rec!.v) : opt.fillValue;
+  }
+  return { worst, inputs, anyOptionalPresent };
 }
 
 /** Reads a sub-score's inputs off one company. Never invents a value: an
@@ -85,37 +157,29 @@ export function resolveInputs(
   company: Company,
   sub: SubScoreDef
 ): { statusClass: StatusClass; inputs: RawInputs | null } {
-  let worst: StatusClass = "measured";
-  const inputs: RawInputs = {};
-  for (const field of sub.inputs) {
-    const rec = company.fields[field];
-    if (!rec || !TRUSTED_STATUSES.has(rec.st)) {
-      worst = "unavailable";
-      continue;
-    }
-    if (!MEASURED_STATUSES.has(rec.st) && worst !== "unavailable") worst = "imputed";
-    inputs[field] = coerce(rec.v);
-  }
-  // Optional inputs never gate availability, unlike required ones above: an
-  // absent/untrusted optional field is always zero-filled, independent of
-  // whatever the required inputs decided. This runs regardless of `worst` so
-  // a sub-score with optionalInputs still gets them zero-filled even in the
-  // nullPolicy: 'zero' branch below (which only ever touches `sub.inputs`).
-  for (const field of sub.optionalInputs ?? []) {
-    const rec = company.fields[field];
-    inputs[field] = rec && TRUSTED_STATUSES.has(rec.st) ? coerce(rec.v) : 0;
-  }
+  const { worst, inputs, anyOptionalPresent } = resolveFieldSet(company, sub.inputs, sub.optionalInputs ?? []);
+
   if (worst === "unavailable") {
     if (sub.nullPolicy !== "zero") return { statusClass: "unavailable", inputs: null };
-    // 'zero': a missing input is filled with a literal 0 (e.g. "no penalty
-    // records found" reads the same as "zero penalties"), but the point
-    // still renders hollow -- the data really is missing, only the maths
-    // treats it as a true zero rather than refusing to compute.
+    // 'zero': a missing required input is filled with a literal 0 (e.g. "no
+    // penalty records found" reads the same as "zero penalties"), but the
+    // point still renders hollow -- the data really is missing, only the
+    // maths treats it as a true zero rather than refusing to compute.
     for (const field of sub.inputs) {
       if (!(field in inputs)) inputs[field] = 0;
     }
     return { statusClass: "unavailable", inputs };
   }
+
+  // A sub-score with no required `inputs` at all (only ever-optional
+  // components) would otherwise always read "measured" here, even when
+  // literally none of its optionalInputs resolved -- requiresAnyOf is the
+  // opt-in fix, only set where Python's own formula can truly go null this
+  // way. See registry.ts's doc comment on requiresAnyOf.
+  if (sub.requiresAnyOf && sub.inputs.length === 0 && !anyOptionalPresent) {
+    return { statusClass: "unavailable", inputs: null };
+  }
+
   return { statusClass: worst, inputs };
 }
 
@@ -125,8 +189,8 @@ export interface SubScoreResult {
   rawValue: number | null;
   /** 0-100, already polarity-adjusted so 100 is always "best". */
   score: number | null;
-  /** Size of the sector distribution this was ranked against -- an axis
-   * reading "0 / 41 companies" is a finding, and this is where it comes from. */
+  /** Size of the distribution this was ranked against -- an axis reading
+   * "0 / 41 companies" is a finding, and this is where it comes from. */
   coverageN: number;
 }
 
@@ -211,7 +275,9 @@ export interface CompanyScoreResult {
 }
 
 export type ResolvedInputs = Map<string, Map<string, { statusClass: StatusClass; inputs: RawInputs | null }>>;
-/** sector -> sub-score id -> sorted-ascending list of MEASURED-only raw values. */
+/** sector -> sub-score id (or, for a percentileComponents sub-score,
+ * `${subId}::${componentId}`) -> sorted-ascending list of MEASURED-only raw
+ * values. */
 export type SectorDistributions = Map<string, Map<string, number[]>>;
 
 /**
@@ -221,45 +287,75 @@ export type SectorDistributions = Map<string, Map<string, number[]>>;
  * be only one distribution-builder and one percentile function in this
  * codebase -- a second implementation is how the map ends up contradicting
  * the table.
+ *
+ * `crossCompanyRaw` (sub-score id -> ticker -> raw value) is exposed
+ * alongside `resolved`/`distributions` for computeScores' own convenience --
+ * a crossCompanyCompute sub-score's `resolved` entry never carries `inputs`
+ * (there's nothing to hand to a per-company `compute()`, since the value
+ * was computed once for every company already), so the raw number itself
+ * has to be looked up here instead.
  */
 export function resolveAndBuildDistributions(
   companies: readonly Company[],
   registry: SubScoreDef[] = REGISTRY
-): { resolved: ResolvedInputs; distributions: SectorDistributions } {
-  const bySector = new Map<string, Company[]>();
-  for (const c of companies) {
-    const arr = bySector.get(c.sector);
-    if (arr) arr.push(c);
-    else bySector.set(c.sector, [c]);
-  }
-
+): { resolved: ResolvedInputs; distributions: SectorDistributions; crossCompanyRaw: Map<string, Map<string, number | null>> } {
   const resolved: ResolvedInputs = new Map();
   const distributions: SectorDistributions = new Map();
+  for (const c of companies) {
+    resolved.set(c.ticker, new Map());
+    if (!distributions.has(c.sector)) distributions.set(c.sector, new Map());
+  }
 
-  for (const [sector, group] of bySector) {
-    const subDist = new Map<string, number[]>();
-    distributions.set(sector, subDist);
-    for (const company of group) {
-      const perCompany = new Map<string, { statusClass: StatusClass; inputs: RawInputs | null }>();
-      resolved.set(company.ticker, perCompany);
-      for (const sub of registry) {
-        const r = resolveInputs(company, sub);
-        perCompany.set(sub.id, r);
-        if (r.statusClass === "measured" && r.inputs) {
-          const rawValue = sub.compute(r.inputs);
-          if (Number.isFinite(rawValue)) {
-            const arr = subDist.get(sub.id);
-            if (arr) arr.push(rawValue);
-            else subDist.set(sub.id, [rawValue]);
+  function pushDistribution(sector: string, key: string, value: number) {
+    const subDist = distributions.get(sector)!;
+    const arr = subDist.get(key);
+    if (arr) arr.push(value);
+    else subDist.set(key, [value]);
+  }
+
+  const crossCompanyRaw = new Map<string, Map<string, number | null>>();
+
+  for (const sub of registry) {
+    if (sub.crossCompanyCompute) {
+      const raw = sub.crossCompanyCompute(companies);
+      crossCompanyRaw.set(sub.id, raw);
+      for (const company of companies) {
+        const v = raw.get(company.ticker) ?? null;
+        resolved.get(company.ticker)!.set(sub.id, { statusClass: v !== null ? "measured" : "unavailable", inputs: null });
+        if (v !== null) pushDistribution(company.sector, sub.id, v);
+      }
+      continue;
+    }
+
+    if (sub.percentileComponents) {
+      for (const company of companies) {
+        for (const comp of sub.percentileComponents) {
+          const key = `${sub.id}::${comp.id}`;
+          const { worst, inputs } = resolveFieldSet(company, comp.inputs, []);
+          resolved.get(company.ticker)!.set(key, worst === "unavailable" ? { statusClass: worst, inputs: null } : { statusClass: worst, inputs });
+          if (worst === "measured") {
+            const v = comp.compute(inputs);
+            if (Number.isFinite(v)) pushDistribution(company.sector, key, v);
           }
         }
       }
+      continue;
+    }
+
+    for (const company of companies) {
+      const r = resolveInputs(company, sub);
+      resolved.get(company.ticker)!.set(sub.id, r);
+      if (r.statusClass === "measured" && r.inputs) {
+        const rawValue = sub.compute(r.inputs);
+        if (Number.isFinite(rawValue)) pushDistribution(company.sector, sub.id, rawValue);
+      }
     }
   }
+
   for (const subDist of distributions.values()) {
     for (const [id, values] of subDist) subDist.set(id, values.sort((a, b) => a - b));
   }
-  return { resolved, distributions };
+  return { resolved, distributions, crossCompanyRaw };
 }
 
 /**
@@ -296,7 +392,23 @@ export function computeScores(
     return n;
   }
 
-  const { resolved, distributions } = resolveAndBuildDistributions(companies, registry);
+  const { resolved, distributions, crossCompanyRaw } = resolveAndBuildDistributions(companies, registry);
+
+  // Built once per call (not per company): a flat, universe-wide,
+  // MEASURED-only distribution for every 'universe_percentile' sub-score,
+  // by merging that sub-score's per-sector distributions -- those already
+  // contain exactly the measured-tier values this needs, just partitioned
+  // by sector. Matches governance_score.py's universe-wide controversy rank.
+  const universeDistributions = new Map<string, number[]>();
+  for (const sub of registry) {
+    if ((sub.scoringMode ?? "sector_percentile") !== "universe_percentile") continue;
+    const merged: number[] = [];
+    for (const subDist of distributions.values()) {
+      const v = subDist.get(sub.id);
+      if (v) merged.push(...v);
+    }
+    universeDistributions.set(sub.id, merged.sort((a, b) => a - b));
+  }
 
   // Pass 2: percentile + aggregate.
   const out = new Map<string, CompanyScoreResult>();
@@ -308,25 +420,7 @@ export function computeScores(
 
     for (const pillar of PILLARS) {
       const subs = registry.filter((s) => s.pillar === pillar);
-      const subResults: SubScoreResult[] = subs.map((sub) => {
-        const r = perCompany.get(sub.id)!;
-        const distribution = subDist.get(sub.id) ?? [];
-        let rawValue: number | null = null;
-
-        if (r.statusClass !== "unavailable" && r.inputs) {
-          const v = sub.compute(r.inputs);
-          rawValue = Number.isFinite(v) ? v : null;
-        } else if (r.statusClass === "unavailable" && sub.nullPolicy === "zero" && r.inputs) {
-          const v = sub.compute(r.inputs);
-          rawValue = Number.isFinite(v) ? v : null;
-        } else if (r.statusClass === "unavailable" && sub.nullPolicy === "sector_median") {
-          rawValue = median(distribution);
-        }
-        // nullPolicy 'not_disclosed' (the default): rawValue stays null.
-
-        const score = rawValue === null ? null : percentileRank(rawValue, distribution, sub.polarity);
-        return { id: sub.id, statusClass: r.statusClass, rawValue, score, coverageN: distribution.length };
-      });
+      const subResults: SubScoreResult[] = subs.map((sub) => computeSubScore(sub, company, perCompany, subDist, universeDistributions, crossCompanyRaw));
 
       const { score, scoreRaw, disclosureCoverage } = aggregateWithDisclosurePenalty(
         subResults.map((r) => {
@@ -351,4 +445,78 @@ export function computeScores(
   }
 
   return out;
+}
+
+/** One sub-score's SubScoreResult for one company, dispatching on which of
+ * the three computation shapes it declared (percentileComponents,
+ * crossCompanyCompute, or the default compute()+scoringMode path). */
+function computeSubScore(
+  sub: SubScoreDef,
+  company: Company,
+  perCompany: Map<string, { statusClass: StatusClass; inputs: RawInputs | null }>,
+  subDist: Map<string, number[]>,
+  universeDistributions: Map<string, number[]>,
+  crossCompanyRaw: Map<string, Map<string, number | null>>
+): SubScoreResult {
+  if (sub.percentileComponents) {
+    const componentScores: number[] = [];
+    let anyMeasured = false;
+    let coverageN = 0;
+    for (const comp of sub.percentileComponents) {
+      const key = `${sub.id}::${comp.id}`;
+      const r = perCompany.get(key);
+      const compDistribution = subDist.get(key) ?? [];
+      if (compDistribution.length > coverageN) coverageN = compDistribution.length;
+      if (r && r.statusClass !== "unavailable" && r.inputs) {
+        const v = comp.compute(r.inputs);
+        if (Number.isFinite(v)) {
+          const s = percentileRank(v, compDistribution, comp.polarity);
+          if (s !== null) {
+            componentScores.push(s);
+            if (r.statusClass === "measured") anyMeasured = true;
+          }
+        }
+      }
+    }
+    const score = componentScores.length ? componentScores.reduce((a, b) => a + b, 0) / componentScores.length : null;
+    return {
+      id: sub.id,
+      statusClass: score === null ? "unavailable" : anyMeasured ? "measured" : "imputed",
+      rawValue: null, // no single meaningful raw value -- see PercentileComponent's doc comment
+      score,
+      coverageN,
+    };
+  }
+
+  if (sub.crossCompanyCompute) {
+    const r = perCompany.get(sub.id)!;
+    const rawValue = r.statusClass !== "unavailable" ? crossCompanyRaw.get(sub.id)?.get(company.ticker) ?? null : null;
+    return { id: sub.id, statusClass: r.statusClass, rawValue, score: rawValue, coverageN: (subDist.get(sub.id) ?? []).length };
+  }
+
+  const scoringMode = sub.scoringMode ?? "sector_percentile";
+  const r = perCompany.get(sub.id)!;
+  const distribution = subDist.get(sub.id) ?? [];
+  let rawValue: number | null = null;
+
+  if (r.statusClass !== "unavailable" && r.inputs) {
+    const v = sub.compute(r.inputs);
+    rawValue = Number.isFinite(v) ? v : null;
+  } else if (r.statusClass === "unavailable" && sub.nullPolicy === "zero" && r.inputs) {
+    const v = sub.compute(r.inputs);
+    rawValue = Number.isFinite(v) ? v : null;
+  } else if (r.statusClass === "unavailable" && sub.nullPolicy === "sector_median") {
+    rawValue = median(distribution);
+  }
+  // nullPolicy 'not_disclosed' (the default): rawValue stays null.
+
+  const isUniverseRanked = scoringMode === "universe_percentile";
+  const rankingDistribution = isUniverseRanked ? universeDistributions.get(sub.id) ?? [] : distribution;
+
+  let score: number | null;
+  if (rawValue === null) score = null;
+  else if (scoringMode === "absolute" || scoringMode === "sector_normalized") score = rawValue;
+  else score = percentileRank(rawValue, rankingDistribution, sub.polarity);
+
+  return { id: sub.id, statusClass: r.statusClass, rawValue, score, coverageN: rankingDistribution.length };
 }

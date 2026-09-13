@@ -66,3 +66,20 @@ export interface QuotesPayload {
   generated_at: string;
   quotes: Record<string, Record<string, string>>;
 }
+
+/** Coerces one FieldRecord.v to a number (booleans -> 1/0), NaN for anything
+ * that isn't numeric. Shared by pipeline.ts (per-field resolution) and
+ * registry.ts (cross-company aggregate compute()s, e.g. sector-level
+ * benchmarks that read raw FieldRecord values directly rather than going
+ * through resolveInputs) so there is exactly one coercion rule in the
+ * codebase. A categorical string field (e.g. sbti_target_type) coerces to
+ * NaN here -- pipeline.ts layers its own category-code lookup on top of
+ * this for the one sub-score that needs it, rather than teaching this
+ * shared primitive about any specific field's vocabulary. */
+export function coerceFieldValue(v: number | string | boolean | undefined): number {
+  if (v === undefined) return NaN;
+  if (typeof v === "boolean") return v ? 1 : 0;
+  if (typeof v === "number") return v;
+  const n = Number(v);
+  return Number.isFinite(n) ? n : NaN;
+}

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useMatrix } from "./data/useMatrix";
 import { useMaterialityWeights } from "./data/useMaterialityWeights";
-import { useAppState } from "./state/useAppState";
+import { useAppState, isSectorVisible } from "./state/useAppState";
 import { computeScores, weightsForSector, type WeightsState } from "./scoring/pipeline";
 import { resolveReference } from "./scoring/reference";
 import { VIEWS, viewById } from "./viz/views";
@@ -13,17 +13,22 @@ import { ProvenanceFooter } from "./components/ProvenanceFooter";
 import { SectorFilter } from "./components/SectorFilter";
 import { Legend } from "./components/Legend";
 import { CoverageStrip } from "./components/CoverageStrip";
-import { ReferencePicker } from "./components/ReferencePicker";
+// import { ReferencePicker } from "./components/ReferencePicker"; -- parked, see the app-sidebar--right JSX below
 import { WeightPanel } from "./components/WeightPanel";
 import { DetailPanel } from "./components/DetailPanel";
 import { SearchBox } from "./components/SearchBox";
+import { TableView } from "./components/TableView";
+import { PortfolioAllocator } from "./components/PortfolioAllocator";
 import "./App.css";
+
+type DisplayMode = "3d" | "table" | "portfolio";
 
 export default function App() {
   const matrix = useMatrix();
   const materiality = useMaterialityWeights();
   const state = useAppState();
   const [cameraPreset, setCameraPreset] = useState<CameraPresetId | null>("isometric");
+  const [displayMode, setDisplayMode] = useState<DisplayMode>("3d");
 
   const companies = matrix.payload?.companies ?? [];
 
@@ -59,7 +64,7 @@ export default function App() {
   const visibleResults = useMemo(() => {
     const out = [];
     for (const c of companies) {
-      if (state.selectedSectors.size > 0 && !state.selectedSectors.has(c.sector)) continue;
+      if (!isSectorVisible(c.sector, state.selectedSectors)) continue;
       const r = scores.get(c.ticker);
       if (r) out.push(r);
     }
@@ -118,6 +123,78 @@ export default function App() {
             onToggle={state.toggleSector}
             onClear={state.clearSectorFilter}
           />
+          <CoverageStrip coverages={coverages} />
+        </aside>
+
+        <main className="app-main">
+          <div className="display-mode-toggle">
+            <button
+              className={displayMode === "3d" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+              onClick={() => setDisplayMode("3d")}
+            >
+              3D
+            </button>
+            <button
+              className={displayMode === "table" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+              onClick={() => setDisplayMode("table")}
+            >
+              Table
+            </button>
+            <button
+              className={displayMode === "portfolio" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+              onClick={() => setDisplayMode("portfolio")}
+            >
+              Portfolio
+            </button>
+          </div>
+          {displayMode === "3d" && (
+            <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} weights={state.weights} />
+          )}
+          {displayMode === "3d" && (
+            <div className="camera-presets">
+              {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
+                <button
+                  key={p}
+                  className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
+                  onClick={() => setCameraPreset(p)}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
+          )}
+          {displayMode !== "portfolio" && (
+            <div className="scatter-container">
+              {displayMode === "3d" ? (
+                <ScatterView
+                  companies={companies}
+                  scores={scores}
+                  axes={state.axes}
+                  visibleSectors={state.selectedSectors}
+                  referenceBySector={referenceBySector}
+                  weights={effectiveWeights}
+                  onSelectCompany={state.setSelectedTicker}
+                  cameraPreset={cameraPreset}
+                />
+              ) : (
+                <TableView
+                  companies={companies}
+                  scores={scores}
+                  visibleSectors={state.selectedSectors}
+                  onSelectCompany={state.setSelectedTicker}
+                />
+              )}
+            </div>
+          )}
+          {displayMode === "portfolio" && (
+            <div className="portfolio-container">
+              <PortfolioAllocator companies={companies} scores={scores} />
+            </div>
+          )}
+        </main>
+
+        <aside className="app-sidebar app-sidebar--right">
+          <Legend />
           <WeightPanel
             weights={state.weights}
             onChange={state.setWeights}
@@ -127,45 +204,17 @@ export default function App() {
             materialityStatus={materiality.status}
             sensitivityWeights={effectiveWeights}
           />
-        </aside>
-
-        <main className="app-main">
-          <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} />
-          <div className="camera-presets">
-            {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
-              <button
-                key={p}
-                className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
-                onClick={() => setCameraPreset(p)}
-              >
-                {p}
-              </button>
-            ))}
-          </div>
-          <div className="scatter-container">
-            <ScatterView
-              companies={companies}
-              scores={scores}
-              axes={state.axes}
-              visibleSectors={state.selectedSectors}
-              referenceBySector={referenceBySector}
-              weights={effectiveWeights}
-              onSelectCompany={state.setSelectedTicker}
-              cameraPreset={cameraPreset}
-            />
-          </div>
-        </main>
-
-        <aside className="app-sidebar app-sidebar--right">
-          <Legend />
-          <CoverageStrip coverages={coverages} />
-          <ReferencePicker
+          {/* ReferencePicker parked, not deleted -- state.reference/deltaMode
+              (and the coloring/delta logic everywhere that reads them) are
+              untouched, just fixed at their defaults (sector median,
+              sector-adjusted) with no UI to change them for now. */}
+          {/* <ReferencePicker
             reference={state.reference}
             onChangeReference={state.setReference}
             deltaMode={state.deltaMode}
             onChangeDeltaMode={state.setDeltaMode}
             companies={companies}
-          />
+          /> */}
         </aside>
 
         {selectedCompany && selectedResult && (

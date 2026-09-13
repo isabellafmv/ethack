@@ -11,6 +11,16 @@ import {
 import type { ReferenceSpec } from "../scoring/reference";
 import { VIEWS, viewById, type AxisSlot, type ViewConfig } from "../viz/views";
 
+/** The one place "is this sector currently visible" is decided -- an empty
+ * `selectedSectors` means "show everything" (see toggleSector's own note),
+ * so this is NOT simply `selectedSectors.has(sector)`. ScatterView, the
+ * composite/coverage calc in App.tsx, and TableView all need the exact same
+ * answer to this question; a second reimplementation is how the table and
+ * the 3D view end up disagreeing about which companies are in scope. */
+export function isSectorVisible(sector: string, selectedSectors: ReadonlySet<string>): boolean {
+  return selectedSectors.size === 0 || selectedSectors.has(sector);
+}
+
 export interface AppState {
   weights: WeightsState;
   setWeights: (w: WeightsState) => void;
