@@ -203,9 +203,11 @@ export default function App() {
           <WeightPanel
             weights={state.weights}
             onChange={state.setWeights}
+            companies={companies}
             weightMode={state.weightMode}
             onChangeWeightMode={state.setWeightMode}
             materialityStatus={materiality.status}
+            sensitivityWeights={effectiveWeights}
           />
           {/* ReferencePicker parked, not deleted -- state.reference/deltaMode
               (and the coloring/delta logic everywhere that reads them) are
