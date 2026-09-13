@@ -33,10 +33,6 @@ export default function App() {
   // mode alongside 3D/Table -- it isn't an axis view of the same scatter,
   // it's a wholly different page, so it gets its own top-level toggle.
   const [showPortfolio, setShowPortfolio] = useState(false);
-  // // Portfolio is a top-level tab next to Map (view-tabs), not a display
-  // // mode alongside 3D/Table -- it isn't an axis view of the same scatter,
-  // // it's a wholly different page, so it gets its own top-level toggle.
-  // const [showPortfolio, setShowPortfolio] = useState(false);
 
   const companies = matrix.payload?.companies ?? [];
 
@@ -138,6 +134,74 @@ export default function App() {
             onSelectAll={state.clearSectorFilter}
             onSelectNone={state.selectNoSectors}
           />
+          <CoverageStrip coverages={coverages} />
+        </aside>
+
+        <main className="app-main">
+          {showPortfolio ? (
+            <div className="portfolio-container">
+              <PortfolioAllocator companies={companies} scores={scores} onSelectCompany={state.setSelectedTicker} />
+            </div>
+          ) : (
+            <>
+              <div className="display-mode-toggle">
+                <button
+                  className={displayMode === "3d" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+                  onClick={() => setDisplayMode("3d")}
+                >
+                  3D
+                </button>
+                <button
+                  className={displayMode === "table" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
+                  onClick={() => setDisplayMode("table")}
+                >
+                  Table
+                </button>
+              </div>
+              {displayMode === "3d" && (
+                <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} weights={state.weights} />
+              )}
+              {displayMode === "3d" && (
+                <div className="camera-presets">
+                  {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
+                    <button
+                      key={p}
+                      className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
+                      onClick={() => setCameraPreset(p)}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="scatter-container">
+                {displayMode === "3d" ? (
+                  <ScatterView
+                    companies={companies}
+                    scores={scores}
+                    axes={state.axes}
+                    visibleSectors={state.selectedSectors}
+                    referenceBySector={referenceBySector}
+                    weights={effectiveWeights}
+                    onSelectCompany={state.setSelectedTicker}
+                    cameraPreset={cameraPreset}
+                    selectedTicker={state.selectedTicker}
+                  />
+                ) : (
+                  <TableView
+                    companies={companies}
+                    scores={scores}
+                    visibleSectors={state.selectedSectors}
+                    onSelectCompany={state.setSelectedTicker}
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </main>
+
+        <aside className="app-sidebar app-sidebar--right">
+          <Legend />
           <WeightPanel
             weights={state.weights}
             onChange={state.setWeights}
@@ -156,75 +220,7 @@ export default function App() {
             onChangeDeltaMode={state.setDeltaMode}
             companies={companies}
           /> */}
-          <CoverageStrip coverages={coverages} />
         </aside>
-
-        <main className="app-main">
-          <div className="display-mode-toggle">
-            <button
-              className={displayMode === "3d" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
-              onClick={() => setDisplayMode("3d")}
-            >
-              3D
-            </button>
-            <button
-              className={displayMode === "table" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
-              onClick={() => setDisplayMode("table")}
-            >
-              Table
-            </button>
-            <button
-              className={displayMode === "portfolio" ? "display-mode-tab display-mode-tab--active" : "display-mode-tab"}
-              onClick={() => setDisplayMode("portfolio")}
-            >
-              Portfolio
-            </button>
-          </div>
-          {displayMode === "3d" && (
-            <AxisPickers view={view} axes={state.axes} onChange={state.setAxis} weights={state.weights} />
-          )}
-          {displayMode === "3d" && (
-            <div className="camera-presets">
-              {(Object.keys(CAMERA_PRESETS) as CameraPresetId[]).map((p) => (
-                <button
-                  key={p}
-                  className={p === cameraPreset ? "camera-preset camera-preset--active" : "camera-preset"}
-                  onClick={() => setCameraPreset(p)}
-                >
-                  {p}
-                </button>
-              ))}
-            </div>
-          )}
-          {displayMode !== "portfolio" && (
-            <div className="scatter-container">
-              {displayMode === "3d" ? (
-                <ScatterView
-                  companies={companies}
-                  scores={scores}
-                  axes={state.axes}
-                  visibleSectors={state.selectedSectors}
-                  referenceBySector={referenceBySector}
-                  weights={effectiveWeights}
-                  onSelectCompany={state.setSelectedTicker}
-                  cameraPreset={cameraPreset}
-                />
-              ) : (
-                <TableView
-                  companies={companies}
-                  scores={scores}
-                  visibleSectors={state.selectedSectors}
-                  onSelectCompany={state.setSelectedTicker}
-                />
-              )}
-            </div>
-          )}
-          {displayMode === "portfolio" && (
-            <div className="portfolio-container">
-              <PortfolioAllocator companies={companies} scores={scores} />
-            </div>
-          )}
-        </main>
 
         {selectedCompany && selectedResult && (
           <DetailPanel
