@@ -15,7 +15,7 @@ export function SectorFilter({
   const sectors = [...sectorCounts.keys()].sort();
   const handleToggle = (sector: string) => onToggle(sector, sectors);
   return (
-    <details className="panel sector-filter" open>
+    <details className="panel sector-filter">
       <summary>Sectors</summary>
       <div className="sector-filter-actions">
         <button className="link-button" onClick={onSelectAll} disabled={selected === null}>

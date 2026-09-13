@@ -125,17 +125,26 @@ export default function App() {
         <SearchBox companies={companies} onSelect={state.setSelectedTicker} />
       </div>
 
-      <div className="app-body">
-        <aside className="app-sidebar app-sidebar--left">
-          <SectorFilter
-            sectorCounts={sectorCounts}
-            selected={state.selectedSectors}
-            onToggle={state.toggleSector}
-            onSelectAll={state.clearSectorFilter}
-            onSelectNone={state.selectNoSectors}
-          />
-          <CoverageStrip coverages={coverages} />
-        </aside>
+      <div className={showPortfolio ? "app-body app-body--no-left-sidebar" : "app-body"}>
+        {!showPortfolio && (
+          <aside className="app-sidebar app-sidebar--left">
+            <SectorFilter
+              sectorCounts={sectorCounts}
+              selected={state.selectedSectors}
+              onToggle={state.toggleSector}
+              onSelectAll={state.clearSectorFilter}
+              onSelectNone={state.selectNoSectors}
+            />
+            <WeightPanel
+              weights={state.weights}
+              onChange={state.setWeights}
+              weightMode={state.weightMode}
+              onChangeWeightMode={state.setWeightMode}
+              materialityStatus={materiality.status}
+            />
+            <CoverageStrip coverages={coverages} />
+          </aside>
+        )}
 
         <main className="app-main">
           {showPortfolio ? (
@@ -176,17 +185,22 @@ export default function App() {
               )}
               <div className="scatter-container">
                 {displayMode === "3d" ? (
-                  <ScatterView
-                    companies={companies}
-                    scores={scores}
-                    axes={state.axes}
-                    visibleSectors={state.selectedSectors}
-                    referenceBySector={referenceBySector}
-                    weights={effectiveWeights}
-                    onSelectCompany={state.setSelectedTicker}
-                    cameraPreset={cameraPreset}
-                    selectedTicker={state.selectedTicker}
-                  />
+                  <>
+                    <ScatterView
+                      companies={companies}
+                      scores={scores}
+                      axes={state.axes}
+                      visibleSectors={state.selectedSectors}
+                      referenceBySector={referenceBySector}
+                      weights={effectiveWeights}
+                      onSelectCompany={state.setSelectedTicker}
+                      cameraPreset={cameraPreset}
+                      selectedTicker={state.selectedTicker}
+                    />
+                    <div className="legend-overlay">
+                      <Legend />
+                    </div>
+                  </>
                 ) : (
                   <TableView
                     companies={companies}
@@ -200,27 +214,20 @@ export default function App() {
           )}
         </main>
 
-        <aside className="app-sidebar app-sidebar--right">
-          <Legend />
-          <WeightPanel
-            weights={state.weights}
-            onChange={state.setWeights}
-            weightMode={state.weightMode}
-            onChangeWeightMode={state.setWeightMode}
-            materialityStatus={materiality.status}
-          />
-          {/* ReferencePicker parked, not deleted -- state.reference/deltaMode
-              (and the coloring/delta logic everywhere that reads them) are
-              untouched, just fixed at their defaults (sector median,
-              sector-adjusted) with no UI to change them for now. */}
-          {/* <ReferencePicker
-            reference={state.reference}
-            onChangeReference={state.setReference}
-            deltaMode={state.deltaMode}
-            onChangeDeltaMode={state.setDeltaMode}
-            companies={companies}
-          /> */}
-        </aside>
+        {/* ReferencePicker parked, not deleted -- state.reference/deltaMode
+            (and the coloring/delta logic everywhere that reads them) are
+            untouched, just fixed at their defaults (sector median,
+            sector-adjusted) with no UI to change them for now. Used to live
+            in its own app-sidebar--right alongside WeightPanel; that aside
+            is gone now that WeightPanel moved into the left sidebar, so
+            re-enabling this needs its own home again, not just an uncomment. */}
+        {/* <ReferencePicker
+          reference={state.reference}
+          onChangeReference={state.setReference}
+          deltaMode={state.deltaMode}
+          onChangeDeltaMode={state.setDeltaMode}
+          companies={companies}
+        /> */}
 
         {selectedCompany && selectedResult && (
           <DetailPanel

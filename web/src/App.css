@@ -109,6 +109,10 @@ body { background: var(--bg); color: var(--ink); }
   min-height: 0;
   position: relative;
 }
+/* Portfolio has no map/table to filter, no weights to tune, and no coverage
+   strip to report on -- the left sidebar is Map-only, so its column
+   collapses rather than leaving an empty 260px gutter. */
+.app-body--no-left-sidebar { grid-template-columns: 1fr; }
 
 .app-sidebar {
   overflow-y: auto;
@@ -441,7 +445,7 @@ blockquote { margin: 0.25rem 0 0; padding-left: 0.6rem; border-left: 2px solid v
 .portfolio-container {
   flex: 1; min-height: 0; min-width: 0; margin: 0 2rem 2rem;
   border-radius: 16px; overflow-y: auto; overflow-x: hidden; border: 1px solid var(--ink-12);
-  padding: 1.5rem 1.75rem; display: flex; flex-direction: column; gap: 1.25rem;
+  padding: 2rem 2.5rem; display: flex; flex-direction: column; gap: 1.25rem;
 }
 .portfolio-allocator { display: flex; flex-direction: column; gap: 1.25rem; }
 .portfolio-explainer p { font-size: 0.85rem; color: var(--ink-55); line-height: 1.55; margin: 0; }
