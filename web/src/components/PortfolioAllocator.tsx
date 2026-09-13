@@ -65,9 +65,11 @@ function fmtPct(v: number | null, digits = 1): string {
 export function PortfolioAllocator({
   companies,
   scores,
+  onSelectCompany,
 }: {
   companies: Company[];
   scores: Map<string, CompanyScoreResult>;
+  onSelectCompany: (ticker: string) => void;
 }) {
   const revenueGrowth = useRevenueGrowth();
 
@@ -368,7 +370,7 @@ export function PortfolioAllocator({
             </thead>
             <tbody>
               {filteredList.map((r, i) => (
-                <tr key={r.ticker}>
+                <tr key={r.ticker} onClick={() => onSelectCompany(r.ticker)}>
                   <td className="num">{i + 1}</td>
                   <td>{r.company} <span className="portfolio-ticker">({r.ticker})</span></td>
                   <td>{r.sector}</td>

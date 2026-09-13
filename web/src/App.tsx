@@ -139,7 +139,7 @@ export default function App() {
         <main className="app-main">
           {showPortfolio ? (
             <div className="portfolio-container">
-              <PortfolioAllocator companies={companies} scores={scores} />
+              <PortfolioAllocator companies={companies} scores={scores} onSelectCompany={state.setSelectedTicker} />
             </div>
           ) : (
             <>

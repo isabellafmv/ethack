@@ -484,3 +484,5 @@ blockquote { margin: 0.25rem 0 0; padding-left: 0.6rem; border-left: 2px solid v
   letter-spacing: 0.02em; color: var(--ink-55); font-weight: 700;
 }
 .portfolio-ticker { color: var(--ink-55); font-size: 0.78rem; }
+.portfolio-table tbody tr { cursor: pointer; }
+.portfolio-table tbody tr:hover td { background: var(--accent-15); }
